@@ -12,6 +12,12 @@
         <title>Imagine | Login</title>
     </head>
     <body>
-        <h1></h1>
+        <h1>Login</h1><br>
+        ${message}
+        <form action="Login" method="post">
+           username <input type="text" name="username" required>
+           password <input type="text" name="password" required>
+           <input type="submit" value="Login">
+        </form>
     </body>
 </html>
