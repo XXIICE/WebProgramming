@@ -13,7 +13,7 @@
     </head>
     <body>
         <h1>Login</h1><br>
-        ${message}
+        
         <form action="Login" method="post">
            username <input type="text" name="username" required>
            password <input type="text" name="password" required>
