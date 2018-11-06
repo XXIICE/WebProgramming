@@ -16,12 +16,12 @@
        
         <form action="Register" method="post">
            username <input type="text" name="username" required><br /><br />
-           password <input type="text" name="password" required><br /><br />
+           password <input type="password" name="password" required><br /><br />
            firstname <input type="text" name="firstname" required><br /><br />
            lastname <input type="text" name="lastname" required><br /><br />
-           email <input type="text" name="email" required><br /><br />
+           email <input type="email" name="email" required><br /><br />
            address <input type="text" name="address" required><br /><br />
-           creditcardnumbet <input type="number" name="creditNo." required><br /><br />
+           creditcardnumber <input type="number" name="creditNo" required><br /><br />
            <input type="submit" value="Register">
         </form>
     </body>

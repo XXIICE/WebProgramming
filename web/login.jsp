@@ -19,5 +19,6 @@
            password <input type="password" name="password" required>
            <input type="submit" value="Login">
         </form>
+        <a href="Register"> Register </a>
     </body>
 </html>
