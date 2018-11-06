@@ -53,9 +53,9 @@ public class Review implements Serializable {
     @Column(name = "COMMENTDATE")
     @Temporal(TemporalType.DATE)
     private Date commentdate;
-    @JoinColumn(name = "CUSTOMER_USERID", referencedColumnName = "USERID")
+    @JoinColumn(name = "CUSTOMER_USERNAME", referencedColumnName = "USERNAME")
     @ManyToOne(optional = false)
-    private Customer customerUserid;
+    private Customer customerUsername;
     @JoinColumn(name = "PRODUCT_PRODUCTID", referencedColumnName = "PRODUCTID")
     @ManyToOne(optional = false)
     private Product productProductid;
@@ -97,12 +97,12 @@ public class Review implements Serializable {
         this.commentdate = commentdate;
     }
 
-    public Customer getCustomerUserid() {
-        return customerUserid;
+    public Customer getCustomerUsername() {
+        return customerUsername;
     }
 
-    public void setCustomerUserid(Customer customerUserid) {
-        this.customerUserid = customerUserid;
+    public void setCustomerUsername(Customer customerUsername) {
+        this.customerUsername = customerUsername;
     }
 
     public Product getProductProductid() {

@@ -43,10 +43,10 @@ public class ReviewJpaController implements Serializable {
         try {
             utx.begin();
             em = getEntityManager();
-            Customer customerUserid = review.getCustomerUserid();
-            if (customerUserid != null) {
-                customerUserid = em.getReference(customerUserid.getClass(), customerUserid.getUserid());
-                review.setCustomerUserid(customerUserid);
+            Customer customerUsername = review.getCustomerUsername();
+            if (customerUsername != null) {
+                customerUsername = em.getReference(customerUsername.getClass(), customerUsername.getUsername());
+                review.setCustomerUsername(customerUsername);
             }
             Product productProductid = review.getProductProductid();
             if (productProductid != null) {
@@ -54,9 +54,9 @@ public class ReviewJpaController implements Serializable {
                 review.setProductProductid(productProductid);
             }
             em.persist(review);
-            if (customerUserid != null) {
-                customerUserid.getReviewList().add(review);
-                customerUserid = em.merge(customerUserid);
+            if (customerUsername != null) {
+                customerUsername.getReviewList().add(review);
+                customerUsername = em.merge(customerUsername);
             }
             if (productProductid != null) {
                 productProductid.getReviewList().add(review);
@@ -86,26 +86,26 @@ public class ReviewJpaController implements Serializable {
             utx.begin();
             em = getEntityManager();
             Review persistentReview = em.find(Review.class, review.getReviewid());
-            Customer customerUseridOld = persistentReview.getCustomerUserid();
-            Customer customerUseridNew = review.getCustomerUserid();
+            Customer customerUsernameOld = persistentReview.getCustomerUsername();
+            Customer customerUsernameNew = review.getCustomerUsername();
             Product productProductidOld = persistentReview.getProductProductid();
             Product productProductidNew = review.getProductProductid();
-            if (customerUseridNew != null) {
-                customerUseridNew = em.getReference(customerUseridNew.getClass(), customerUseridNew.getUserid());
-                review.setCustomerUserid(customerUseridNew);
+            if (customerUsernameNew != null) {
+                customerUsernameNew = em.getReference(customerUsernameNew.getClass(), customerUsernameNew.getUsername());
+                review.setCustomerUsername(customerUsernameNew);
             }
             if (productProductidNew != null) {
                 productProductidNew = em.getReference(productProductidNew.getClass(), productProductidNew.getProductid());
                 review.setProductProductid(productProductidNew);
             }
             review = em.merge(review);
-            if (customerUseridOld != null && !customerUseridOld.equals(customerUseridNew)) {
-                customerUseridOld.getReviewList().remove(review);
-                customerUseridOld = em.merge(customerUseridOld);
+            if (customerUsernameOld != null && !customerUsernameOld.equals(customerUsernameNew)) {
+                customerUsernameOld.getReviewList().remove(review);
+                customerUsernameOld = em.merge(customerUsernameOld);
             }
-            if (customerUseridNew != null && !customerUseridNew.equals(customerUseridOld)) {
-                customerUseridNew.getReviewList().add(review);
-                customerUseridNew = em.merge(customerUseridNew);
+            if (customerUsernameNew != null && !customerUsernameNew.equals(customerUsernameOld)) {
+                customerUsernameNew.getReviewList().add(review);
+                customerUsernameNew = em.merge(customerUsernameNew);
             }
             if (productProductidOld != null && !productProductidOld.equals(productProductidNew)) {
                 productProductidOld.getReviewList().remove(review);
@@ -149,10 +149,10 @@ public class ReviewJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The review with id " + id + " no longer exists.", enfe);
             }
-            Customer customerUserid = review.getCustomerUserid();
-            if (customerUserid != null) {
-                customerUserid.getReviewList().remove(review);
-                customerUserid = em.merge(customerUserid);
+            Customer customerUsername = review.getCustomerUsername();
+            if (customerUsername != null) {
+                customerUsername.getReviewList().remove(review);
+                customerUsername = em.merge(customerUsername);
             }
             Product productProductid = review.getProductProductid();
             if (productProductid != null) {

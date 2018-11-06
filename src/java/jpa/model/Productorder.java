@@ -63,9 +63,9 @@ public class Productorder implements Serializable {
     @JoinColumn(name = "CART_CARTID", referencedColumnName = "CARTID")
     @OneToOne(optional = false)
     private Cart cartCartid;
-    @JoinColumn(name = "CUSTOMER_USERID", referencedColumnName = "USERID")
+    @JoinColumn(name = "CUSTOMER_USERNAME", referencedColumnName = "USERNAME")
     @ManyToOne(optional = false)
-    private Customer customerUserid;
+    private Customer customerUsername;
     @JoinColumn(name = "PAYMENT_PAYMENTID", referencedColumnName = "PAYMENTID")
     @OneToOne(optional = false)
     private Payment paymentPaymentid;
@@ -133,12 +133,12 @@ public class Productorder implements Serializable {
         this.cartCartid = cartCartid;
     }
 
-    public Customer getCustomerUserid() {
-        return customerUserid;
+    public Customer getCustomerUsername() {
+        return customerUsername;
     }
 
-    public void setCustomerUserid(Customer customerUserid) {
-        this.customerUserid = customerUserid;
+    public void setCustomerUsername(Customer customerUsername) {
+        this.customerUsername = customerUsername;
     }
 
     public Payment getPaymentPaymentid() {

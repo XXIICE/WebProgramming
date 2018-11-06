@@ -33,7 +33,6 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Customer.findAll", query = "SELECT c FROM Customer c")
-    , @NamedQuery(name = "Customer.findByUserid", query = "SELECT c FROM Customer c WHERE c.userid = :userid")
     , @NamedQuery(name = "Customer.findByUsername", query = "SELECT c FROM Customer c WHERE c.username = :username")
     , @NamedQuery(name = "Customer.findByPassword", query = "SELECT c FROM Customer c WHERE c.password = :password")
     , @NamedQuery(name = "Customer.findByFirstname", query = "SELECT c FROM Customer c WHERE c.firstname = :firstname")
@@ -46,11 +45,6 @@ public class Customer implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 5)
-    @Column(name = "USERID")
-    private String userid;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
@@ -90,24 +84,23 @@ public class Customer implements Serializable {
     @Column(name = "POINT")
     private Integer point;
     @JoinTable(name = "FAVORITE", joinColumns = {
-        @JoinColumn(name = "CUSTOMER_USERID", referencedColumnName = "USERID")}, inverseJoinColumns = {
+        @JoinColumn(name = "CUSTOMER_USERNAME", referencedColumnName = "USERNAME")}, inverseJoinColumns = {
         @JoinColumn(name = "PRODUCT_PRODUCTID", referencedColumnName = "PRODUCTID")})
     @ManyToMany
     private List<Product> productList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerUserid")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerUsername")
     private List<Productorder> productorderList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerUserid")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerUsername")
     private List<Review> reviewList;
 
     public Customer() {
     }
 
-    public Customer(String userid) {
-        this.userid = userid;
+    public Customer(String username) {
+        this.username = username;
     }
 
-    public Customer(String userid, String username, String password, String firstname, String lastname, String email, String address, String creditcardnumber) {
-        this.userid = userid;
+    public Customer(String username, String password, String firstname, String lastname, String email, String address, String creditcardnumber) {
         this.username = username;
         this.password = password;
         this.firstname = firstname;
@@ -115,14 +108,6 @@ public class Customer implements Serializable {
         this.email = email;
         this.address = address;
         this.creditcardnumber = creditcardnumber;
-    }
-
-    public String getUserid() {
-        return userid;
-    }
-
-    public void setUserid(String userid) {
-        this.userid = userid;
     }
 
     public String getUsername() {
@@ -219,7 +204,7 @@ public class Customer implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (userid != null ? userid.hashCode() : 0);
+        hash += (username != null ? username.hashCode() : 0);
         return hash;
     }
 
@@ -230,7 +215,7 @@ public class Customer implements Serializable {
             return false;
         }
         Customer other = (Customer) object;
-        if ((this.userid == null && other.userid != null) || (this.userid != null && !this.userid.equals(other.userid))) {
+        if ((this.username == null && other.username != null) || (this.username != null && !this.username.equals(other.username))) {
             return false;
         }
         return true;
@@ -238,7 +223,7 @@ public class Customer implements Serializable {
 
     @Override
     public String toString() {
-        return "jpa.model.Customer[ userid=" + userid + " ]";
+        return "jpa.model.Customer[ username=" + username + " ]";
     }
     
 }

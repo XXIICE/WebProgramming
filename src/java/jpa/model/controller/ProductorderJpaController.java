@@ -84,10 +84,10 @@ public class ProductorderJpaController implements Serializable {
                 cartCartid = em.getReference(cartCartid.getClass(), cartCartid.getCartid());
                 productorder.setCartCartid(cartCartid);
             }
-            Customer customerUserid = productorder.getCustomerUserid();
-            if (customerUserid != null) {
-                customerUserid = em.getReference(customerUserid.getClass(), customerUserid.getUserid());
-                productorder.setCustomerUserid(customerUserid);
+            Customer customerUsername = productorder.getCustomerUsername();
+            if (customerUsername != null) {
+                customerUsername = em.getReference(customerUsername.getClass(), customerUsername.getUsername());
+                productorder.setCustomerUsername(customerUsername);
             }
             Payment paymentPaymentid = productorder.getPaymentPaymentid();
             if (paymentPaymentid != null) {
@@ -114,9 +114,9 @@ public class ProductorderJpaController implements Serializable {
                 cartCartid.setProductorder(productorder);
                 cartCartid = em.merge(cartCartid);
             }
-            if (customerUserid != null) {
-                customerUserid.getProductorderList().add(productorder);
-                customerUserid = em.merge(customerUserid);
+            if (customerUsername != null) {
+                customerUsername.getProductorderList().add(productorder);
+                customerUsername = em.merge(customerUsername);
             }
             if (paymentPaymentid != null) {
                 paymentPaymentid.setProductorderOderid(productorder);
@@ -159,8 +159,8 @@ public class ProductorderJpaController implements Serializable {
             Payment paymentNew = productorder.getPayment();
             Cart cartCartidOld = persistentProductorder.getCartCartid();
             Cart cartCartidNew = productorder.getCartCartid();
-            Customer customerUseridOld = persistentProductorder.getCustomerUserid();
-            Customer customerUseridNew = productorder.getCustomerUserid();
+            Customer customerUsernameOld = persistentProductorder.getCustomerUsername();
+            Customer customerUsernameNew = productorder.getCustomerUsername();
             Payment paymentPaymentidOld = persistentProductorder.getPaymentPaymentid();
             Payment paymentPaymentidNew = productorder.getPaymentPaymentid();
             List<Orderitem> orderitemListOld = persistentProductorder.getOrderitemList();
@@ -215,9 +215,9 @@ public class ProductorderJpaController implements Serializable {
                 cartCartidNew = em.getReference(cartCartidNew.getClass(), cartCartidNew.getCartid());
                 productorder.setCartCartid(cartCartidNew);
             }
-            if (customerUseridNew != null) {
-                customerUseridNew = em.getReference(customerUseridNew.getClass(), customerUseridNew.getUserid());
-                productorder.setCustomerUserid(customerUseridNew);
+            if (customerUsernameNew != null) {
+                customerUsernameNew = em.getReference(customerUsernameNew.getClass(), customerUsernameNew.getUsername());
+                productorder.setCustomerUsername(customerUsernameNew);
             }
             if (paymentPaymentidNew != null) {
                 paymentPaymentidNew = em.getReference(paymentPaymentidNew.getClass(), paymentPaymentidNew.getPaymentid());
@@ -248,13 +248,13 @@ public class ProductorderJpaController implements Serializable {
                 cartCartidNew.setProductorder(productorder);
                 cartCartidNew = em.merge(cartCartidNew);
             }
-            if (customerUseridOld != null && !customerUseridOld.equals(customerUseridNew)) {
-                customerUseridOld.getProductorderList().remove(productorder);
-                customerUseridOld = em.merge(customerUseridOld);
+            if (customerUsernameOld != null && !customerUsernameOld.equals(customerUsernameNew)) {
+                customerUsernameOld.getProductorderList().remove(productorder);
+                customerUsernameOld = em.merge(customerUsernameOld);
             }
-            if (customerUseridNew != null && !customerUseridNew.equals(customerUseridOld)) {
-                customerUseridNew.getProductorderList().add(productorder);
-                customerUseridNew = em.merge(customerUseridNew);
+            if (customerUsernameNew != null && !customerUsernameNew.equals(customerUsernameOld)) {
+                customerUsernameNew.getProductorderList().add(productorder);
+                customerUsernameNew = em.merge(customerUsernameNew);
             }
             if (paymentPaymentidNew != null && !paymentPaymentidNew.equals(paymentPaymentidOld)) {
                 paymentPaymentidNew.setProductorderOderid(productorder);
@@ -335,10 +335,10 @@ public class ProductorderJpaController implements Serializable {
                 cartCartid.setProductorder(null);
                 cartCartid = em.merge(cartCartid);
             }
-            Customer customerUserid = productorder.getCustomerUserid();
-            if (customerUserid != null) {
-                customerUserid.getProductorderList().remove(productorder);
-                customerUserid = em.merge(customerUserid);
+            Customer customerUsername = productorder.getCustomerUsername();
+            if (customerUsername != null) {
+                customerUsername.getProductorderList().remove(productorder);
+                customerUsername = em.merge(customerUsername);
             }
             em.remove(productorder);
             utx.commit();

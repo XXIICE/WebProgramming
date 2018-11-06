@@ -44,7 +44,8 @@ public class LoginServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        Customer custom = new Customer();
+        
+        Customer custom = new Customer() ;
         if (username != null && username.trim().length() > 0 
                 && password != null && password.trim().length() > 0) {
             CustomerJpaController customJpaCtrl = new CustomerJpaController(utx, emf);

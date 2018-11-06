@@ -63,7 +63,7 @@ public class ProductJpaController implements Serializable {
             }
             List<Customer> attachedCustomerList = new ArrayList<Customer>();
             for (Customer customerListCustomerToAttach : product.getCustomerList()) {
-                customerListCustomerToAttach = em.getReference(customerListCustomerToAttach.getClass(), customerListCustomerToAttach.getUserid());
+                customerListCustomerToAttach = em.getReference(customerListCustomerToAttach.getClass(), customerListCustomerToAttach.getUsername());
                 attachedCustomerList.add(customerListCustomerToAttach);
             }
             product.setCustomerList(attachedCustomerList);
@@ -175,7 +175,7 @@ public class ProductJpaController implements Serializable {
             }
             List<Customer> attachedCustomerListNew = new ArrayList<Customer>();
             for (Customer customerListNewCustomerToAttach : customerListNew) {
-                customerListNewCustomerToAttach = em.getReference(customerListNewCustomerToAttach.getClass(), customerListNewCustomerToAttach.getUserid());
+                customerListNewCustomerToAttach = em.getReference(customerListNewCustomerToAttach.getClass(), customerListNewCustomerToAttach.getUsername());
                 attachedCustomerListNew.add(customerListNewCustomerToAttach);
             }
             customerListNew = attachedCustomerListNew;

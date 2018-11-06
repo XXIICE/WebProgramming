@@ -79,21 +79,21 @@ public class CustomerJpaController implements Serializable {
                 productListProduct = em.merge(productListProduct);
             }
             for (Productorder productorderListProductorder : customer.getProductorderList()) {
-                Customer oldCustomerUseridOfProductorderListProductorder = productorderListProductorder.getCustomerUserid();
-                productorderListProductorder.setCustomerUserid(customer);
+                Customer oldCustomerUsernameOfProductorderListProductorder = productorderListProductorder.getCustomerUsername();
+                productorderListProductorder.setCustomerUsername(customer);
                 productorderListProductorder = em.merge(productorderListProductorder);
-                if (oldCustomerUseridOfProductorderListProductorder != null) {
-                    oldCustomerUseridOfProductorderListProductorder.getProductorderList().remove(productorderListProductorder);
-                    oldCustomerUseridOfProductorderListProductorder = em.merge(oldCustomerUseridOfProductorderListProductorder);
+                if (oldCustomerUsernameOfProductorderListProductorder != null) {
+                    oldCustomerUsernameOfProductorderListProductorder.getProductorderList().remove(productorderListProductorder);
+                    oldCustomerUsernameOfProductorderListProductorder = em.merge(oldCustomerUsernameOfProductorderListProductorder);
                 }
             }
             for (Review reviewListReview : customer.getReviewList()) {
-                Customer oldCustomerUseridOfReviewListReview = reviewListReview.getCustomerUserid();
-                reviewListReview.setCustomerUserid(customer);
+                Customer oldCustomerUsernameOfReviewListReview = reviewListReview.getCustomerUsername();
+                reviewListReview.setCustomerUsername(customer);
                 reviewListReview = em.merge(reviewListReview);
-                if (oldCustomerUseridOfReviewListReview != null) {
-                    oldCustomerUseridOfReviewListReview.getReviewList().remove(reviewListReview);
-                    oldCustomerUseridOfReviewListReview = em.merge(oldCustomerUseridOfReviewListReview);
+                if (oldCustomerUsernameOfReviewListReview != null) {
+                    oldCustomerUsernameOfReviewListReview.getReviewList().remove(reviewListReview);
+                    oldCustomerUsernameOfReviewListReview = em.merge(oldCustomerUsernameOfReviewListReview);
                 }
             }
             utx.commit();
@@ -103,7 +103,7 @@ public class CustomerJpaController implements Serializable {
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
-            if (findCustomer(customer.getUserid()) != null) {
+            if (findCustomer(customer.getUsername()) != null) {
                 throw new PreexistingEntityException("Customer " + customer + " already exists.", ex);
             }
             throw ex;
@@ -119,7 +119,7 @@ public class CustomerJpaController implements Serializable {
         try {
             utx.begin();
             em = getEntityManager();
-            Customer persistentCustomer = em.find(Customer.class, customer.getUserid());
+            Customer persistentCustomer = em.find(Customer.class, customer.getUsername());
             List<Product> productListOld = persistentCustomer.getProductList();
             List<Product> productListNew = customer.getProductList();
             List<Productorder> productorderListOld = persistentCustomer.getProductorderList();
@@ -132,7 +132,7 @@ public class CustomerJpaController implements Serializable {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain Productorder " + productorderListOldProductorder + " since its customerUserid field is not nullable.");
+                    illegalOrphanMessages.add("You must retain Productorder " + productorderListOldProductorder + " since its customerUsername field is not nullable.");
                 }
             }
             for (Review reviewListOldReview : reviewListOld) {
@@ -140,7 +140,7 @@ public class CustomerJpaController implements Serializable {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain Review " + reviewListOldReview + " since its customerUserid field is not nullable.");
+                    illegalOrphanMessages.add("You must retain Review " + reviewListOldReview + " since its customerUsername field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
@@ -182,23 +182,23 @@ public class CustomerJpaController implements Serializable {
             }
             for (Productorder productorderListNewProductorder : productorderListNew) {
                 if (!productorderListOld.contains(productorderListNewProductorder)) {
-                    Customer oldCustomerUseridOfProductorderListNewProductorder = productorderListNewProductorder.getCustomerUserid();
-                    productorderListNewProductorder.setCustomerUserid(customer);
+                    Customer oldCustomerUsernameOfProductorderListNewProductorder = productorderListNewProductorder.getCustomerUsername();
+                    productorderListNewProductorder.setCustomerUsername(customer);
                     productorderListNewProductorder = em.merge(productorderListNewProductorder);
-                    if (oldCustomerUseridOfProductorderListNewProductorder != null && !oldCustomerUseridOfProductorderListNewProductorder.equals(customer)) {
-                        oldCustomerUseridOfProductorderListNewProductorder.getProductorderList().remove(productorderListNewProductorder);
-                        oldCustomerUseridOfProductorderListNewProductorder = em.merge(oldCustomerUseridOfProductorderListNewProductorder);
+                    if (oldCustomerUsernameOfProductorderListNewProductorder != null && !oldCustomerUsernameOfProductorderListNewProductorder.equals(customer)) {
+                        oldCustomerUsernameOfProductorderListNewProductorder.getProductorderList().remove(productorderListNewProductorder);
+                        oldCustomerUsernameOfProductorderListNewProductorder = em.merge(oldCustomerUsernameOfProductorderListNewProductorder);
                     }
                 }
             }
             for (Review reviewListNewReview : reviewListNew) {
                 if (!reviewListOld.contains(reviewListNewReview)) {
-                    Customer oldCustomerUseridOfReviewListNewReview = reviewListNewReview.getCustomerUserid();
-                    reviewListNewReview.setCustomerUserid(customer);
+                    Customer oldCustomerUsernameOfReviewListNewReview = reviewListNewReview.getCustomerUsername();
+                    reviewListNewReview.setCustomerUsername(customer);
                     reviewListNewReview = em.merge(reviewListNewReview);
-                    if (oldCustomerUseridOfReviewListNewReview != null && !oldCustomerUseridOfReviewListNewReview.equals(customer)) {
-                        oldCustomerUseridOfReviewListNewReview.getReviewList().remove(reviewListNewReview);
-                        oldCustomerUseridOfReviewListNewReview = em.merge(oldCustomerUseridOfReviewListNewReview);
+                    if (oldCustomerUsernameOfReviewListNewReview != null && !oldCustomerUsernameOfReviewListNewReview.equals(customer)) {
+                        oldCustomerUsernameOfReviewListNewReview.getReviewList().remove(reviewListNewReview);
+                        oldCustomerUsernameOfReviewListNewReview = em.merge(oldCustomerUsernameOfReviewListNewReview);
                     }
                 }
             }
@@ -211,7 +211,7 @@ public class CustomerJpaController implements Serializable {
             }
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                String id = customer.getUserid();
+                String id = customer.getUsername();
                 if (findCustomer(id) == null) {
                     throw new NonexistentEntityException("The customer with id " + id + " no longer exists.");
                 }
@@ -232,7 +232,7 @@ public class CustomerJpaController implements Serializable {
             Customer customer;
             try {
                 customer = em.getReference(Customer.class, id);
-                customer.getUserid();
+                customer.getUsername();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The customer with id " + id + " no longer exists.", enfe);
             }
@@ -242,14 +242,14 @@ public class CustomerJpaController implements Serializable {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This Customer (" + customer + ") cannot be destroyed since the Productorder " + productorderListOrphanCheckProductorder + " in its productorderList field has a non-nullable customerUserid field.");
+                illegalOrphanMessages.add("This Customer (" + customer + ") cannot be destroyed since the Productorder " + productorderListOrphanCheckProductorder + " in its productorderList field has a non-nullable customerUsername field.");
             }
             List<Review> reviewListOrphanCheck = customer.getReviewList();
             for (Review reviewListOrphanCheckReview : reviewListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This Customer (" + customer + ") cannot be destroyed since the Review " + reviewListOrphanCheckReview + " in its reviewList field has a non-nullable customerUserid field.");
+                illegalOrphanMessages.add("This Customer (" + customer + ") cannot be destroyed since the Review " + reviewListOrphanCheckReview + " in its reviewList field has a non-nullable customerUsername field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
