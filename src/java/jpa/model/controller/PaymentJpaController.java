@@ -6,18 +6,15 @@
 package jpa.model.controller;
 
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import jpa.model.Productorder;
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.transaction.UserTransaction;
 import jpa.model.Payment;
-import jpa.model.controller.exceptions.IllegalOrphanException;
 import jpa.model.controller.exceptions.NonexistentEntityException;
 import jpa.model.controller.exceptions.PreexistingEntityException;
 import jpa.model.controller.exceptions.RollbackFailureException;
@@ -39,49 +36,12 @@ public class PaymentJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Payment payment) throws IllegalOrphanException, PreexistingEntityException, RollbackFailureException, Exception {
-        List<String> illegalOrphanMessages = null;
-        Productorder productorderOderidOrphanCheck = payment.getProductorderOderid();
-        if (productorderOderidOrphanCheck != null) {
-            Payment oldPaymentOfProductorderOderid = productorderOderidOrphanCheck.getPayment();
-            if (oldPaymentOfProductorderOderid != null) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("The Productorder " + productorderOderidOrphanCheck + " already has an item of type Payment whose productorderOderid column cannot be null. Please make another selection for the productorderOderid field.");
-            }
-        }
-        if (illegalOrphanMessages != null) {
-            throw new IllegalOrphanException(illegalOrphanMessages);
-        }
+    public void create(Payment payment) throws PreexistingEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            Productorder productorderOderid = payment.getProductorderOderid();
-            if (productorderOderid != null) {
-                productorderOderid = em.getReference(productorderOderid.getClass(), productorderOderid.getOderid());
-                payment.setProductorderOderid(productorderOderid);
-            }
-            Productorder productorder = payment.getProductorder();
-            if (productorder != null) {
-                productorder = em.getReference(productorder.getClass(), productorder.getOderid());
-                payment.setProductorder(productorder);
-            }
             em.persist(payment);
-            if (productorderOderid != null) {
-                productorderOderid.setPayment(payment);
-                productorderOderid = em.merge(productorderOderid);
-            }
-            if (productorder != null) {
-                Payment oldPaymentPaymentidOfProductorder = productorder.getPaymentPaymentid();
-                if (oldPaymentPaymentidOfProductorder != null) {
-                    oldPaymentPaymentidOfProductorder.setProductorder(null);
-                    oldPaymentPaymentidOfProductorder = em.merge(oldPaymentPaymentidOfProductorder);
-                }
-                productorder.setPaymentPaymentid(payment);
-                productorder = em.merge(productorder);
-            }
             utx.commit();
         } catch (Exception ex) {
             try {
@@ -100,61 +60,12 @@ public class PaymentJpaController implements Serializable {
         }
     }
 
-    public void edit(Payment payment) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
+    public void edit(Payment payment) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            Payment persistentPayment = em.find(Payment.class, payment.getPaymentid());
-            Productorder productorderOderidOld = persistentPayment.getProductorderOderid();
-            Productorder productorderOderidNew = payment.getProductorderOderid();
-            Productorder productorderOld = persistentPayment.getProductorder();
-            Productorder productorderNew = payment.getProductorder();
-            List<String> illegalOrphanMessages = null;
-            if (productorderOderidNew != null && !productorderOderidNew.equals(productorderOderidOld)) {
-                Payment oldPaymentOfProductorderOderid = productorderOderidNew.getPayment();
-                if (oldPaymentOfProductorderOderid != null) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("The Productorder " + productorderOderidNew + " already has an item of type Payment whose productorderOderid column cannot be null. Please make another selection for the productorderOderid field.");
-                }
-            }
-            if (productorderOld != null && !productorderOld.equals(productorderNew)) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("You must retain Productorder " + productorderOld + " since its paymentPaymentid field is not nullable.");
-            }
-            if (illegalOrphanMessages != null) {
-                throw new IllegalOrphanException(illegalOrphanMessages);
-            }
-            if (productorderOderidNew != null) {
-                productorderOderidNew = em.getReference(productorderOderidNew.getClass(), productorderOderidNew.getOderid());
-                payment.setProductorderOderid(productorderOderidNew);
-            }
-            if (productorderNew != null) {
-                productorderNew = em.getReference(productorderNew.getClass(), productorderNew.getOderid());
-                payment.setProductorder(productorderNew);
-            }
             payment = em.merge(payment);
-            if (productorderOderidOld != null && !productorderOderidOld.equals(productorderOderidNew)) {
-                productorderOderidOld.setPayment(null);
-                productorderOderidOld = em.merge(productorderOderidOld);
-            }
-            if (productorderOderidNew != null && !productorderOderidNew.equals(productorderOderidOld)) {
-                productorderOderidNew.setPayment(payment);
-                productorderOderidNew = em.merge(productorderOderidNew);
-            }
-            if (productorderNew != null && !productorderNew.equals(productorderOld)) {
-                Payment oldPaymentPaymentidOfProductorder = productorderNew.getPaymentPaymentid();
-                if (oldPaymentPaymentidOfProductorder != null) {
-                    oldPaymentPaymentidOfProductorder.setProductorder(null);
-                    oldPaymentPaymentidOfProductorder = em.merge(oldPaymentPaymentidOfProductorder);
-                }
-                productorderNew.setPaymentPaymentid(payment);
-                productorderNew = em.merge(productorderNew);
-            }
             utx.commit();
         } catch (Exception ex) {
             try {
@@ -177,7 +88,7 @@ public class PaymentJpaController implements Serializable {
         }
     }
 
-    public void destroy(String id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
+    public void destroy(String id) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
@@ -188,22 +99,6 @@ public class PaymentJpaController implements Serializable {
                 payment.getPaymentid();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The payment with id " + id + " no longer exists.", enfe);
-            }
-            List<String> illegalOrphanMessages = null;
-            Productorder productorderOrphanCheck = payment.getProductorder();
-            if (productorderOrphanCheck != null) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This Payment (" + payment + ") cannot be destroyed since the Productorder " + productorderOrphanCheck + " in its productorder field has a non-nullable paymentPaymentid field.");
-            }
-            if (illegalOrphanMessages != null) {
-                throw new IllegalOrphanException(illegalOrphanMessages);
-            }
-            Productorder productorderOderid = payment.getProductorderOderid();
-            if (productorderOderid != null) {
-                productorderOderid.setPayment(null);
-                productorderOderid = em.merge(productorderOderid);
             }
             em.remove(payment);
             utx.commit();

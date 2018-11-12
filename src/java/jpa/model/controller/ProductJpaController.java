@@ -10,7 +10,6 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import jpa.model.Tracklist;
 import jpa.model.Customer;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +17,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.transaction.UserTransaction;
 import jpa.model.Review;
+import jpa.model.Tracklist;
 import jpa.model.Orderitem;
 import jpa.model.Product;
 import jpa.model.controller.exceptions.IllegalOrphanException;
@@ -49,6 +49,9 @@ public class ProductJpaController implements Serializable {
         if (product.getReviewList() == null) {
             product.setReviewList(new ArrayList<Review>());
         }
+        if (product.getTracklistList() == null) {
+            product.setTracklistList(new ArrayList<Tracklist>());
+        }
         if (product.getOrderitemList() == null) {
             product.setOrderitemList(new ArrayList<Orderitem>());
         }
@@ -56,11 +59,6 @@ public class ProductJpaController implements Serializable {
         try {
             utx.begin();
             em = getEntityManager();
-            Tracklist tracklist = product.getTracklist();
-            if (tracklist != null) {
-                tracklist = em.getReference(tracklist.getClass(), tracklist.getProductProductid());
-                product.setTracklist(tracklist);
-            }
             List<Customer> attachedCustomerList = new ArrayList<Customer>();
             for (Customer customerListCustomerToAttach : product.getCustomerList()) {
                 customerListCustomerToAttach = em.getReference(customerListCustomerToAttach.getClass(), customerListCustomerToAttach.getUsername());
@@ -73,6 +71,12 @@ public class ProductJpaController implements Serializable {
                 attachedReviewList.add(reviewListReviewToAttach);
             }
             product.setReviewList(attachedReviewList);
+            List<Tracklist> attachedTracklistList = new ArrayList<Tracklist>();
+            for (Tracklist tracklistListTracklistToAttach : product.getTracklistList()) {
+                tracklistListTracklistToAttach = em.getReference(tracklistListTracklistToAttach.getClass(), tracklistListTracklistToAttach.getTracklistPK());
+                attachedTracklistList.add(tracklistListTracklistToAttach);
+            }
+            product.setTracklistList(attachedTracklistList);
             List<Orderitem> attachedOrderitemList = new ArrayList<Orderitem>();
             for (Orderitem orderitemListOrderitemToAttach : product.getOrderitemList()) {
                 orderitemListOrderitemToAttach = em.getReference(orderitemListOrderitemToAttach.getClass(), orderitemListOrderitemToAttach.getOrderitemid());
@@ -80,15 +84,6 @@ public class ProductJpaController implements Serializable {
             }
             product.setOrderitemList(attachedOrderitemList);
             em.persist(product);
-            if (tracklist != null) {
-                Product oldProductOfTracklist = tracklist.getProduct();
-                if (oldProductOfTracklist != null) {
-                    oldProductOfTracklist.setTracklist(null);
-                    oldProductOfTracklist = em.merge(oldProductOfTracklist);
-                }
-                tracklist.setProduct(product);
-                tracklist = em.merge(tracklist);
-            }
             for (Customer customerListCustomer : product.getCustomerList()) {
                 customerListCustomer.getProductList().add(product);
                 customerListCustomer = em.merge(customerListCustomer);
@@ -100,6 +95,15 @@ public class ProductJpaController implements Serializable {
                 if (oldProductProductidOfReviewListReview != null) {
                     oldProductProductidOfReviewListReview.getReviewList().remove(reviewListReview);
                     oldProductProductidOfReviewListReview = em.merge(oldProductProductidOfReviewListReview);
+                }
+            }
+            for (Tracklist tracklistListTracklist : product.getTracklistList()) {
+                Product oldProductOfTracklistListTracklist = tracklistListTracklist.getProduct();
+                tracklistListTracklist.setProduct(product);
+                tracklistListTracklist = em.merge(tracklistListTracklist);
+                if (oldProductOfTracklistListTracklist != null) {
+                    oldProductOfTracklistListTracklist.getTracklistList().remove(tracklistListTracklist);
+                    oldProductOfTracklistListTracklist = em.merge(oldProductOfTracklistListTracklist);
                 }
             }
             for (Orderitem orderitemListOrderitem : product.getOrderitemList()) {
@@ -135,27 +139,29 @@ public class ProductJpaController implements Serializable {
             utx.begin();
             em = getEntityManager();
             Product persistentProduct = em.find(Product.class, product.getProductid());
-            Tracklist tracklistOld = persistentProduct.getTracklist();
-            Tracklist tracklistNew = product.getTracklist();
             List<Customer> customerListOld = persistentProduct.getCustomerList();
             List<Customer> customerListNew = product.getCustomerList();
             List<Review> reviewListOld = persistentProduct.getReviewList();
             List<Review> reviewListNew = product.getReviewList();
+            List<Tracklist> tracklistListOld = persistentProduct.getTracklistList();
+            List<Tracklist> tracklistListNew = product.getTracklistList();
             List<Orderitem> orderitemListOld = persistentProduct.getOrderitemList();
             List<Orderitem> orderitemListNew = product.getOrderitemList();
             List<String> illegalOrphanMessages = null;
-            if (tracklistOld != null && !tracklistOld.equals(tracklistNew)) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("You must retain Tracklist " + tracklistOld + " since its product field is not nullable.");
-            }
             for (Review reviewListOldReview : reviewListOld) {
                 if (!reviewListNew.contains(reviewListOldReview)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
                     illegalOrphanMessages.add("You must retain Review " + reviewListOldReview + " since its productProductid field is not nullable.");
+                }
+            }
+            for (Tracklist tracklistListOldTracklist : tracklistListOld) {
+                if (!tracklistListNew.contains(tracklistListOldTracklist)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain Tracklist " + tracklistListOldTracklist + " since its product field is not nullable.");
                 }
             }
             for (Orderitem orderitemListOldOrderitem : orderitemListOld) {
@@ -168,10 +174,6 @@ public class ProductJpaController implements Serializable {
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
-            }
-            if (tracklistNew != null) {
-                tracklistNew = em.getReference(tracklistNew.getClass(), tracklistNew.getProductProductid());
-                product.setTracklist(tracklistNew);
             }
             List<Customer> attachedCustomerListNew = new ArrayList<Customer>();
             for (Customer customerListNewCustomerToAttach : customerListNew) {
@@ -187,6 +189,13 @@ public class ProductJpaController implements Serializable {
             }
             reviewListNew = attachedReviewListNew;
             product.setReviewList(reviewListNew);
+            List<Tracklist> attachedTracklistListNew = new ArrayList<Tracklist>();
+            for (Tracklist tracklistListNewTracklistToAttach : tracklistListNew) {
+                tracklistListNewTracklistToAttach = em.getReference(tracklistListNewTracklistToAttach.getClass(), tracklistListNewTracklistToAttach.getTracklistPK());
+                attachedTracklistListNew.add(tracklistListNewTracklistToAttach);
+            }
+            tracklistListNew = attachedTracklistListNew;
+            product.setTracklistList(tracklistListNew);
             List<Orderitem> attachedOrderitemListNew = new ArrayList<Orderitem>();
             for (Orderitem orderitemListNewOrderitemToAttach : orderitemListNew) {
                 orderitemListNewOrderitemToAttach = em.getReference(orderitemListNewOrderitemToAttach.getClass(), orderitemListNewOrderitemToAttach.getOrderitemid());
@@ -195,15 +204,6 @@ public class ProductJpaController implements Serializable {
             orderitemListNew = attachedOrderitemListNew;
             product.setOrderitemList(orderitemListNew);
             product = em.merge(product);
-            if (tracklistNew != null && !tracklistNew.equals(tracklistOld)) {
-                Product oldProductOfTracklist = tracklistNew.getProduct();
-                if (oldProductOfTracklist != null) {
-                    oldProductOfTracklist.setTracklist(null);
-                    oldProductOfTracklist = em.merge(oldProductOfTracklist);
-                }
-                tracklistNew.setProduct(product);
-                tracklistNew = em.merge(tracklistNew);
-            }
             for (Customer customerListOldCustomer : customerListOld) {
                 if (!customerListNew.contains(customerListOldCustomer)) {
                     customerListOldCustomer.getProductList().remove(product);
@@ -224,6 +224,17 @@ public class ProductJpaController implements Serializable {
                     if (oldProductProductidOfReviewListNewReview != null && !oldProductProductidOfReviewListNewReview.equals(product)) {
                         oldProductProductidOfReviewListNewReview.getReviewList().remove(reviewListNewReview);
                         oldProductProductidOfReviewListNewReview = em.merge(oldProductProductidOfReviewListNewReview);
+                    }
+                }
+            }
+            for (Tracklist tracklistListNewTracklist : tracklistListNew) {
+                if (!tracklistListOld.contains(tracklistListNewTracklist)) {
+                    Product oldProductOfTracklistListNewTracklist = tracklistListNewTracklist.getProduct();
+                    tracklistListNewTracklist.setProduct(product);
+                    tracklistListNewTracklist = em.merge(tracklistListNewTracklist);
+                    if (oldProductOfTracklistListNewTracklist != null && !oldProductOfTracklistListNewTracklist.equals(product)) {
+                        oldProductOfTracklistListNewTracklist.getTracklistList().remove(tracklistListNewTracklist);
+                        oldProductOfTracklistListNewTracklist = em.merge(oldProductOfTracklistListNewTracklist);
                     }
                 }
             }
@@ -273,19 +284,19 @@ public class ProductJpaController implements Serializable {
                 throw new NonexistentEntityException("The product with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            Tracklist tracklistOrphanCheck = product.getTracklist();
-            if (tracklistOrphanCheck != null) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This Product (" + product + ") cannot be destroyed since the Tracklist " + tracklistOrphanCheck + " in its tracklist field has a non-nullable product field.");
-            }
             List<Review> reviewListOrphanCheck = product.getReviewList();
             for (Review reviewListOrphanCheckReview : reviewListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
                 illegalOrphanMessages.add("This Product (" + product + ") cannot be destroyed since the Review " + reviewListOrphanCheckReview + " in its reviewList field has a non-nullable productProductid field.");
+            }
+            List<Tracklist> tracklistListOrphanCheck = product.getTracklistList();
+            for (Tracklist tracklistListOrphanCheckTracklist : tracklistListOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Product (" + product + ") cannot be destroyed since the Tracklist " + tracklistListOrphanCheckTracklist + " in its tracklistList field has a non-nullable product field.");
             }
             List<Orderitem> orderitemListOrphanCheck = product.getOrderitemList();
             for (Orderitem orderitemListOrphanCheckOrderitem : orderitemListOrphanCheck) {

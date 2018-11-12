@@ -6,17 +6,13 @@
 package jpa.model;
 
 import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -28,52 +24,34 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Tracklist.findAll", query = "SELECT t FROM Tracklist t")
-    , @NamedQuery(name = "Tracklist.findBySongname", query = "SELECT t FROM Tracklist t WHERE t.songname = :songname")
-    , @NamedQuery(name = "Tracklist.findByProductProductid", query = "SELECT t FROM Tracklist t WHERE t.productProductid = :productProductid")})
+    , @NamedQuery(name = "Tracklist.findBySongname", query = "SELECT t FROM Tracklist t WHERE t.tracklistPK.songname = :songname")
+    , @NamedQuery(name = "Tracklist.findByProductProductid", query = "SELECT t FROM Tracklist t WHERE t.tracklistPK.productProductid = :productProductid")})
 public class Tracklist implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 30)
-    @Column(name = "SONGNAME")
-    private String songname;
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 5)
-    @Column(name = "PRODUCT_PRODUCTID")
-    private String productProductid;
+    @EmbeddedId
+    protected TracklistPK tracklistPK;
     @JoinColumn(name = "PRODUCT_PRODUCTID", referencedColumnName = "PRODUCTID", insertable = false, updatable = false)
-    @OneToOne(optional = false)
+    @ManyToOne(optional = false)
     private Product product;
 
     public Tracklist() {
     }
 
-    public Tracklist(String productProductid) {
-        this.productProductid = productProductid;
+    public Tracklist(TracklistPK tracklistPK) {
+        this.tracklistPK = tracklistPK;
     }
 
-    public Tracklist(String productProductid, String songname) {
-        this.productProductid = productProductid;
-        this.songname = songname;
+    public Tracklist(String songname, String productProductid) {
+        this.tracklistPK = new TracklistPK(songname, productProductid);
     }
 
-    public String getSongname() {
-        return songname;
+    public TracklistPK getTracklistPK() {
+        return tracklistPK;
     }
 
-    public void setSongname(String songname) {
-        this.songname = songname;
-    }
-
-    public String getProductProductid() {
-        return productProductid;
-    }
-
-    public void setProductProductid(String productProductid) {
-        this.productProductid = productProductid;
+    public void setTracklistPK(TracklistPK tracklistPK) {
+        this.tracklistPK = tracklistPK;
     }
 
     public Product getProduct() {
@@ -87,7 +65,7 @@ public class Tracklist implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (productProductid != null ? productProductid.hashCode() : 0);
+        hash += (tracklistPK != null ? tracklistPK.hashCode() : 0);
         return hash;
     }
 
@@ -98,7 +76,7 @@ public class Tracklist implements Serializable {
             return false;
         }
         Tracklist other = (Tracklist) object;
-        if ((this.productProductid == null && other.productProductid != null) || (this.productProductid != null && !this.productProductid.equals(other.productProductid))) {
+        if ((this.tracklistPK == null && other.tracklistPK != null) || (this.tracklistPK != null && !this.tracklistPK.equals(other.tracklistPK))) {
             return false;
         }
         return true;
@@ -106,7 +84,7 @@ public class Tracklist implements Serializable {
 
     @Override
     public String toString() {
-        return "jpa.model.Tracklist[ productProductid=" + productProductid + " ]";
+        return "jpa.model.Tracklist[ tracklistPK=" + tracklistPK + " ]";
     }
     
 }

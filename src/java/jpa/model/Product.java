@@ -17,7 +17,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -74,8 +73,8 @@ public class Product implements Serializable {
     private List<Customer> customerList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productProductid")
     private List<Review> reviewList;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "product")
-    private Tracklist tracklist;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
+    private List<Tracklist> tracklistList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productProductid")
     private List<Orderitem> orderitemList;
 
@@ -159,12 +158,13 @@ public class Product implements Serializable {
         this.reviewList = reviewList;
     }
 
-    public Tracklist getTracklist() {
-        return tracklist;
+    @XmlTransient
+    public List<Tracklist> getTracklistList() {
+        return tracklistList;
     }
 
-    public void setTracklist(Tracklist tracklist) {
-        this.tracklist = tracklist;
+    public void setTracklistList(List<Tracklist> tracklistList) {
+        this.tracklistList = tracklistList;
     }
 
     @XmlTransient

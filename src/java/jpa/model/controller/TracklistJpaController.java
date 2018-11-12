@@ -6,18 +6,17 @@
 package jpa.model.controller;
 
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import jpa.model.Product;
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.transaction.UserTransaction;
+import jpa.model.Product;
 import jpa.model.Tracklist;
-import jpa.model.controller.exceptions.IllegalOrphanException;
+import jpa.model.TracklistPK;
 import jpa.model.controller.exceptions.NonexistentEntityException;
 import jpa.model.controller.exceptions.PreexistingEntityException;
 import jpa.model.controller.exceptions.RollbackFailureException;
@@ -39,21 +38,11 @@ public class TracklistJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Tracklist tracklist) throws IllegalOrphanException, PreexistingEntityException, RollbackFailureException, Exception {
-        List<String> illegalOrphanMessages = null;
-        Product productOrphanCheck = tracklist.getProduct();
-        if (productOrphanCheck != null) {
-            Tracklist oldTracklistOfProduct = productOrphanCheck.getTracklist();
-            if (oldTracklistOfProduct != null) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("The Product " + productOrphanCheck + " already has an item of type Tracklist whose product column cannot be null. Please make another selection for the product field.");
-            }
+    public void create(Tracklist tracklist) throws PreexistingEntityException, RollbackFailureException, Exception {
+        if (tracklist.getTracklistPK() == null) {
+            tracklist.setTracklistPK(new TracklistPK());
         }
-        if (illegalOrphanMessages != null) {
-            throw new IllegalOrphanException(illegalOrphanMessages);
-        }
+        tracklist.getTracklistPK().setProductProductid(tracklist.getProduct().getProductid());
         EntityManager em = null;
         try {
             utx.begin();
@@ -65,7 +54,7 @@ public class TracklistJpaController implements Serializable {
             }
             em.persist(tracklist);
             if (product != null) {
-                product.setTracklist(tracklist);
+                product.getTracklistList().add(tracklist);
                 product = em.merge(product);
             }
             utx.commit();
@@ -75,7 +64,7 @@ public class TracklistJpaController implements Serializable {
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
-            if (findTracklist(tracklist.getProductProductid()) != null) {
+            if (findTracklist(tracklist.getTracklistPK()) != null) {
                 throw new PreexistingEntityException("Tracklist " + tracklist + " already exists.", ex);
             }
             throw ex;
@@ -86,38 +75,26 @@ public class TracklistJpaController implements Serializable {
         }
     }
 
-    public void edit(Tracklist tracklist) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
+    public void edit(Tracklist tracklist) throws NonexistentEntityException, RollbackFailureException, Exception {
+        tracklist.getTracklistPK().setProductProductid(tracklist.getProduct().getProductid());
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            Tracklist persistentTracklist = em.find(Tracklist.class, tracklist.getProductProductid());
+            Tracklist persistentTracklist = em.find(Tracklist.class, tracklist.getTracklistPK());
             Product productOld = persistentTracklist.getProduct();
             Product productNew = tracklist.getProduct();
-            List<String> illegalOrphanMessages = null;
-            if (productNew != null && !productNew.equals(productOld)) {
-                Tracklist oldTracklistOfProduct = productNew.getTracklist();
-                if (oldTracklistOfProduct != null) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("The Product " + productNew + " already has an item of type Tracklist whose product column cannot be null. Please make another selection for the product field.");
-                }
-            }
-            if (illegalOrphanMessages != null) {
-                throw new IllegalOrphanException(illegalOrphanMessages);
-            }
             if (productNew != null) {
                 productNew = em.getReference(productNew.getClass(), productNew.getProductid());
                 tracklist.setProduct(productNew);
             }
             tracklist = em.merge(tracklist);
             if (productOld != null && !productOld.equals(productNew)) {
-                productOld.setTracklist(null);
+                productOld.getTracklistList().remove(tracklist);
                 productOld = em.merge(productOld);
             }
             if (productNew != null && !productNew.equals(productOld)) {
-                productNew.setTracklist(tracklist);
+                productNew.getTracklistList().add(tracklist);
                 productNew = em.merge(productNew);
             }
             utx.commit();
@@ -129,7 +106,7 @@ public class TracklistJpaController implements Serializable {
             }
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                String id = tracklist.getProductProductid();
+                TracklistPK id = tracklist.getTracklistPK();
                 if (findTracklist(id) == null) {
                     throw new NonexistentEntityException("The tracklist with id " + id + " no longer exists.");
                 }
@@ -142,7 +119,7 @@ public class TracklistJpaController implements Serializable {
         }
     }
 
-    public void destroy(String id) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void destroy(TracklistPK id) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
@@ -150,13 +127,13 @@ public class TracklistJpaController implements Serializable {
             Tracklist tracklist;
             try {
                 tracklist = em.getReference(Tracklist.class, id);
-                tracklist.getProductProductid();
+                tracklist.getTracklistPK();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The tracklist with id " + id + " no longer exists.", enfe);
             }
             Product product = tracklist.getProduct();
             if (product != null) {
-                product.setTracklist(null);
+                product.getTracklistList().remove(tracklist);
                 product = em.merge(product);
             }
             em.remove(tracklist);
@@ -199,7 +176,7 @@ public class TracklistJpaController implements Serializable {
         }
     }
 
-    public Tracklist findTracklist(String id) {
+    public Tracklist findTracklist(TracklistPK id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Tracklist.class, id);
