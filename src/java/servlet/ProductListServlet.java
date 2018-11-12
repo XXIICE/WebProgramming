@@ -7,6 +7,7 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.annotation.Resource;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
@@ -14,22 +15,19 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
-import jpa.model.Customer;
-import jpa.model.controller.CustomerJpaController;
+import jpa.model.Product;
+import jpa.model.controller.ProductJpaController;
 
 /**
  *
  * @author ariya boonchoo
  */
-public class LoginServlet extends HttpServlet {
-
-    @PersistenceUnit(unitName = "ImaginePU")
+public class ProductListServlet extends HttpServlet {
+  @PersistenceUnit(unitName = "ImaginePU")
     EntityManagerFactory emf;
     @Resource
     UserTransaction utx;
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,31 +39,11 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+        ProductJpaController productJpaCtrl = new ProductJpaController(utx, emf);
         
-        Customer custom = new Customer() ;
-        if (username != null && username.trim().length() > 0 
-                && password != null && password.trim().length() > 0) {
-            CustomerJpaController customJpaCtrl = new CustomerJpaController(utx, emf);
-            custom = customJpaCtrl.findCustomer(username);
-            session.setAttribute("msg", "username or password is incorrect,Please try again!!");
-            if (custom != null) {                
-                if (custom.getUsername().equals(username) && custom.getPassword().equals(password)) {
-                    if (session == null) {
-                        session = request.getSession(true);
-                    }else if(session != null){
-                        session.setAttribute("msg", "");
-                    }
-                   
-                    session.setAttribute("custom", custom);
-                    getServletContext().getRequestDispatcher("/ProductList").forward(request, response);
-                }
-            }
-        }
-
-        getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
+        List<Product>productList = productJpaCtrl.findProductEntities();
+        request.setAttribute("productList", productList);
+        getServletContext().getRequestDispatcher("/home.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

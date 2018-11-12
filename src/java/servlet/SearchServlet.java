@@ -7,6 +7,7 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.annotation.Resource;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
@@ -16,14 +17,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
-import jpa.model.Customer;
-import jpa.model.controller.CustomerJpaController;
+import jpa.model.Orderitem;
+import jpa.model.Product;
+import jpa.model.controller.ProductJpaController;
 
 /**
  *
  * @author ariya boonchoo
  */
-public class LoginServlet extends HttpServlet {
+public class SearchServlet extends HttpServlet {
 
     @PersistenceUnit(unitName = "ImaginePU")
     EntityManagerFactory emf;
@@ -42,30 +44,45 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        
-        Customer custom = new Customer() ;
-        if (username != null && username.trim().length() > 0 
-                && password != null && password.trim().length() > 0) {
-            CustomerJpaController customJpaCtrl = new CustomerJpaController(utx, emf);
-            custom = customJpaCtrl.findCustomer(username);
-            session.setAttribute("msg", "username or password is incorrect,Please try again!!");
-            if (custom != null) {                
-                if (custom.getUsername().equals(username) && custom.getPassword().equals(password)) {
-                    if (session == null) {
-                        session = request.getSession(true);
-                    }else if(session != null){
-                        session.setAttribute("msg", "");
-                    }
-                   
-                    session.setAttribute("custom", custom);
-                    getServletContext().getRequestDispatcher("/ProductList").forward(request, response);
-                }
-            }
-        }
+        String search = request.getParameter("search");
+        Product productObj = (Product) session.getAttribute("productList");
+        ProductJpaController productJpaCtrl = new ProductJpaController(utx, emf);
+//        product = productJpaCtrl.findProduct(product.getProductname());
 
-        getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
+//        request.setAttribute("productList", productList);
+//         Product product2 = productJpaCtrl.findProduct(productObj.getArtist());
+        if (search != null && search.trim().length() > 0) {
+            System.out.println("22222222222222");
+//            System.out.println(search.length());
+//            if (productObj != null) {       
+//            String p1 = productObj.getProductname().substring(0, search.length()-1);
+//            Product product1 = productJpaCtrl.findProduct(productObj.getProductname().substring(0,search.length()));
+                Product product1 = productJpaCtrl.findProduct(search);
+try{
+            if (product1.getProductname().substring(0, search.length()-1).equalsIgnoreCase(search.substring(0, search.length() - 1))
+                    || product1.getArtist().substring(0, search.length()-1).equalsIgnoreCase(search.substring(0, search.length() - 1))) {
+
+//            if (product1.getArtist().equalsIgnoreCase(search.substring(0, search.length()-1))) {
+                System.out.println("11111111111");
+                List<Product> productList = productJpaCtrl.findProductEntities();
+//                request.setAttribute("productList", productList);
+                session.setAttribute("productList", productList);
+//                getServletContext().getRequestDispatcher("/resultSearch.jsp").forward(request, response);
+                getServletContext().getRequestDispatcher("/ProductList").forward(request, response);
+//            } else if (product1.getArtist().equalsIgnoreCase(search)) {
+//                System.out.println("11111111111");
+//                List<Product> productList = productJpaCtrl.findProductEntities();
+////                request.setAttribute("productList", productList);
+//                session.setAttribute("productList", productList);
+////                getServletContext().getRequestDispatcher("/resultSearch.jsp").forward(request, response);
+//                getServletContext().getRequestDispatcher("/ProductList").forward(request, response);
+//            }
+            }
+}catch (Exception ex){
+    
+}
+        }
+        getServletContext().getRequestDispatcher("/home.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

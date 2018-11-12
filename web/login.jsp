@@ -16,7 +16,8 @@
         
         <form action="Login" method="post">
            username <input type="text" name="username" required><br>
-           password <input type="password" name="password" required>
+           password <input type="password" name="password" required><br>
+           ${msg}
            <input type="submit" value="Login">
         </form>
         <a href="Register"> Register </a>
