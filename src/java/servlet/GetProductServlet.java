@@ -14,16 +14,16 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
-import jpa.model.Review;
+import jpa.model.Product;
+import jpa.model.controller.ProductJpaController;
 
 /**
  *
  * @author ariya boonchoo
  */
-public class ReviewServlet extends HttpServlet {
- @PersistenceUnit (unitName = "ImaginePU")
+public class GetProductServlet extends HttpServlet {
+@PersistenceUnit(unitName = "ImaginePU")
     EntityManagerFactory emf;
     @Resource
     UserTransaction utx;
@@ -38,8 +38,15 @@ public class ReviewServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-                HttpSession session = request.getSession(false);
-                
+       String productName = request.getParameter("productName");
+//        if (productName != null) {
+         
+             ProductJpaController productJpaCtrl = new ProductJpaController(utx, emf);
+            Product product = productJpaCtrl.findProduct(productName);
+            request.setAttribute("product", product);
+            getServletContext().getRequestDispatcher("/productDetail.jsp").forward(request, response);
+//    }
+          getServletContext().getRequestDispatcher("/productDetail.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

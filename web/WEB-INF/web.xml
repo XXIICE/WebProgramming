@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <filter>
+        <filter-name>AuthenticationFilter</filter-name>
+        <filter-class>filter.AuthenticationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthenticationFilter</filter-name>
+        <servlet-name>PaymentServlet</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>servlet.LoginServlet</servlet-class>
@@ -24,6 +34,34 @@
         <servlet-name>ProductListServlet</servlet-name>
         <servlet-class>servlet.ProductListServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetProductServlet</servlet-name>
+        <servlet-class>servlet.GetProductServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddItemToCartServlet</servlet-name>
+        <servlet-class>servlet.AddItemToCartServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ShowCartServlet</servlet-name>
+        <servlet-class>servlet.ShowCartServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RemoveAllServlet</servlet-name>
+        <servlet-class>servlet.RemoveAllServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RemoveItemFromCartServlet</servlet-name>
+        <servlet-class>servlet.RemoveItemFromCartServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PlusItem</servlet-name>
+        <servlet-class>servlet.PlusItem</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PaymentServlet</servlet-name>
+        <servlet-class>servlet.PaymentServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -47,6 +85,34 @@
     <servlet-mapping>
         <servlet-name>ProductListServlet</servlet-name>
         <url-pattern>/ProductList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetProductServlet</servlet-name>
+        <url-pattern>/GetProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddItemToCartServlet</servlet-name>
+        <url-pattern>/AddItemToCart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShowCartServlet</servlet-name>
+        <url-pattern>/ShowCart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RemoveAllServlet</servlet-name>
+        <url-pattern>/RemoveAll</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RemoveItemFromCartServlet</servlet-name>
+        <url-pattern>/RemoveItemFromCart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PlusItem</servlet-name>
+        <url-pattern>/PlusItem</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PaymentServlet</servlet-name>
+        <url-pattern>/Payment</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
