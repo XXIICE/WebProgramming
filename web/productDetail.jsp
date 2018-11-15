@@ -17,8 +17,8 @@
         Image<br>
         ${product.productid}<br>
         ${product.productname}<br>
-       ${product.productid.songname}<br>
-       ${product.price}
+        ${product.productid.songname}<br>
+        ${product.price}
         <form action = "Review" method="post">
         review by ${custom.username}<input type="text" name="comment">
         
