@@ -17,6 +17,9 @@
             <c:if test="${cart!=null}">
                 <a href="ShowCart">Your Cart : (${cart.totalQuantity})</a>
             </c:if>
+            <c:if test="${fav!=null}">
+                <a href="ShowFavorite">Your Favorite : (${fav.totalQuantity})</a>
+            </c:if>
             &nbsp;&nbsp;&nbsp;
             <c:choose>
                 <c:when test="${sessionScope.custom != null}">

@@ -62,6 +62,18 @@
         <servlet-name>PaymentServlet</servlet-name>
         <servlet-class>servlet.PaymentServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>FavoriteServlet</servlet-name>
+        <servlet-class>servlet.FavoriteServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ShowFavoriteServlet</servlet-name>
+        <servlet-class>servlet.ShowFavoriteServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RemoveFavoriteServlet</servlet-name>
+        <servlet-class>servlet.RemoveFavoriteServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -113,6 +125,18 @@
     <servlet-mapping>
         <servlet-name>PaymentServlet</servlet-name>
         <url-pattern>/Payment</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FavoriteServlet</servlet-name>
+        <url-pattern>/Favorite</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShowFavoriteServlet</servlet-name>
+        <url-pattern>/ShowFavorite</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RemoveFavoriteServlet</servlet-name>
+        <url-pattern>/RemoveFavorite</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

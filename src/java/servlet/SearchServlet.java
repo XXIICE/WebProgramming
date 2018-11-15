@@ -64,7 +64,7 @@ public class SearchServlet extends HttpServlet {
 //              p.setProductname(p1);
                 search = productObj.getProductname();
                 p = productJpaCtrl.findProduct(search);
-                
+//                System.out.println(p.getProductname());
 //           System.out.println(search+p.getProductname().substring(search.length()));
 //                String prod = p.getProductname().substring(0, search.length() - 1);
 //            p.setProductname(prod);
@@ -102,7 +102,7 @@ public class SearchServlet extends HttpServlet {
 
             }
         }
-        getServletContext().getRequestDispatcher("/home.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher("/ProductList").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

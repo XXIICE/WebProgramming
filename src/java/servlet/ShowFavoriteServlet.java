@@ -16,14 +16,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
-import model.ShoppingCart;
-
+import model.Favorite;
 
 /**
  *
- * @author INT303
+ * @author ariya boonchoo
  */
-public class ShowCartServlet extends HttpServlet {
+public class ShowFavoriteServlet extends HttpServlet {
 @PersistenceUnit(unitName = "ImaginePU")
     EntityManagerFactory emf;
     @Resource
@@ -39,12 +38,11 @@ public class ShowCartServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         HttpSession session = request.getSession(false); 
         if (session != null) {
-            ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
-            if (cart != null) {
-                getServletContext().getRequestDispatcher("/ShowCart.jsp").forward(request, response);
+           Favorite fav = (Favorite) session.getAttribute("fav");
+            if (fav != null) {
+                getServletContext().getRequestDispatcher("/ShowFavorite.jsp").forward(request, response);
                 return;
             }
         }

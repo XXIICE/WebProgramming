@@ -7,6 +7,9 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
@@ -16,8 +19,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
+import jpa.model.Cart;
+import jpa.model.Customer;
+import jpa.model.Orderitem;
 import jpa.model.Product;
+import jpa.model.Productorder;
+import jpa.model.controller.CartJpaController;
+import jpa.model.controller.CustomerJpaController;
 import jpa.model.controller.ProductJpaController;
+import jpa.model.controller.ProductorderJpaController;
+import jpa.model.controller.exceptions.PreexistingEntityException;
+import jpa.model.controller.exceptions.RollbackFailureException;
 import model.ShoppingCart;
 
 /**
@@ -42,20 +54,47 @@ public class AddItemToCartServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession(true);
+        HttpSession session = request.getSession(false);
         ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
         String productid = request.getParameter("productid");
-        
-        if (cart == null) {
-            cart = new ShoppingCart();
-            session.setAttribute("cart", cart);
-        }
-        ProductJpaController productJpaCtrl = new ProductJpaController(utx, emf);
+        if (session != null) {
 
-        Product p = productJpaCtrl.findProduct(productid);
-        cart.add(p);
-        session.setAttribute("cart", cart);
-        getServletContext().getRequestDispatcher("/ProductList").forward(request, response);
+            if (cart == null) {
+                cart = new ShoppingCart();
+                session.setAttribute("cart", cart);
+            }
+            ProductJpaController productJpaCtrl = new ProductJpaController(utx, emf);
+
+            Product p = productJpaCtrl.findProduct(productid);
+            cart.add(p);
+            session.setAttribute("cart", cart);
+            getServletContext().getRequestDispatcher("/ProductList").forward(request, response);
+//            ProductorderJpaController prJpaCtrl = new ProductorderJpaController(utx, emf);
+//            List<Productorder> productOrderItemList = prJpaCtrl.findProductorderEntities();
+//            Customer custom = (Customer) session.getAttribute("custom");
+//            CustomerJpaController customJpaCtrl = new CustomerJpaController(utx, emf);
+//            custom.setProductorderList(productOrderItemList);
+//            Productorder pr = (Productorder) session.getAttribute("productOrder");
+//            try {
+//                customJpaCtrl.edit(custom);
+//                prJpaCtrl.create(pr);
+//                session.setAttribute("cart", cart);
+//                getServletContext().getRequestDispatcher("/ProductList").forward(request, response);
+//            } catch (PreexistingEntityException ex) {
+//                Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+//            } catch (RollbackFailureException ex) {
+//                Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+//            } catch (Exception ex) {
+//                Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        Cart c = new Cart();
+//        for (int i = 0; i < 10; i++) {
+//         c.setCartid("C"+i);       
+//        }        
+//        CartJpaController cartJpaCtrl = new CartJpaController(utx, emf);
+//        cartJpaCtrl.edit(c);
+
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

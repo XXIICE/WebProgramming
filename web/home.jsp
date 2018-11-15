@@ -52,6 +52,11 @@
                                 <input type="submit" value="Add To Cart"/>
                             </form>
                     </td>
+                    <td><form action="Favorite" method="post">
+                                <input type="hidden" value="${p.productid}" name="productid"/>
+                                <input type="submit" value="Favorite"/>
+                            </form>
+                    </td>
                 </tr>
             </c:forEach>
         </table>

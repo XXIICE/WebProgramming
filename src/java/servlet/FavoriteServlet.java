@@ -16,14 +16,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
+import jpa.model.Customer;
+import jpa.model.Product;
+import jpa.model.controller.CustomerJpaController;
+import jpa.model.controller.ProductJpaController;
+import model.Favorite;
 import model.ShoppingCart;
-
 
 /**
  *
- * @author INT303
+ * @author ariya boonchoo
  */
-public class ShowCartServlet extends HttpServlet {
+public class FavoriteServlet extends HttpServlet {
 @PersistenceUnit(unitName = "ImaginePU")
     EntityManagerFactory emf;
     @Resource
@@ -39,15 +43,24 @@ public class ShowCartServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        HttpSession session = request.getSession(false); 
+            
+        HttpSession session = request.getSession(false);
+        Favorite fav = (Favorite) session.getAttribute("fav");
+        String productid = request.getParameter("productid");
         if (session != null) {
-            ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
-            if (cart != null) {
-                getServletContext().getRequestDispatcher("/ShowCart.jsp").forward(request, response);
-                return;
+
+            if (fav == null) {
+                fav = new Favorite();
+                session.setAttribute("fav", fav);
             }
-        }
+            ProductJpaController productJpaCtrl = new ProductJpaController(utx, emf);
+
+            Product p = productJpaCtrl.findProduct(productid);
+            fav.add(p);
+           
+            session.setAttribute("fav", fav);
+            getServletContext().getRequestDispatcher("/ProductList").forward(request, response);
+    }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
