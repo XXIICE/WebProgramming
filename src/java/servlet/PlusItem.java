@@ -16,17 +16,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
-import jpa.model.Review;
+import jpa.model.Product;
+import jpa.model.controller.ProductJpaController;
+import model.ShoppingCart;
 
 /**
  *
- * @author ariya boonchoo
+ * @author INT303
  */
-public class ReviewServlet extends HttpServlet {
- @PersistenceUnit (unitName = "ImaginePU")
+public class PlusItem extends HttpServlet {
+
+    @PersistenceUnit(unitName = "ImaginePU")
     EntityManagerFactory emf;
     @Resource
     UserTransaction utx;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,8 +42,20 @@ public class ReviewServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-                HttpSession session = request.getSession(false);
-                
+        HttpSession session = request.getSession(true);
+        ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
+        if (cart == null) {
+            cart = new ShoppingCart();
+            session.setAttribute("cart", cart);
+        }
+
+        String productid = request.getParameter("productid");
+        ProductJpaController productJpaCtrl = new ProductJpaController(utx, emf);
+        Product p = productJpaCtrl.findProduct(productid);
+        cart.add(p);
+        session.setAttribute("cart", cart);
+        getServletContext().getRequestDispatcher("/ShowCart").forward(request, response);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

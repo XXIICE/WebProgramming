@@ -17,7 +17,8 @@
             }
         </style>
     </head>
-    <body>
+    <body> 
+        <jsp:include page="include/Header.jsp?title=ProductListing ::"/>
         <h1>Hello World!</h1>
         <a href="Register"> Register </a><br>
         <a href="Login"> Login </a><br>
@@ -28,9 +29,11 @@
             search : <input type="text" name="search">&nbsp;&nbsp;
             <input type="submit">
         </form>
+       
         <table>
             <thead>
             <th>No.</th>
+            <th>Product ID</th>
             <th>Album Name</th>
             <th>Artist</th>
             <th>Gen</th>
@@ -39,10 +42,16 @@
             <c:forEach items="${productList}" var="p" varStatus="vs" >
                 <tr>
                     <td>${vs.count}</td>
-                    <td>${p.productname}</td>
+                    <td>${p.productid}</td>
+                    <td><a href="GetProduct?productName=${p.productname}">${p.productname}</a></td>
                     <td>${p.artist}</td>
                     <td>${p.genre}</td>
                     <td>${p.price}</td>
+                    <td><form action="AddItemToCart" method="post">
+                                <input type="hidden" value="${p.productid}" name="productid"/>
+                                <input type="submit" value="Add To Cart"/>
+                            </form>
+                    </td>
                 </tr>
             </c:forEach>
         </table>

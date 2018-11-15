@@ -7,26 +7,18 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.annotation.Resource;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnit;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.transaction.UserTransaction;
-import jpa.model.Review;
 
 /**
  *
  * @author ariya boonchoo
  */
-public class ReviewServlet extends HttpServlet {
- @PersistenceUnit (unitName = "ImaginePU")
-    EntityManagerFactory emf;
-    @Resource
-    UserTransaction utx;
+public class PaymentServlet extends HttpServlet {
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,8 +30,10 @@ public class ReviewServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-                HttpSession session = request.getSession(false);
-                
+        HttpSession session = request.getSession(false);
+        if (session !=null) {
+            
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
