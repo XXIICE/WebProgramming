@@ -10,6 +10,7 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import jpa.model.Payment;
 import jpa.model.Cart;
 import jpa.model.Customer;
 import jpa.model.Orderitem;
@@ -56,6 +57,16 @@ public class ProductorderJpaController implements Serializable {
                 illegalOrphanMessages.add("The Cart " + cartCartidOrphanCheck + " already has an item of type Productorder whose cartCartid column cannot be null. Please make another selection for the cartCartid field.");
             }
         }
+        Payment paymentPaymentidOrphanCheck = productorder.getPaymentPaymentid();
+        if (paymentPaymentidOrphanCheck != null) {
+            Productorder oldProductorderOderidOfPaymentPaymentid = paymentPaymentidOrphanCheck.getProductorderOderid();
+            if (oldProductorderOderidOfPaymentPaymentid != null) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("The Payment " + paymentPaymentidOrphanCheck + " already has an item of type Productorder whose paymentPaymentid column cannot be null. Please make another selection for the paymentPaymentid field.");
+            }
+        }
         if (illegalOrphanMessages != null) {
             throw new IllegalOrphanException(illegalOrphanMessages);
         }
@@ -63,6 +74,11 @@ public class ProductorderJpaController implements Serializable {
         try {
             utx.begin();
             em = getEntityManager();
+            Payment payment = productorder.getPayment();
+            if (payment != null) {
+                payment = em.getReference(payment.getClass(), payment.getPaymentid());
+                productorder.setPayment(payment);
+            }
             Cart cartCartid = productorder.getCartCartid();
             if (cartCartid != null) {
                 cartCartid = em.getReference(cartCartid.getClass(), cartCartid.getCartid());
@@ -73,6 +89,11 @@ public class ProductorderJpaController implements Serializable {
                 customerUsername = em.getReference(customerUsername.getClass(), customerUsername.getUsername());
                 productorder.setCustomerUsername(customerUsername);
             }
+            Payment paymentPaymentid = productorder.getPaymentPaymentid();
+            if (paymentPaymentid != null) {
+                paymentPaymentid = em.getReference(paymentPaymentid.getClass(), paymentPaymentid.getPaymentid());
+                productorder.setPaymentPaymentid(paymentPaymentid);
+            }
             List<Orderitem> attachedOrderitemList = new ArrayList<Orderitem>();
             for (Orderitem orderitemListOrderitemToAttach : productorder.getOrderitemList()) {
                 orderitemListOrderitemToAttach = em.getReference(orderitemListOrderitemToAttach.getClass(), orderitemListOrderitemToAttach.getOrderitemid());
@@ -80,6 +101,15 @@ public class ProductorderJpaController implements Serializable {
             }
             productorder.setOrderitemList(attachedOrderitemList);
             em.persist(productorder);
+            if (payment != null) {
+                Productorder oldProductorderOderidOfPayment = payment.getProductorderOderid();
+                if (oldProductorderOderidOfPayment != null) {
+                    oldProductorderOderidOfPayment.setPayment(null);
+                    oldProductorderOderidOfPayment = em.merge(oldProductorderOderidOfPayment);
+                }
+                payment.setProductorderOderid(productorder);
+                payment = em.merge(payment);
+            }
             if (cartCartid != null) {
                 cartCartid.setProductorder(productorder);
                 cartCartid = em.merge(cartCartid);
@@ -87,6 +117,10 @@ public class ProductorderJpaController implements Serializable {
             if (customerUsername != null) {
                 customerUsername.getProductorderList().add(productorder);
                 customerUsername = em.merge(customerUsername);
+            }
+            if (paymentPaymentid != null) {
+                paymentPaymentid.setProductorderOderid(productorder);
+                paymentPaymentid = em.merge(paymentPaymentid);
             }
             for (Orderitem orderitemListOrderitem : productorder.getOrderitemList()) {
                 Productorder oldProductorderOderidOfOrderitemListOrderitem = orderitemListOrderitem.getProductorderOderid();
@@ -121,13 +155,23 @@ public class ProductorderJpaController implements Serializable {
             utx.begin();
             em = getEntityManager();
             Productorder persistentProductorder = em.find(Productorder.class, productorder.getOderid());
+            Payment paymentOld = persistentProductorder.getPayment();
+            Payment paymentNew = productorder.getPayment();
             Cart cartCartidOld = persistentProductorder.getCartCartid();
             Cart cartCartidNew = productorder.getCartCartid();
             Customer customerUsernameOld = persistentProductorder.getCustomerUsername();
             Customer customerUsernameNew = productorder.getCustomerUsername();
+            Payment paymentPaymentidOld = persistentProductorder.getPaymentPaymentid();
+            Payment paymentPaymentidNew = productorder.getPaymentPaymentid();
             List<Orderitem> orderitemListOld = persistentProductorder.getOrderitemList();
             List<Orderitem> orderitemListNew = productorder.getOrderitemList();
             List<String> illegalOrphanMessages = null;
+            if (paymentOld != null && !paymentOld.equals(paymentNew)) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("You must retain Payment " + paymentOld + " since its productorderOderid field is not nullable.");
+            }
             if (cartCartidNew != null && !cartCartidNew.equals(cartCartidOld)) {
                 Productorder oldProductorderOfCartCartid = cartCartidNew.getProductorder();
                 if (oldProductorderOfCartCartid != null) {
@@ -135,6 +179,21 @@ public class ProductorderJpaController implements Serializable {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
                     illegalOrphanMessages.add("The Cart " + cartCartidNew + " already has an item of type Productorder whose cartCartid column cannot be null. Please make another selection for the cartCartid field.");
+                }
+            }
+            if (paymentPaymentidOld != null && !paymentPaymentidOld.equals(paymentPaymentidNew)) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("You must retain Payment " + paymentPaymentidOld + " since its productorderOderid field is not nullable.");
+            }
+            if (paymentPaymentidNew != null && !paymentPaymentidNew.equals(paymentPaymentidOld)) {
+                Productorder oldProductorderOderidOfPaymentPaymentid = paymentPaymentidNew.getProductorderOderid();
+                if (oldProductorderOderidOfPaymentPaymentid != null) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("The Payment " + paymentPaymentidNew + " already has an item of type Productorder whose paymentPaymentid column cannot be null. Please make another selection for the paymentPaymentid field.");
                 }
             }
             for (Orderitem orderitemListOldOrderitem : orderitemListOld) {
@@ -148,6 +207,10 @@ public class ProductorderJpaController implements Serializable {
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
+            if (paymentNew != null) {
+                paymentNew = em.getReference(paymentNew.getClass(), paymentNew.getPaymentid());
+                productorder.setPayment(paymentNew);
+            }
             if (cartCartidNew != null) {
                 cartCartidNew = em.getReference(cartCartidNew.getClass(), cartCartidNew.getCartid());
                 productorder.setCartCartid(cartCartidNew);
@@ -155,6 +218,10 @@ public class ProductorderJpaController implements Serializable {
             if (customerUsernameNew != null) {
                 customerUsernameNew = em.getReference(customerUsernameNew.getClass(), customerUsernameNew.getUsername());
                 productorder.setCustomerUsername(customerUsernameNew);
+            }
+            if (paymentPaymentidNew != null) {
+                paymentPaymentidNew = em.getReference(paymentPaymentidNew.getClass(), paymentPaymentidNew.getPaymentid());
+                productorder.setPaymentPaymentid(paymentPaymentidNew);
             }
             List<Orderitem> attachedOrderitemListNew = new ArrayList<Orderitem>();
             for (Orderitem orderitemListNewOrderitemToAttach : orderitemListNew) {
@@ -164,6 +231,15 @@ public class ProductorderJpaController implements Serializable {
             orderitemListNew = attachedOrderitemListNew;
             productorder.setOrderitemList(orderitemListNew);
             productorder = em.merge(productorder);
+            if (paymentNew != null && !paymentNew.equals(paymentOld)) {
+                Productorder oldProductorderOderidOfPayment = paymentNew.getProductorderOderid();
+                if (oldProductorderOderidOfPayment != null) {
+                    oldProductorderOderidOfPayment.setPayment(null);
+                    oldProductorderOderidOfPayment = em.merge(oldProductorderOderidOfPayment);
+                }
+                paymentNew.setProductorderOderid(productorder);
+                paymentNew = em.merge(paymentNew);
+            }
             if (cartCartidOld != null && !cartCartidOld.equals(cartCartidNew)) {
                 cartCartidOld.setProductorder(null);
                 cartCartidOld = em.merge(cartCartidOld);
@@ -179,6 +255,10 @@ public class ProductorderJpaController implements Serializable {
             if (customerUsernameNew != null && !customerUsernameNew.equals(customerUsernameOld)) {
                 customerUsernameNew.getProductorderList().add(productorder);
                 customerUsernameNew = em.merge(customerUsernameNew);
+            }
+            if (paymentPaymentidNew != null && !paymentPaymentidNew.equals(paymentPaymentidOld)) {
+                paymentPaymentidNew.setProductorderOderid(productorder);
+                paymentPaymentidNew = em.merge(paymentPaymentidNew);
             }
             for (Orderitem orderitemListNewOrderitem : orderitemListNew) {
                 if (!orderitemListOld.contains(orderitemListNewOrderitem)) {
@@ -226,6 +306,20 @@ public class ProductorderJpaController implements Serializable {
                 throw new NonexistentEntityException("The productorder with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
+            Payment paymentOrphanCheck = productorder.getPayment();
+            if (paymentOrphanCheck != null) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Productorder (" + productorder + ") cannot be destroyed since the Payment " + paymentOrphanCheck + " in its payment field has a non-nullable productorderOderid field.");
+            }
+            Payment paymentPaymentidOrphanCheck = productorder.getPaymentPaymentid();
+            if (paymentPaymentidOrphanCheck != null) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Productorder (" + productorder + ") cannot be destroyed since the Payment " + paymentPaymentidOrphanCheck + " in its paymentPaymentid field has a non-nullable productorderOderid field.");
+            }
             List<Orderitem> orderitemListOrphanCheck = productorder.getOrderitemList();
             for (Orderitem orderitemListOrphanCheckOrderitem : orderitemListOrphanCheck) {
                 if (illegalOrphanMessages == null) {

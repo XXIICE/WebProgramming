@@ -58,5 +58,6 @@
                     </tr>
                 </c:forEach>
             </table>
+                <h5 align ="right"> <a href="ProductList">Back to home</a></h5>
     </body>
 </html>

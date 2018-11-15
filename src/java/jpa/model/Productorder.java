@@ -36,8 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Productorder.findByOderid", query = "SELECT p FROM Productorder p WHERE p.oderid = :oderid")
     , @NamedQuery(name = "Productorder.findByProductstatus", query = "SELECT p FROM Productorder p WHERE p.productstatus = :productstatus")
     , @NamedQuery(name = "Productorder.findByTotalprice", query = "SELECT p FROM Productorder p WHERE p.totalprice = :totalprice")
-    , @NamedQuery(name = "Productorder.findByTrackingno", query = "SELECT p FROM Productorder p WHERE p.trackingno = :trackingno")
-    , @NamedQuery(name = "Productorder.findByPaymentPaymentid", query = "SELECT p FROM Productorder p WHERE p.paymentPaymentid = :paymentPaymentid")})
+    , @NamedQuery(name = "Productorder.findByTrackingno", query = "SELECT p FROM Productorder p WHERE p.trackingno = :trackingno")})
 public class Productorder implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -59,17 +58,17 @@ public class Productorder implements Serializable {
     @Size(max = 50)
     @Column(name = "TRACKINGNO")
     private String trackingno;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 5)
-    @Column(name = "PAYMENT_PAYMENTID")
-    private String paymentPaymentid;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "productorderOderid")
+    private Payment payment;
     @JoinColumn(name = "CART_CARTID", referencedColumnName = "CARTID")
     @OneToOne(optional = false)
     private Cart cartCartid;
     @JoinColumn(name = "CUSTOMER_USERNAME", referencedColumnName = "USERNAME")
     @ManyToOne(optional = false)
     private Customer customerUsername;
+    @JoinColumn(name = "PAYMENT_PAYMENTID", referencedColumnName = "PAYMENTID")
+    @OneToOne(optional = false)
+    private Payment paymentPaymentid;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productorderOderid")
     private List<Orderitem> orderitemList;
 
@@ -80,11 +79,10 @@ public class Productorder implements Serializable {
         this.oderid = oderid;
     }
 
-    public Productorder(String oderid, String productstatus, int totalprice, String paymentPaymentid) {
+    public Productorder(String oderid, String productstatus, int totalprice) {
         this.oderid = oderid;
         this.productstatus = productstatus;
         this.totalprice = totalprice;
-        this.paymentPaymentid = paymentPaymentid;
     }
 
     public String getOderid() {
@@ -119,12 +117,12 @@ public class Productorder implements Serializable {
         this.trackingno = trackingno;
     }
 
-    public String getPaymentPaymentid() {
-        return paymentPaymentid;
+    public Payment getPayment() {
+        return payment;
     }
 
-    public void setPaymentPaymentid(String paymentPaymentid) {
-        this.paymentPaymentid = paymentPaymentid;
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 
     public Cart getCartCartid() {
@@ -141,6 +139,14 @@ public class Productorder implements Serializable {
 
     public void setCustomerUsername(Customer customerUsername) {
         this.customerUsername = customerUsername;
+    }
+
+    public Payment getPaymentPaymentid() {
+        return paymentPaymentid;
+    }
+
+    public void setPaymentPaymentid(Payment paymentPaymentid) {
+        this.paymentPaymentid = paymentPaymentid;
     }
 
     @XmlTransient

@@ -7,11 +7,14 @@ package jpa.model;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -27,8 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Payment.findAll", query = "SELECT p FROM Payment p")
     , @NamedQuery(name = "Payment.findByPaymentid", query = "SELECT p FROM Payment p WHERE p.paymentid = :paymentid")
-    , @NamedQuery(name = "Payment.findByPaymentstatus", query = "SELECT p FROM Payment p WHERE p.paymentstatus = :paymentstatus")
-    , @NamedQuery(name = "Payment.findByProductorderOderid", query = "SELECT p FROM Payment p WHERE p.productorderOderid = :productorderOderid")})
+    , @NamedQuery(name = "Payment.findByPaymentstatus", query = "SELECT p FROM Payment p WHERE p.paymentstatus = :paymentstatus")})
 public class Payment implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -43,11 +45,11 @@ public class Payment implements Serializable {
     @Size(min = 1, max = 20)
     @Column(name = "PAYMENTSTATUS")
     private String paymentstatus;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 5)
-    @Column(name = "PRODUCTORDER_ODERID")
-    private String productorderOderid;
+    @JoinColumn(name = "PRODUCTORDER_ODERID", referencedColumnName = "ODERID")
+    @OneToOne(optional = false)
+    private Productorder productorderOderid;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "paymentPaymentid")
+    private Productorder productorder;
 
     public Payment() {
     }
@@ -56,10 +58,9 @@ public class Payment implements Serializable {
         this.paymentid = paymentid;
     }
 
-    public Payment(String paymentid, String paymentstatus, String productorderOderid) {
+    public Payment(String paymentid, String paymentstatus) {
         this.paymentid = paymentid;
         this.paymentstatus = paymentstatus;
-        this.productorderOderid = productorderOderid;
     }
 
     public String getPaymentid() {
@@ -78,12 +79,20 @@ public class Payment implements Serializable {
         this.paymentstatus = paymentstatus;
     }
 
-    public String getProductorderOderid() {
+    public Productorder getProductorderOderid() {
         return productorderOderid;
     }
 
-    public void setProductorderOderid(String productorderOderid) {
+    public void setProductorderOderid(Productorder productorderOderid) {
         this.productorderOderid = productorderOderid;
+    }
+
+    public Productorder getProductorder() {
+        return productorder;
+    }
+
+    public void setProductorder(Productorder productorder) {
+        this.productorder = productorder;
     }
 
     @Override

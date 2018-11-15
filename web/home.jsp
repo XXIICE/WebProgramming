@@ -47,8 +47,10 @@
                     <td>${p.artist}</td>
                     <td>${p.genre}</td>
                     <td>${p.price}</td>
+                    
                     <td><form action="AddItemToCart" method="post">
                                 <input type="hidden" value="${p.productid}" name="productid"/>
+                                
                                 <input type="submit" value="Add To Cart"/>
                             </form>
                     </td>

@@ -10,15 +10,15 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import jpa.model.Product;
+import jpa.model.Productorder;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.transaction.UserTransaction;
 import jpa.model.Customer;
-import jpa.model.Productorder;
 import jpa.model.Review;
+import jpa.model.Favorite;
 import jpa.model.controller.exceptions.IllegalOrphanException;
 import jpa.model.controller.exceptions.NonexistentEntityException;
 import jpa.model.controller.exceptions.PreexistingEntityException;
@@ -42,25 +42,19 @@ public class CustomerJpaController implements Serializable {
     }
 
     public void create(Customer customer) throws PreexistingEntityException, RollbackFailureException, Exception {
-        if (customer.getProductList() == null) {
-            customer.setProductList(new ArrayList<Product>());
-        }
         if (customer.getProductorderList() == null) {
             customer.setProductorderList(new ArrayList<Productorder>());
         }
         if (customer.getReviewList() == null) {
             customer.setReviewList(new ArrayList<Review>());
         }
+        if (customer.getFavoriteList() == null) {
+            customer.setFavoriteList(new ArrayList<Favorite>());
+        }
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            List<Product> attachedProductList = new ArrayList<Product>();
-            for (Product productListProductToAttach : customer.getProductList()) {
-                productListProductToAttach = em.getReference(productListProductToAttach.getClass(), productListProductToAttach.getProductid());
-                attachedProductList.add(productListProductToAttach);
-            }
-            customer.setProductList(attachedProductList);
             List<Productorder> attachedProductorderList = new ArrayList<Productorder>();
             for (Productorder productorderListProductorderToAttach : customer.getProductorderList()) {
                 productorderListProductorderToAttach = em.getReference(productorderListProductorderToAttach.getClass(), productorderListProductorderToAttach.getOderid());
@@ -73,11 +67,13 @@ public class CustomerJpaController implements Serializable {
                 attachedReviewList.add(reviewListReviewToAttach);
             }
             customer.setReviewList(attachedReviewList);
-            em.persist(customer);
-            for (Product productListProduct : customer.getProductList()) {
-                productListProduct.getCustomerList().add(customer);
-                productListProduct = em.merge(productListProduct);
+            List<Favorite> attachedFavoriteList = new ArrayList<Favorite>();
+            for (Favorite favoriteListFavoriteToAttach : customer.getFavoriteList()) {
+                favoriteListFavoriteToAttach = em.getReference(favoriteListFavoriteToAttach.getClass(), favoriteListFavoriteToAttach.getFavoriteid());
+                attachedFavoriteList.add(favoriteListFavoriteToAttach);
             }
+            customer.setFavoriteList(attachedFavoriteList);
+            em.persist(customer);
             for (Productorder productorderListProductorder : customer.getProductorderList()) {
                 Customer oldCustomerUsernameOfProductorderListProductorder = productorderListProductorder.getCustomerUsername();
                 productorderListProductorder.setCustomerUsername(customer);
@@ -94,6 +90,15 @@ public class CustomerJpaController implements Serializable {
                 if (oldCustomerUsernameOfReviewListReview != null) {
                     oldCustomerUsernameOfReviewListReview.getReviewList().remove(reviewListReview);
                     oldCustomerUsernameOfReviewListReview = em.merge(oldCustomerUsernameOfReviewListReview);
+                }
+            }
+            for (Favorite favoriteListFavorite : customer.getFavoriteList()) {
+                Customer oldCustomerUsernameOfFavoriteListFavorite = favoriteListFavorite.getCustomerUsername();
+                favoriteListFavorite.setCustomerUsername(customer);
+                favoriteListFavorite = em.merge(favoriteListFavorite);
+                if (oldCustomerUsernameOfFavoriteListFavorite != null) {
+                    oldCustomerUsernameOfFavoriteListFavorite.getFavoriteList().remove(favoriteListFavorite);
+                    oldCustomerUsernameOfFavoriteListFavorite = em.merge(oldCustomerUsernameOfFavoriteListFavorite);
                 }
             }
             utx.commit();
@@ -120,12 +125,12 @@ public class CustomerJpaController implements Serializable {
             utx.begin();
             em = getEntityManager();
             Customer persistentCustomer = em.find(Customer.class, customer.getUsername());
-            List<Product> productListOld = persistentCustomer.getProductList();
-            List<Product> productListNew = customer.getProductList();
             List<Productorder> productorderListOld = persistentCustomer.getProductorderList();
             List<Productorder> productorderListNew = customer.getProductorderList();
             List<Review> reviewListOld = persistentCustomer.getReviewList();
             List<Review> reviewListNew = customer.getReviewList();
+            List<Favorite> favoriteListOld = persistentCustomer.getFavoriteList();
+            List<Favorite> favoriteListNew = customer.getFavoriteList();
             List<String> illegalOrphanMessages = null;
             for (Productorder productorderListOldProductorder : productorderListOld) {
                 if (!productorderListNew.contains(productorderListOldProductorder)) {
@@ -143,16 +148,17 @@ public class CustomerJpaController implements Serializable {
                     illegalOrphanMessages.add("You must retain Review " + reviewListOldReview + " since its customerUsername field is not nullable.");
                 }
             }
+            for (Favorite favoriteListOldFavorite : favoriteListOld) {
+                if (!favoriteListNew.contains(favoriteListOldFavorite)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain Favorite " + favoriteListOldFavorite + " since its customerUsername field is not nullable.");
+                }
+            }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            List<Product> attachedProductListNew = new ArrayList<Product>();
-            for (Product productListNewProductToAttach : productListNew) {
-                productListNewProductToAttach = em.getReference(productListNewProductToAttach.getClass(), productListNewProductToAttach.getProductid());
-                attachedProductListNew.add(productListNewProductToAttach);
-            }
-            productListNew = attachedProductListNew;
-            customer.setProductList(productListNew);
             List<Productorder> attachedProductorderListNew = new ArrayList<Productorder>();
             for (Productorder productorderListNewProductorderToAttach : productorderListNew) {
                 productorderListNewProductorderToAttach = em.getReference(productorderListNewProductorderToAttach.getClass(), productorderListNewProductorderToAttach.getOderid());
@@ -167,19 +173,14 @@ public class CustomerJpaController implements Serializable {
             }
             reviewListNew = attachedReviewListNew;
             customer.setReviewList(reviewListNew);
+            List<Favorite> attachedFavoriteListNew = new ArrayList<Favorite>();
+            for (Favorite favoriteListNewFavoriteToAttach : favoriteListNew) {
+                favoriteListNewFavoriteToAttach = em.getReference(favoriteListNewFavoriteToAttach.getClass(), favoriteListNewFavoriteToAttach.getFavoriteid());
+                attachedFavoriteListNew.add(favoriteListNewFavoriteToAttach);
+            }
+            favoriteListNew = attachedFavoriteListNew;
+            customer.setFavoriteList(favoriteListNew);
             customer = em.merge(customer);
-            for (Product productListOldProduct : productListOld) {
-                if (!productListNew.contains(productListOldProduct)) {
-                    productListOldProduct.getCustomerList().remove(customer);
-                    productListOldProduct = em.merge(productListOldProduct);
-                }
-            }
-            for (Product productListNewProduct : productListNew) {
-                if (!productListOld.contains(productListNewProduct)) {
-                    productListNewProduct.getCustomerList().add(customer);
-                    productListNewProduct = em.merge(productListNewProduct);
-                }
-            }
             for (Productorder productorderListNewProductorder : productorderListNew) {
                 if (!productorderListOld.contains(productorderListNewProductorder)) {
                     Customer oldCustomerUsernameOfProductorderListNewProductorder = productorderListNewProductorder.getCustomerUsername();
@@ -199,6 +200,17 @@ public class CustomerJpaController implements Serializable {
                     if (oldCustomerUsernameOfReviewListNewReview != null && !oldCustomerUsernameOfReviewListNewReview.equals(customer)) {
                         oldCustomerUsernameOfReviewListNewReview.getReviewList().remove(reviewListNewReview);
                         oldCustomerUsernameOfReviewListNewReview = em.merge(oldCustomerUsernameOfReviewListNewReview);
+                    }
+                }
+            }
+            for (Favorite favoriteListNewFavorite : favoriteListNew) {
+                if (!favoriteListOld.contains(favoriteListNewFavorite)) {
+                    Customer oldCustomerUsernameOfFavoriteListNewFavorite = favoriteListNewFavorite.getCustomerUsername();
+                    favoriteListNewFavorite.setCustomerUsername(customer);
+                    favoriteListNewFavorite = em.merge(favoriteListNewFavorite);
+                    if (oldCustomerUsernameOfFavoriteListNewFavorite != null && !oldCustomerUsernameOfFavoriteListNewFavorite.equals(customer)) {
+                        oldCustomerUsernameOfFavoriteListNewFavorite.getFavoriteList().remove(favoriteListNewFavorite);
+                        oldCustomerUsernameOfFavoriteListNewFavorite = em.merge(oldCustomerUsernameOfFavoriteListNewFavorite);
                     }
                 }
             }
@@ -251,13 +263,15 @@ public class CustomerJpaController implements Serializable {
                 }
                 illegalOrphanMessages.add("This Customer (" + customer + ") cannot be destroyed since the Review " + reviewListOrphanCheckReview + " in its reviewList field has a non-nullable customerUsername field.");
             }
+            List<Favorite> favoriteListOrphanCheck = customer.getFavoriteList();
+            for (Favorite favoriteListOrphanCheckFavorite : favoriteListOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Customer (" + customer + ") cannot be destroyed since the Favorite " + favoriteListOrphanCheckFavorite + " in its favoriteList field has a non-nullable customerUsername field.");
+            }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
-            }
-            List<Product> productList = customer.getProductList();
-            for (Product productListProduct : productList) {
-                productListProduct.getCustomerList().remove(customer);
-                productListProduct = em.merge(productListProduct);
             }
             em.remove(customer);
             utx.commit();

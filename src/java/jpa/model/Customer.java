@@ -12,9 +12,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -83,15 +80,12 @@ public class Customer implements Serializable {
     private String creditcardnumber;
     @Column(name = "POINT")
     private Integer point;
-    @JoinTable(name = "FAVORITE", joinColumns = {
-        @JoinColumn(name = "CUSTOMER_USERNAME", referencedColumnName = "USERNAME")}, inverseJoinColumns = {
-        @JoinColumn(name = "PRODUCT_PRODUCTID", referencedColumnName = "PRODUCTID")})
-    @ManyToMany
-    private List<Product> productList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerUsername")
     private List<Productorder> productorderList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerUsername")
     private List<Review> reviewList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerUsername")
+    private List<Favorite> favoriteList;
 
     public Customer() {
     }
@@ -175,15 +169,6 @@ public class Customer implements Serializable {
     }
 
     @XmlTransient
-    public List<Product> getProductList() {
-        return productList;
-    }
-
-    public void setProductList(List<Product> productList) {
-        this.productList = productList;
-    }
-
-    @XmlTransient
     public List<Productorder> getProductorderList() {
         return productorderList;
     }
@@ -199,6 +184,15 @@ public class Customer implements Serializable {
 
     public void setReviewList(List<Review> reviewList) {
         this.reviewList = reviewList;
+    }
+
+    @XmlTransient
+    public List<Favorite> getFavoriteList() {
+        return favoriteList;
+    }
+
+    public void setFavoriteList(List<Favorite> favoriteList) {
+        this.favoriteList = favoriteList;
     }
 
     @Override

@@ -13,7 +13,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -69,12 +68,12 @@ public class Product implements Serializable {
     @Column(name = "RELEASEDATE")
     @Temporal(TemporalType.DATE)
     private Date releasedate;
-    @ManyToMany(mappedBy = "productList")
-    private List<Customer> customerList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productProductid")
     private List<Review> reviewList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
     private List<Tracklist> tracklistList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productProductid")
+    private List<Favorite> favoriteList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productProductid")
     private List<Orderitem> orderitemList;
 
@@ -141,15 +140,6 @@ public class Product implements Serializable {
     }
 
     @XmlTransient
-    public List<Customer> getCustomerList() {
-        return customerList;
-    }
-
-    public void setCustomerList(List<Customer> customerList) {
-        this.customerList = customerList;
-    }
-
-    @XmlTransient
     public List<Review> getReviewList() {
         return reviewList;
     }
@@ -165,6 +155,15 @@ public class Product implements Serializable {
 
     public void setTracklistList(List<Tracklist> tracklistList) {
         this.tracklistList = tracklistList;
+    }
+
+    @XmlTransient
+    public List<Favorite> getFavoriteList() {
+        return favoriteList;
+    }
+
+    public void setFavoriteList(List<Favorite> favoriteList) {
+        this.favoriteList = favoriteList;
     }
 
     @XmlTransient
