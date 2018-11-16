@@ -14,11 +14,33 @@
     <body>
         <jsp:include page="include/Header.jsp?title=Product :: "/>
         <h1>Product</h1>
-        Image<br>
-        ${product.productid}<br>
-        ${product.productname}<br>
-        ${product.productid.songname}<br>
-        ${product.price}
+        <table>
+            <tr>
+                <td>Image : </td>
+                <td><img src="images/KPOP-${product.productid}.jpg" width="120"></td>
+            </tr>
+            <tr>
+                <td>Product Id: </td>
+                <td>${productList.productid}</td>
+            </tr>
+            <tr>
+                <td>Product Name: </td>
+                <td>${product.productname}</td>
+            </tr>
+          
+            
+            <tr>
+                <td>Tracklist : </td>
+                <td>${product.productdescription}</td>
+            </tr>
+            <tr>
+                <td>Price: </td>
+                <td>${product.price}</td>
+            </tr>
+        
+     
+        
+        </table>
         <form action = "Review" method="post">
         review by ${custom.username}<input type="text" name="comment">
         

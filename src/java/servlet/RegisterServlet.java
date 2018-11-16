@@ -26,10 +26,12 @@ import jpa.model.controller.exceptions.RollbackFailureException;
  * @author ariya boonchoo
  */
 public class RegisterServlet extends HttpServlet {
- @PersistenceUnit (unitName = "ImaginePU")
+
+    @PersistenceUnit(unitName = "ImaginePU")
     EntityManagerFactory emf;
     @Resource
     UserTransaction utx;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -43,6 +45,7 @@ public class RegisterServlet extends HttpServlet {
             throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        String retypepassword = request.getParameter("retypepassword");
         String firstname = request.getParameter("firstname");
         String lastname = request.getParameter("lastname");
         String email = request.getParameter("email");
@@ -50,24 +53,38 @@ public class RegisterServlet extends HttpServlet {
         String creditcardnumber = request.getParameter("creditNo");
         Customer customer = new Customer(username, password, firstname, lastname, email, address, creditcardnumber);
         CustomerJpaController customerJpaCtrl = new CustomerJpaController(utx, emf);
-         if (username != null && password != null &&firstname !=null &&lastname !=null &&email!=null &&address!=null &&creditcardnumber!=null ) {
-         
-               customer.setUsername(username);
-               customer.setPassword(password);
-               customer.setFirstname(firstname);
-               customer.setLastname(lastname);
-               customer.setEmail(email);
-               customer.setAddress(address);
-               customer.setCreditcardnumber(creditcardnumber);
-            try {
-                customerJpaCtrl.create(customer);
-            } catch (Exception ex) {
-                Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, ex);
+
+        if (username != null && password != null && firstname != null && lastname != null && email != null && address != null && creditcardnumber != null) {
+            
+            if (retypepassword.equals(password)) {
+                customer.setUsername(username);
+                customer.setPassword(password);
+                customer.setFirstname(firstname);
+                customer.setLastname(lastname);
+                customer.setEmail(email);
+                customer.setAddress(address);
+                customer.setCreditcardnumber(creditcardnumber);
+                try {
+                    customerJpaCtrl.create(customer);
+                } catch (Exception ex) {
+                    Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
+            } else {
+                
+                request.setAttribute("messagere", "password not match.");
+                getServletContext().getRequestDispatcher("/register.jsp").forward(request, response);
             }
-             getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
-         }
+//            customer = customerJpaCtrl.findCustomer(email);
+//            if (customer.getEmail().equals(email)) {
+//                request.setAttribute("messageus", "email already exists.");
+//                getServletContext().getRequestDispatcher("/register.jsp").forward(request, response);
+//            }
+          
+        }
+
         getServletContext().getRequestDispatcher("/register.jsp").forward(request, response);
-       
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

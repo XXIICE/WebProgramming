@@ -15,13 +15,14 @@
         <h1>Register</h1>
        
         <form action="Register" method="post">
-           username <input type="text" name="username" required><br /><br />
+           username <input type="text" name="username" required>${messageus}<br /><br />
            password <input type="password" name="password" required><br /><br />
+           retype password <input type="password" name="retypepassword" required> ${messagere}<br /><br />
            firstname <input type="text" name="firstname" required><br /><br />
            lastname <input type="text" name="lastname" required><br /><br />
            email <input type="email" name="email" required><br /><br />
            address <input type="text" name="address" required><br /><br />
-           creditcardnumber <input type="number" name="creditNo" required><br /><br />
+           creditcardnumber <input type="number" name="creditNo" required><br /><br /><!-- check duay naja -->
            <input type="submit" value="Register">
         </form>
     </body>

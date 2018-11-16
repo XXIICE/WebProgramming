@@ -68,7 +68,7 @@
 
                         <%--<c:set var = "balance" value="${p.totalPrice}"/>--%> 
                         <%--<fmt:formatNumber type = "number"  maxIntegerDigits = "10" value = "${balance}" />--%>
-                        <td ><fmt:formatNumber value="${p.totalPrice}" pattern="#,###.00"/> $</td>
+                        <td ><fmt:formatNumber value="${p.totalPrice}" pattern="#,###.00"/> ฿</td>
                         <td>
                             <form action="RemoveAll" method="post">
                                 <input type="hidden" value="${p.product.productid}" name="productid"/>
@@ -83,7 +83,7 @@
                 <fmt:formatNumber value="${cart.totalPrice}" pattern="#,###.00"/>
                 <%--<c:set var = "balance" value="${cart.totalPrice}"/>--%> 
                 <%--<fmt:formatNumber type = "number"  maxIntegerDigits = "10" value = "${balance}" />--%>  
-                $</h4><br>
+                ฿</h4><br>
                 <h5 align ="right">
                     <form action="Payment" method="post">
                                 <input type="hidden" value="${p.product.productid}" name="productid"/>
