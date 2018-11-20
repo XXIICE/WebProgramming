@@ -53,9 +53,9 @@
         <c:forEach items="${productList}" var="p" varStatus="vs" >
             <tr>
                 <td>${vs.count}</td>
-                <td><img src="images/KPOP-${p.productid}.jpg" width="120"></td>
-                <td><a href="RecentView?productid=${p.productid}">${p.productid}</a></td>
-                <td><a href="GetProduct?productName=${p.productname}">${p.productname}</a></td>
+                <td><img src="images/${p.genre}-${p.productid}.jpg" width="120"></td>
+                <td><a href="GetProduct?productid=${p.productid}">${p.productid}</a></td>
+                <td>${p.productname}</a></td>
                 <td>${p.artist}</td>
                 <td>${p.genre}</td>
                 <td>${p.price} ฿</td>
