@@ -124,7 +124,7 @@ public class FavoriteJpaController implements Serializable {
             }
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                String id = favorite.getFavoriteid();
+                Integer id = favorite.getFavoriteid();
                 if (findFavorite(id) == null) {
                     throw new NonexistentEntityException("The favorite with id " + id + " no longer exists.");
                 }
@@ -137,7 +137,7 @@ public class FavoriteJpaController implements Serializable {
         }
     }
 
-    public void destroy(String id) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
@@ -199,7 +199,7 @@ public class FavoriteJpaController implements Serializable {
         }
     }
 
-    public Favorite findFavorite(String id) {
+    public Favorite findFavorite(Integer id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Favorite.class, id);

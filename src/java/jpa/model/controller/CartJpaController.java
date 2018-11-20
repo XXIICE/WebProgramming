@@ -50,7 +50,7 @@ public class CartJpaController implements Serializable {
             em = getEntityManager();
             Productorder productorder = cart.getProductorder();
             if (productorder != null) {
-                productorder = em.getReference(productorder.getClass(), productorder.getOderid());
+                productorder = em.getReference(productorder.getClass(), productorder.getOrderid());
                 cart.setProductorder(productorder);
             }
             List<Lineitem> attachedLineitemList = new ArrayList<Lineitem>();
@@ -125,7 +125,7 @@ public class CartJpaController implements Serializable {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
             if (productorderNew != null) {
-                productorderNew = em.getReference(productorderNew.getClass(), productorderNew.getOderid());
+                productorderNew = em.getReference(productorderNew.getClass(), productorderNew.getOrderid());
                 cart.setProductorder(productorderNew);
             }
             List<Lineitem> attachedLineitemListNew = new ArrayList<Lineitem>();
@@ -165,7 +165,7 @@ public class CartJpaController implements Serializable {
             }
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                String id = cart.getCartid();
+                Integer id = cart.getCartid();
                 if (findCart(id) == null) {
                     throw new NonexistentEntityException("The cart with id " + id + " no longer exists.");
                 }
@@ -178,7 +178,7 @@ public class CartJpaController implements Serializable {
         }
     }
 
-    public void destroy(String id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
+    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
@@ -248,7 +248,7 @@ public class CartJpaController implements Serializable {
         }
     }
 
-    public Cart findCart(String id) {
+    public Cart findCart(Integer id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Cart.class, id);

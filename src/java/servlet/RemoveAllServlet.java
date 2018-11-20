@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
 import jpa.model.Product;
 import jpa.model.controller.ProductJpaController;
-import model.ShoppingCart;
+import model.ShoppingCart2;
 
 /**
  *
@@ -43,9 +43,9 @@ public class RemoveAllServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(true);
-        ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
+        ShoppingCart2 cart = (ShoppingCart2) session.getAttribute("cart");
         if (cart == null) {
-            cart = new ShoppingCart();
+            cart = new ShoppingCart2();
             session.setAttribute("cart", cart);
         }
 

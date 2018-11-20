@@ -55,7 +55,7 @@
             <c:if test="${fav!=null}">
                 <a href="ShowFavorite.jsp">See Your Favorite</a>
             </c:if>
-
+                <a href="ProductList">Back to home</a>
         </div>
     </body>
 </html>

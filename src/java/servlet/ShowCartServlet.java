@@ -7,6 +7,7 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.annotation.Resource;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
@@ -16,18 +17,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
-import model.ShoppingCart;
-
+import jpa.model.Customer;
+import jpa.model.Productorder;
+import jpa.model.controller.CustomerJpaController;
+import model.ShoppingCart2;
 
 /**
  *
  * @author INT303
  */
 public class ShowCartServlet extends HttpServlet {
-@PersistenceUnit(unitName = "ImaginePU")
+
+    @PersistenceUnit(unitName = "ImaginePU")
     EntityManagerFactory emf;
     @Resource
     UserTransaction utx;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,14 +45,26 @@ public class ShowCartServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session = request.getSession(false); 
+        HttpSession session = request.getSession(false);
         if (session != null) {
-            ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
+            ShoppingCart2 cart = (ShoppingCart2) session.getAttribute("cart");
             if (cart != null) {
-                getServletContext().getRequestDispatcher("/ShowCart.jsp").forward(request, response);
-                return;
+                session.setAttribute("cart", cart);
+                 getServletContext().getRequestDispatcher("/ShowCart.jsp").forward(request, response);
+   
+//                Customer custom = (Customer) session.getAttribute("custom");
+//                if (custom != null) {
+//                    CustomerJpaController customJpaCtrl = new CustomerJpaController(utx, emf);
+//                    Customer customer = customJpaCtrl.findCustomer(custom.getUsername());
+//                    if (customer != null) {
+//                        List<Productorder> productorderList = customer.getProductorderList();
+//                        session.setAttribute("productorderList", productorderList);
+//                        getServletContext().getRequestDispatcher("/ShowCart.jsp").forward(request, response);
+//                    }
+//                }
             }
         }
+        getServletContext().getRequestDispatcher("/ShowCart.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

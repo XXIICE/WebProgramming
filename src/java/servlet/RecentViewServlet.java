@@ -7,28 +7,22 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
 import javax.annotation.Resource;
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
-import javax.persistence.Query;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.UserTransaction;
-import jpa.model.Product;
-import jpa.model.controller.ProductJpaController;
 
 /**
  *
  * @author ariya boonchoo
  */
-public class ProductListServlet extends HttpServlet {
-  @PersistenceUnit(unitName = "ImaginePU")
+public class RecentViewServlet extends HttpServlet {
+ @PersistenceUnit(unitName = "ImaginePU")
     EntityManagerFactory emf;
     @Resource
     UserTransaction utx;
@@ -43,17 +37,14 @@ public class ProductListServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ProductJpaController productJpaCtrl = new ProductJpaController(utx, emf);
-        Product pro = new Product();
-//        String date = request.getParameter("releasedate");
-        EntityManager em = emf.createEntityManager();
-        Query q = em.createQuery("select p FROM Product p order by p.releasedate desc");
-//        Query q = em.createNamedQuery("select p from Product p order by p.releasedate desc");
-//        q.setParameter("p.releasedate", date);
-//        List<Product>productList = productJpaCtrl.findProductEntities();
-        List<Product>productList =q.getResultList();
-        request.setAttribute("productList", productList);
-        getServletContext().getRequestDispatcher("/home.jsp").forward(request, response);
+        String productid = request.getParameter("productid");
+    if (productid != null && productid.trim().length()>0) {
+        Cookie ck = new Cookie("productid",productid);
+     ck.setMaxAge(7*24*60*60);
+     response.addCookie(ck);
+     getServletContext().getRequestDispatcher("/ProductList").forward(request, response);
+    }
+     getServletContext().getRequestDispatcher("/ProductList").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

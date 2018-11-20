@@ -11,8 +11,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import jpa.model.Orderitem;
 import jpa.model.Product;
-
 
 /**
  *
@@ -20,18 +20,20 @@ import jpa.model.Product;
  */
 public class ShoppingCart implements Serializable {
 
-    private Map<String,LineItem> cart;
+    private Map<String, Orderitem> cart;
 
     public ShoppingCart() {
         cart = new HashMap();
     }
 
     public void add(Product p) {
-        LineItem line = cart.get(p.getProductid());
-        if (line == null) {
-            cart.put(p.getProductid(), new LineItem(p));
+//        LineItem line = cart.get(p.getProductid());
+        Orderitem order = cart.get(p.getProductid());
+        if (order == null) {
+//            cart.put(p.getProductid(), new LineItem(p));
+            cart.put(p.getProductid(), new Orderitem(p));
         } else {
-            line.setQuantity(line.getQuantity() + 1);
+            order.setQuantity(order.getQuantity() + 1);
         }
 
     }
@@ -42,38 +44,40 @@ public class ShoppingCart implements Serializable {
     }
 
     public void remove(String productId) {
-        
+
         cart.remove(productId);
 
     }
-    public double getTotalPrice(){
-       double sum = 0;
-       Collection<LineItem>lineItems = cart.values();
-        for (LineItem lineItem : lineItems) {
-            sum+= lineItem.getTotalPrice();
+
+    public double getTotalPrice() {
+        double sum = 0;
+        Collection<Orderitem> orderItems = cart.values();
+        for (Orderitem orderItem : orderItems) {
+            sum += orderItem.getTotalPrice();
         }
-       return sum;
+        return sum;
     }
-    public int getTotalQuantity(){
+
+    public int getTotalQuantity() {
         int sum = 0;
-        Collection<LineItem>lineItems = cart.values();
-         for (LineItem lineItem : lineItems) {
-            sum+= lineItem.getQuantity();
+        Collection<Orderitem> orderItems = cart.values();
+        for (Orderitem orderItem : orderItems) {
+            sum += orderItem.getQuantity();
         }
-       return sum;
+        return sum;
     }
-    public List<LineItem> getLineItems(){
+
+    public List<Orderitem> getOrderItems() {
         return new ArrayList(cart.values());
     }
-    public void delete(Product p){
-         LineItem line = cart.get(p.getProductid());
-        if (line.getQuantity() == 1) {
-          this.remove(p.getProductid());
-        } else if(line.getQuantity() > 1){
-            line.setQuantity(line.getQuantity() -1);
+
+    public void delete(Product p) {
+        Orderitem order = cart.get(p.getProductid());
+        if (order.getQuantity() == 1) {
+            this.remove(p.getProductid());
+        } else if (order.getQuantity() > 1) {
+            order.setQuantity(order.getQuantity() - 1);
         }
     }
 
-  
-    
 }

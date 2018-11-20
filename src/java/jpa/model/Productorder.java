@@ -7,6 +7,7 @@ package jpa.model;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.UUID;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -33,32 +34,30 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Productorder.findAll", query = "SELECT p FROM Productorder p")
-    , @NamedQuery(name = "Productorder.findByOderid", query = "SELECT p FROM Productorder p WHERE p.oderid = :oderid")
+    , @NamedQuery(name = "Productorder.findByOrderid", query = "SELECT p FROM Productorder p WHERE p.orderid = :orderid")
     , @NamedQuery(name = "Productorder.findByProductstatus", query = "SELECT p FROM Productorder p WHERE p.productstatus = :productstatus")
-    , @NamedQuery(name = "Productorder.findByTotalprice", query = "SELECT p FROM Productorder p WHERE p.totalprice = :totalprice")
-    , @NamedQuery(name = "Productorder.findByTrackingno", query = "SELECT p FROM Productorder p WHERE p.trackingno = :trackingno")})
+    , @NamedQuery(name = "Productorder.findByTrackingno", query = "SELECT p FROM Productorder p WHERE p.trackingno = :trackingno")
+    , @NamedQuery(name = "Productorder.findByTotalprice", query = "SELECT p FROM Productorder p WHERE p.totalprice = :totalprice")})
 public class Productorder implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 5)
-    @Column(name = "ODERID")
-    private String oderid;
+    @Column(name = "ORDERID")
+    private Integer orderid;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "PRODUCTSTATUS")
     private String productstatus;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "TOTALPRICE")
-    private int totalprice;
     @Size(max = 50)
     @Column(name = "TRACKINGNO")
     private String trackingno;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "productorderOderid")
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "TOTALPRICE")
+    private Double totalprice;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "productorderOrderid")
     private Payment payment;
     @JoinColumn(name = "CART_CARTID", referencedColumnName = "CARTID")
     @OneToOne(optional = false)
@@ -69,28 +68,28 @@ public class Productorder implements Serializable {
     @JoinColumn(name = "PAYMENT_PAYMENTID", referencedColumnName = "PAYMENTID")
     @OneToOne(optional = false)
     private Payment paymentPaymentid;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productorderOderid")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productorderOrderid")
     private List<Orderitem> orderitemList;
 
     public Productorder() {
     }
 
-    public Productorder(String oderid) {
-        this.oderid = oderid;
+    public Productorder(Integer orderid) {
+        this.orderid = orderid;
     }
 
-    public Productorder(String oderid, String productstatus, int totalprice) {
-        this.oderid = oderid;
+    public Productorder(Integer orderid, String productstatus) {
+        this.orderid = orderid;
         this.productstatus = productstatus;
-        this.totalprice = totalprice;
+        this.trackingno = UUID.randomUUID().toString().replace("-","").substring(0,15);
     }
 
-    public String getOderid() {
-        return oderid;
+    public Integer getOrderid() {
+        return orderid;
     }
 
-    public void setOderid(String oderid) {
-        this.oderid = oderid;
+    public void setOrderid(Integer orderid) {
+        this.orderid = orderid;
     }
 
     public String getProductstatus() {
@@ -101,20 +100,20 @@ public class Productorder implements Serializable {
         this.productstatus = productstatus;
     }
 
-    public int getTotalprice() {
-        return totalprice;
-    }
-
-    public void setTotalprice(int totalprice) {
-        this.totalprice = totalprice;
-    }
-
     public String getTrackingno() {
         return trackingno;
     }
 
     public void setTrackingno(String trackingno) {
         this.trackingno = trackingno;
+    }
+
+    public Double getTotalprice() {
+        return totalprice;
+    }
+
+    public void setTotalprice(Double totalprice) {
+        this.totalprice = totalprice;
     }
 
     public Payment getPayment() {
@@ -161,7 +160,7 @@ public class Productorder implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (oderid != null ? oderid.hashCode() : 0);
+        hash += (orderid != null ? orderid.hashCode() : 0);
         return hash;
     }
 
@@ -172,7 +171,7 @@ public class Productorder implements Serializable {
             return false;
         }
         Productorder other = (Productorder) object;
-        if ((this.oderid == null && other.oderid != null) || (this.oderid != null && !this.oderid.equals(other.oderid))) {
+        if ((this.orderid == null && other.orderid != null) || (this.orderid != null && !this.orderid.equals(other.orderid))) {
             return false;
         }
         return true;
@@ -180,7 +179,7 @@ public class Productorder implements Serializable {
 
     @Override
     public String toString() {
-        return "jpa.model.Productorder[ oderid=" + oderid + " ]";
+        return "jpa.model.Productorder[ orderid=" + orderid + " ]";
     }
     
 }

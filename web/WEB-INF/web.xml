@@ -78,6 +78,10 @@
         <servlet-name>ViewProfileServlet</servlet-name>
         <servlet-class>servlet.ViewProfileServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RecentViewServlet</servlet-name>
+        <servlet-class>servlet.RecentViewServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -145,6 +149,10 @@
     <servlet-mapping>
         <servlet-name>ViewProfileServlet</servlet-name>
         <url-pattern>/ViewProfile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RecentViewServlet</servlet-name>
+        <url-pattern>/RecentView</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -48,19 +48,19 @@ public class OrderitemJpaController implements Serializable {
                 productProductid = em.getReference(productProductid.getClass(), productProductid.getProductid());
                 orderitem.setProductProductid(productProductid);
             }
-            Productorder productorderOderid = orderitem.getProductorderOderid();
-            if (productorderOderid != null) {
-                productorderOderid = em.getReference(productorderOderid.getClass(), productorderOderid.getOderid());
-                orderitem.setProductorderOderid(productorderOderid);
+            Productorder productorderOrderid = orderitem.getProductorderOrderid();
+            if (productorderOrderid != null) {
+                productorderOrderid = em.getReference(productorderOrderid.getClass(), productorderOrderid.getOrderid());
+                orderitem.setProductorderOrderid(productorderOrderid);
             }
             em.persist(orderitem);
             if (productProductid != null) {
                 productProductid.getOrderitemList().add(orderitem);
                 productProductid = em.merge(productProductid);
             }
-            if (productorderOderid != null) {
-                productorderOderid.getOrderitemList().add(orderitem);
-                productorderOderid = em.merge(productorderOderid);
+            if (productorderOrderid != null) {
+                productorderOrderid.getOrderitemList().add(orderitem);
+                productorderOrderid = em.merge(productorderOrderid);
             }
             utx.commit();
         } catch (Exception ex) {
@@ -88,15 +88,15 @@ public class OrderitemJpaController implements Serializable {
             Orderitem persistentOrderitem = em.find(Orderitem.class, orderitem.getOrderitemid());
             Product productProductidOld = persistentOrderitem.getProductProductid();
             Product productProductidNew = orderitem.getProductProductid();
-            Productorder productorderOderidOld = persistentOrderitem.getProductorderOderid();
-            Productorder productorderOderidNew = orderitem.getProductorderOderid();
+            Productorder productorderOrderidOld = persistentOrderitem.getProductorderOrderid();
+            Productorder productorderOrderidNew = orderitem.getProductorderOrderid();
             if (productProductidNew != null) {
                 productProductidNew = em.getReference(productProductidNew.getClass(), productProductidNew.getProductid());
                 orderitem.setProductProductid(productProductidNew);
             }
-            if (productorderOderidNew != null) {
-                productorderOderidNew = em.getReference(productorderOderidNew.getClass(), productorderOderidNew.getOderid());
-                orderitem.setProductorderOderid(productorderOderidNew);
+            if (productorderOrderidNew != null) {
+                productorderOrderidNew = em.getReference(productorderOrderidNew.getClass(), productorderOrderidNew.getOrderid());
+                orderitem.setProductorderOrderid(productorderOrderidNew);
             }
             orderitem = em.merge(orderitem);
             if (productProductidOld != null && !productProductidOld.equals(productProductidNew)) {
@@ -107,13 +107,13 @@ public class OrderitemJpaController implements Serializable {
                 productProductidNew.getOrderitemList().add(orderitem);
                 productProductidNew = em.merge(productProductidNew);
             }
-            if (productorderOderidOld != null && !productorderOderidOld.equals(productorderOderidNew)) {
-                productorderOderidOld.getOrderitemList().remove(orderitem);
-                productorderOderidOld = em.merge(productorderOderidOld);
+            if (productorderOrderidOld != null && !productorderOrderidOld.equals(productorderOrderidNew)) {
+                productorderOrderidOld.getOrderitemList().remove(orderitem);
+                productorderOrderidOld = em.merge(productorderOrderidOld);
             }
-            if (productorderOderidNew != null && !productorderOderidNew.equals(productorderOderidOld)) {
-                productorderOderidNew.getOrderitemList().add(orderitem);
-                productorderOderidNew = em.merge(productorderOderidNew);
+            if (productorderOrderidNew != null && !productorderOrderidNew.equals(productorderOrderidOld)) {
+                productorderOrderidNew.getOrderitemList().add(orderitem);
+                productorderOrderidNew = em.merge(productorderOrderidNew);
             }
             utx.commit();
         } catch (Exception ex) {
@@ -124,7 +124,7 @@ public class OrderitemJpaController implements Serializable {
             }
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                String id = orderitem.getOrderitemid();
+                Integer id = orderitem.getOrderitemid();
                 if (findOrderitem(id) == null) {
                     throw new NonexistentEntityException("The orderitem with id " + id + " no longer exists.");
                 }
@@ -137,7 +137,7 @@ public class OrderitemJpaController implements Serializable {
         }
     }
 
-    public void destroy(String id) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
@@ -154,10 +154,10 @@ public class OrderitemJpaController implements Serializable {
                 productProductid.getOrderitemList().remove(orderitem);
                 productProductid = em.merge(productProductid);
             }
-            Productorder productorderOderid = orderitem.getProductorderOderid();
-            if (productorderOderid != null) {
-                productorderOderid.getOrderitemList().remove(orderitem);
-                productorderOderid = em.merge(productorderOderid);
+            Productorder productorderOrderid = orderitem.getProductorderOrderid();
+            if (productorderOrderid != null) {
+                productorderOrderid.getOrderitemList().remove(orderitem);
+                productorderOrderid = em.merge(productorderOrderid);
             }
             em.remove(orderitem);
             utx.commit();
@@ -199,7 +199,7 @@ public class OrderitemJpaController implements Serializable {
         }
     }
 
-    public Orderitem findOrderitem(String id) {
+    public Orderitem findOrderitem(Integer id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Orderitem.class, id);

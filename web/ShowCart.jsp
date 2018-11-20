@@ -28,25 +28,25 @@
             <hr>
             <table class="table" id="example" >
                 <thead>
-                <th>Images</th>
+               <th>Images</th>
                 <th>No</th>
                 <th>Product ID</th>            
                 <th>Product Name</th> 
-                <th>Price per piece</th> 
+                <th>Price per piece</th>  
                 <th>Quantity</th>
 
                 <th>Total Price</th> 
                 </thead>
                 <c:set var="Items" value="${sessionScope.cart.lineItems}"/>
-                <c:set var="bgColorX" value="lightgray"/>
-                <c:set var="bgColorY" value="white"/>
+                <%--<c:set var="bgColorX" value="lightgray"/>--%>
+                <%--<c:set var="bgColorY" value="white"/>--%>
                 <c:forEach items="${cart.lineItems}" var="p" varStatus="vs">
                     <tr>
-                        <td><img src="model-images/${p.product.productid}.jpg" width="120"></td>
+                        <td><img src="images/KPOP-${p.product.productid}.jpg" width="120"></td>
                         <td>${vs.count}</td>
-                        <td><a href="GetProduct?productCode=${p.product.productid}">${p.product.productid}</a></td>
+                        <td><a href="GetProduct?productId=${p.product.productid}">${p.product.productid}</a></td>
                         <td>${p.product.productname}</td>
-                        <td>${p.salePrice} $</td>
+                        <td>${p.salePrice} ฿</td>
                         <td> 
                             <table>
                                 <tr> 

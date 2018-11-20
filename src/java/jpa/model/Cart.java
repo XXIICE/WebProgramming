@@ -7,7 +7,6 @@ package jpa.model;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.UUID;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,7 +18,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -39,9 +37,8 @@ public class Cart implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 5)
     @Column(name = "CARTID")
-    private String cartid;
+    private Integer cartid;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "cartCartid")
     private Productorder productorder;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cartCartid")
@@ -50,15 +47,15 @@ public class Cart implements Serializable {
     public Cart() {
     }
 
-    public Cart(String cartid) {
+    public Cart(Integer cartid) {
         this.cartid = cartid;
     }
 
-    public String getCartid() {
+    public Integer getCartid() {
         return cartid;
     }
 
-    public void setCartid(String cartid) {
+    public void setCartid(Integer cartid) {
         this.cartid = cartid;
     }
 

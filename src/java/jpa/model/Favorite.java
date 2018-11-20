@@ -16,7 +16,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -35,9 +34,8 @@ public class Favorite implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 10)
     @Column(name = "FAVORITEID")
-    private String favoriteid;
+    private Integer favoriteid;
     @JoinColumn(name = "CUSTOMER_USERNAME", referencedColumnName = "USERNAME")
     @ManyToOne(optional = false)
     private Customer customerUsername;
@@ -48,15 +46,15 @@ public class Favorite implements Serializable {
     public Favorite() {
     }
 
-    public Favorite(String favoriteid) {
+    public Favorite(Integer favoriteid) {
         this.favoriteid = favoriteid;
     }
 
-    public String getFavoriteid() {
+    public Integer getFavoriteid() {
         return favoriteid;
     }
 
-    public void setFavoriteid(String favoriteid) {
+    public void setFavoriteid(Integer favoriteid) {
         this.favoriteid = favoriteid;
     }
 

@@ -57,7 +57,7 @@ public class CustomerJpaController implements Serializable {
             em = getEntityManager();
             List<Productorder> attachedProductorderList = new ArrayList<Productorder>();
             for (Productorder productorderListProductorderToAttach : customer.getProductorderList()) {
-                productorderListProductorderToAttach = em.getReference(productorderListProductorderToAttach.getClass(), productorderListProductorderToAttach.getOderid());
+                productorderListProductorderToAttach = em.getReference(productorderListProductorderToAttach.getClass(), productorderListProductorderToAttach.getOrderid());
                 attachedProductorderList.add(productorderListProductorderToAttach);
             }
             customer.setProductorderList(attachedProductorderList);
@@ -161,7 +161,7 @@ public class CustomerJpaController implements Serializable {
             }
             List<Productorder> attachedProductorderListNew = new ArrayList<Productorder>();
             for (Productorder productorderListNewProductorderToAttach : productorderListNew) {
-                productorderListNewProductorderToAttach = em.getReference(productorderListNewProductorderToAttach.getClass(), productorderListNewProductorderToAttach.getOderid());
+                productorderListNewProductorderToAttach = em.getReference(productorderListNewProductorderToAttach.getClass(), productorderListNewProductorderToAttach.getOrderid());
                 attachedProductorderListNew.add(productorderListNewProductorderToAttach);
             }
             productorderListNew = attachedProductorderListNew;

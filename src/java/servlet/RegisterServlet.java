@@ -70,16 +70,17 @@ public class RegisterServlet extends HttpServlet {
                     Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
-            } else {
-                
-                request.setAttribute("messagere", "password not match.");
-                getServletContext().getRequestDispatcher("/register.jsp").forward(request, response);
             }
-//            customer = customerJpaCtrl.findCustomer(email);
-//            if (customer.getEmail().equals(email)) {
+             else {
+//              Customer  custObj = customerJpaCtrl.findCustomer(email);
+//            if (custObj.getEmail().equals(email)) {
 //                request.setAttribute("messageus", "email already exists.");
 //                getServletContext().getRequestDispatcher("/register.jsp").forward(request, response);
 //            }
+                request.setAttribute("messagere", "password not match.");
+                getServletContext().getRequestDispatcher("/register.jsp").forward(request, response);
+            }
+            
           
         }
 

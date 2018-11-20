@@ -37,37 +37,36 @@ public class Payment implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 5)
     @Column(name = "PAYMENTID")
-    private String paymentid;
+    private Integer paymentid;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
     @Column(name = "PAYMENTSTATUS")
     private String paymentstatus;
-    @JoinColumn(name = "PRODUCTORDER_ODERID", referencedColumnName = "ODERID")
+    @JoinColumn(name = "PRODUCTORDER_ORDERID", referencedColumnName = "ORDERID")
     @OneToOne(optional = false)
-    private Productorder productorderOderid;
+    private Productorder productorderOrderid;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "paymentPaymentid")
     private Productorder productorder;
 
     public Payment() {
     }
 
-    public Payment(String paymentid) {
+    public Payment(Integer paymentid) {
         this.paymentid = paymentid;
     }
 
-    public Payment(String paymentid, String paymentstatus) {
+    public Payment(Integer paymentid, String paymentstatus) {
         this.paymentid = paymentid;
         this.paymentstatus = paymentstatus;
     }
 
-    public String getPaymentid() {
+    public Integer getPaymentid() {
         return paymentid;
     }
 
-    public void setPaymentid(String paymentid) {
+    public void setPaymentid(Integer paymentid) {
         this.paymentid = paymentid;
     }
 
@@ -79,12 +78,12 @@ public class Payment implements Serializable {
         this.paymentstatus = paymentstatus;
     }
 
-    public Productorder getProductorderOderid() {
-        return productorderOderid;
+    public Productorder getProductorderOrderid() {
+        return productorderOrderid;
     }
 
-    public void setProductorderOderid(Productorder productorderOderid) {
-        this.productorderOderid = productorderOderid;
+    public void setProductorderOrderid(Productorder productorderOrderid) {
+        this.productorderOrderid = productorderOrderid;
     }
 
     public Productorder getProductorder() {

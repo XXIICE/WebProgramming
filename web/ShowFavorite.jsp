@@ -39,7 +39,7 @@
                 
                 <c:forEach items="${fav.lineItems}" var="f" varStatus="vs">
                     <tr>
-                        <td><img src="model-images/${f.product.productid}.jpg" width="120"></td>
+                        <td><img src="images/KPOP-${f.product.productid}.jpg" width="120"></td>
                         <td>${vs.count}</td>
                         <td><a href="GetProduct?productid=${f.product.productid}">${f.product.productid}</a></td>
                         <td>${f.product.productname}</td>

@@ -100,7 +100,7 @@ public class LineitemJpaController implements Serializable {
             }
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                String id = lineitem.getLineitemid();
+                Integer id = lineitem.getLineitemid();
                 if (findLineitem(id) == null) {
                     throw new NonexistentEntityException("The lineitem with id " + id + " no longer exists.");
                 }
@@ -113,7 +113,7 @@ public class LineitemJpaController implements Serializable {
         }
     }
 
-    public void destroy(String id) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
@@ -170,7 +170,7 @@ public class LineitemJpaController implements Serializable {
         }
     }
 
-    public Lineitem findLineitem(String id) {
+    public Lineitem findLineitem(Integer id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Lineitem.class, id);

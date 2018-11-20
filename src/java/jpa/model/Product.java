@@ -37,8 +37,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Product.findByProductname", query = "SELECT p FROM Product p WHERE p.productname = :productname")
     , @NamedQuery(name = "Product.findByArtist", query = "SELECT p FROM Product p WHERE p.artist = :artist")
     , @NamedQuery(name = "Product.findByGenre", query = "SELECT p FROM Product p WHERE p.genre = :genre")
-    , @NamedQuery(name = "Product.findByPrice", query = "SELECT p FROM Product p WHERE p.price = :price")
-    , @NamedQuery(name = "Product.findByReleasedate", query = "SELECT p FROM Product p WHERE p.releasedate = :releasedate")})
+    , @NamedQuery(name = "Product.findByReleasedate", query = "SELECT p FROM Product p WHERE p.releasedate = :releasedate")
+    , @NamedQuery(name = "Product.findByPrice", query = "SELECT p FROM Product p WHERE p.price = :price")})
 public class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -61,13 +61,12 @@ public class Product implements Serializable {
     @Size(max = 20)
     @Column(name = "GENRE")
     private String genre;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "PRICE")
-    private int price;
     @Column(name = "RELEASEDATE")
     @Temporal(TemporalType.DATE)
     private Date releasedate;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "PRICE")
+    private Double price;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productProductid")
     private List<Review> reviewList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
@@ -84,11 +83,10 @@ public class Product implements Serializable {
         this.productid = productid;
     }
 
-    public Product(String productid, String productname, String artist, int price) {
+    public Product(String productid, String productname, String artist) {
         this.productid = productid;
         this.productname = productname;
         this.artist = artist;
-        this.price = price;
     }
 
     public String getProductid() {
@@ -123,20 +121,20 @@ public class Product implements Serializable {
         this.genre = genre;
     }
 
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
     public Date getReleasedate() {
         return releasedate;
     }
 
     public void setReleasedate(Date releasedate) {
         this.releasedate = releasedate;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     @XmlTransient
