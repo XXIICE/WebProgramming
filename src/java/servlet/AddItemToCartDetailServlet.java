@@ -29,15 +29,13 @@ import model.ShoppingCart2;
 
 /**
  *
- * @author INT303
+ * @author ariya boonchoo
  */
-public class PlusItem extends HttpServlet {
-
-    @PersistenceUnit(unitName = "ImaginePU")
+public class AddItemToCartDetailServlet extends HttpServlet {
+@PersistenceUnit(unitName = "ImaginePU")
     EntityManagerFactory emf;
     @Resource
     UserTransaction utx;
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -49,15 +47,14 @@ public class PlusItem extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession(true);
+        HttpSession session = request.getSession(false);
         ShoppingCart2 cart = (ShoppingCart2) session.getAttribute("cart");
+        String productid = request.getParameter("productid");
+        Customer custom = (Customer) session.getAttribute("custom");
         if (cart == null) {
             cart = new ShoppingCart2();
             session.setAttribute("cart", cart);
         }
-        Customer custom = (Customer) session.getAttribute("custom");
-
-        String productid = request.getParameter("productid");
         ProductJpaController productJpaCtrl = new ProductJpaController(utx, emf);
         Product p = productJpaCtrl.findProduct(productid);
         if (productid != null) {
@@ -65,7 +62,7 @@ public class PlusItem extends HttpServlet {
             if (custom != null) {
                 Cart ca = new Cart();
                 CartJpaController cartJpaCtrl = new CartJpaController(utx, emf);
-                int idC = cartJpaCtrl.getCartCount() + 1;
+                int idC = cartJpaCtrl.getCartCount()+1;
                 ca.setCartid(idC);
 //                    ca.setCartid(1);
 //                    ca.setLineitemList(lineitemList);
@@ -79,54 +76,51 @@ public class PlusItem extends HttpServlet {
                     Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-
             session.setAttribute("cart", cart);
-            getServletContext().getRequestDispatcher("/ShowCart").forward(request, response);
+            getServletContext().getRequestDispatcher("/GetProductDetail").forward(request, response);
 
         }
+
+    }
+    
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
     }
 
-        // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-        /**
-         * Handles the HTTP <code>GET</code> method.
-         *
-         * @param request servlet request
-         * @param response servlet response
-         * @throws ServletException if a servlet-specific error occurs
-         * @throws IOException if an I/O error occurs
-         */
-        @Override
-        protected void doGet
-        (HttpServletRequest request, HttpServletResponse response)
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            processRequest(request, response);
-        }
+        processRequest(request, response);
+    }
 
-        /**
-         * Handles the HTTP <code>POST</code> method.
-         *
-         * @param request servlet request
-         * @param response servlet response
-         * @throws ServletException if a servlet-specific error occurs
-         * @throws IOException if an I/O error occurs
-         */
-        @Override
-        protected void doPost
-        (HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-            processRequest(request, response);
-        }
-
-        /**
-         * Returns a short description of the servlet.
-         *
-         * @return a String containing servlet description
-         */
-        @Override
-        public String getServletInfo
-        
-            () {
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
         return "Short description";
-        }// </editor-fold>
+    }// </editor-fold>
 
-    }
+}

@@ -86,6 +86,14 @@
         <servlet-name>GetTracklistServlet</servlet-name>
         <servlet-class>servlet.GetTracklistServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddItemToCartDetailServlet</servlet-name>
+        <servlet-class>servlet.AddItemToCartDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FavoriteDetailServlet</servlet-name>
+        <servlet-class>servlet.FavoriteDetailServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -161,6 +169,14 @@
     <servlet-mapping>
         <servlet-name>GetProductDetailServlet</servlet-name>
         <url-pattern>/GetProductDetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddItemToCartDetailServlet</servlet-name>
+        <url-pattern>/AddItemToCartDetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FavoriteDetailServlet</servlet-name>
+        <url-pattern>/FavoriteDetail</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

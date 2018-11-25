@@ -188,7 +188,7 @@
                                                 <div class="col-sm-3">
                                                     <div class="thumb-wrapper">
                                                         <div class="img-box">
-                                                            <a href="#"><img src="images/KPOP-P0001.jpg" class="img-responsive img-fluid" alt=""></a>
+                                                            <a href="#"><img src="images/K-POP-P0001.jpg" class="img-responsive img-fluid" alt=""></a>
                                                         </div>
                                                         <div class="thumb-content">
                                                             <h4><a href="#">The War</a></h4>
@@ -201,7 +201,7 @@
                                                 <div class="col-sm-3">
                                                     <div class="thumb-wrapper">
                                                         <div class="img-box">
-                                                            <a href="#"><img src="images/KPOP-P0002.jpg" class="img-responsive img-fluid" alt=""></a>
+                                                            <a href="#"><img src="images/K-POP-P0002.jpg" class="img-responsive img-fluid" alt=""></a>
                                                         </div>
                                                         <div class="thumb-content">
                                                             <h4><a href="#">Summer Nights</a></h4>
@@ -213,7 +213,7 @@
                                                 <div class="col-sm-3">
                                                     <div class="thumb-wrapper">
                                                         <div class="img-box">
-                                                            <a href="#"><img src="images/KPOP-P0003.jpg" class="img-responsive img-fluid" alt=""></a>
+                                                            <a href="#"><img src="images/K-POP-P0003.jpg" class="img-responsive img-fluid" alt=""></a>
                                                         </div>
                                                         <div class="thumb-content">
                                                             <h4><a href="#">BBI BBI</a></h4>
@@ -225,7 +225,7 @@
                                                 <div class="col-sm-3">
                                                     <div class="thumb-wrapper">
                                                         <div class="img-box">
-                                                            <a href="#"><img src="images/KPOP-P0004.jpg" class="img-responsive img-fluid" alt=""></a>
+                                                            <a href="#"><img src="images/K-POP-P0004.jpg" class="img-responsive img-fluid" alt=""></a>
                                                         </div>
                                                         <div class="thumb-content">
                                                             <h4><a href="#">Regular-Irregular</a></h4>
@@ -242,7 +242,7 @@
                                                 <div class="col-sm-3">
                                                     <div class="thumb-wrapper">
                                                         <div class="img-box">
-                                                            <a href="#"><img src="images/KPOP-P0001.jpg" class="img-responsive img-fluid" alt=""></a>
+                                                            <a href="#"><img src="images/K-POP-P0001.jpg" class="img-responsive img-fluid" alt=""></a>
                                                         </div>
                                                         <div class="thumb-content">
                                                             <h4><a href="#">The War</a></h4>
@@ -255,7 +255,7 @@
                                                 <div class="col-sm-3">
                                                     <div class="thumb-wrapper">
                                                         <div class="img-box">
-                                                            <a href="#"><img src="images/KPOP-P0002.jpg" class="img-responsive img-fluid" alt=""></a>
+                                                            <a href="#"><img src="images/K-POP-P0002.jpg" class="img-responsive img-fluid" alt=""></a>
                                                         </div>
                                                         <div class="thumb-content">
                                                             <h4><a href="#">Summer Nights</a></h4>
@@ -267,7 +267,7 @@
                                                 <div class="col-sm-3">
                                                     <div class="thumb-wrapper">
                                                         <div class="img-box">
-                                                            <a href="#"><img src="images/KPOP-P0003.jpg" class="img-responsive img-fluid" alt=""></a>
+                                                            <a href="#"><img src="images/K-POP-P0003.jpg" class="img-responsive img-fluid" alt=""></a>
                                                         </div>
                                                         <div class="thumb-content">
                                                             <h4><a href="#">BBI BBI</a></h4>
@@ -279,7 +279,7 @@
                                                 <div class="col-sm-3">
                                                     <div class="thumb-wrapper">
                                                         <div class="img-box">
-                                                            <a href="#"><img src="images/KPOP-P0004.jpg" class="img-responsive img-fluid" alt=""></a>
+                                                            <a href="#"><img src="images/K-POP-P0004.jpg" class="img-responsive img-fluid" alt=""></a>
                                                         </div>
                                                         <div class="thumb-content">
                                                             <h4><a href="#">Regular-Irregular</a></h4>
@@ -337,12 +337,12 @@
         <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
         <!--<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">-->
         <!--<style>-->
-            /*@import url('https://fonts.googleapis.com/css?family=Abril+Fatface|Questrial');*/
+            <!--/*@import url('https://fonts.googleapis.com/css?family=Abril+Fatface|Questrial');*/-->
 
-            /*.container{*/
+<!--            /*.container{*/
                 /*font-family: 'Abril Fatface', cursive;*/
                 /*font-family: 'Questrial', sans-serif;*/
-            /*}*/
+            /*}*/-->
         <!--</style>-->
     <!--</head>-->
     <!--<body>--> 
@@ -410,7 +410,7 @@
     <%--<c:forEach items="${cookie.productid.value}" var="p" varStatus="vs" >--%>
         <tr>
             <td>${vs.count}</td>
-            <td><img src="images/KPOP-${p.productid}.jpg" width="120"></td>
+            <td><img src="images/K-POP-${p.productid}.jpg" width="120"></td>
             <td>${p.productid}</a></td>
             <td><a href="GetProduct?productName=${p.productname}">${p.productname}</a></td>
             <td>${p.artist}</td>

@@ -11,6 +11,21 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Imagine | ProductDetail</title>
+        <link rel="shortcut icon" href="images/icon.ico"/>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <title>Full Slider - Start Bootstrap Template</title>
+
+        <!-- Bootstrap core CSS -->
+        <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom styles for this template -->
+        <link href="css/full-slider.css" rel="stylesheet">
+
+        <!--Font awesome-->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
         <style>
             @import url('https://fonts.googleapis.com/css?family=Abril+Fatface|Questrial');
 
@@ -19,12 +34,13 @@
                 font-family: 'Questrial', sans-serif;
             }
         </style>
+        
     </head>
     <body>
-       <div class="container"> 
+      
            <jsp:include page="include/Header.jsp?title=Product Detail :: "/>
-        
-            <table>
+         <div class="container"> 
+             <table style="margin-top: 80px;">
                 <tr>
                     <td>Image : </td>
                     <td><img src="images/${product.genre}-${product.productid}.jpg" width="120"></td>
@@ -52,9 +68,23 @@
                     <td>Price: </td>
                     <td>${product.price}</td>
                 </tr>
+<tr>
+                    <td>Releasedate </td>
+                    <td>${product.releasedate}</td>
+                </tr>
+                <tr>
+<td><form action="AddItemToCartDetail" method="post">
+                        <input type="hidden" value="${product.productid}" name="productid"/>
 
-
-
+                        <input type="submit" value="Add To Cart"/>
+                    </form>
+                </td>
+                <td><form action="FavoriteDetail" method="post">
+                        <input type="hidden" value="${product.productid}" name="productid"/>
+                        <input type="submit" value="Favorite"/>
+                    </form>
+                </td>
+                </tr>
             </table>
         
         <form action = "Review" method="post">
