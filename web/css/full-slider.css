@@ -1,0 +1,211 @@
+/*!
+ * Start Bootstrap - Full Slider (https://startbootstrap.com/template-overviews/full-slider)
+ * Copyright 2013-2017 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-full-slider/blob/master/LICENSE)
+ */
+.carousel-item {
+    height: 100vh;
+    min-height: 300px;
+    background: no-repeat center center scroll;
+    background-attachment: fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+.man-user{
+    margin-right: 5px;
+}
+#nav-user {
+    margin-right: 10px;
+}
+.cart {
+    margin-left: 1px;
+}
+.outer {
+    align-items: center;
+    display: inline-flex;
+    height: 16px;
+    justify-content: center;
+    max-width: 100%;
+    resize:both;
+}
+svg {
+    height: 100%;
+}
+
+circle {
+    fill: red;
+}
+
+text { 
+    fill: #fff;
+    font-size: 9px;
+    font-weight: bold;
+}
+
+.container-product h2 {
+    color: #000;
+    font-size: 26px;
+    font-weight: 300;
+    text-align: center;
+    position: relative;
+    margin: 30px 0 80px;
+}
+.container-product h2 b {
+    color: #ffc000;
+}
+.container-product h2::after {
+    content: "";
+    width: 100px;
+    position: absolute;
+    margin: 0 auto;
+    height: 4px;
+    background: #0061aa;
+    left: 0;
+    right: 0;
+    bottom: -20px;
+}
+.container-product  .carousel {
+    margin: 50px auto;
+    padding: 0 70px;
+}
+.container-product .carousel .item {
+    min-height: 330px;
+    text-align: center;
+    overflow: hidden;
+}
+.container-product .carousel .item .img-box {
+    height: 160px;
+    width: 100%;
+    position: relative;
+}
+.container-product .carousel .item img { 
+    max-width: 100%;
+    max-height: 100%;
+    display: inline-block;
+    position: absolute;
+    bottom: 0;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+}
+.container-product .carousel .item h4 {
+    font-size: 18px;
+    margin: 10px 0;
+}
+.container-product .carousel .item .btn {
+    color: #333;
+    border-radius: 0;
+    font-size: 11px;
+    text-transform: uppercase;
+    font-weight: bold;
+    background: none;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    margin-top: 5px;
+    line-height: 16px;
+}
+.container-product .carousel .item .btn:hover, .container-product .carousel .item .btn:focus {
+    color: #fff;
+    background: #0061aa;
+    border-color: #ebebeb;
+    box-shadow: none;
+}
+.container-product .carousel .item .btn i {
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 5px;
+}
+.container-product .carousel .thumb-wrapper {
+    text-align: center;
+}
+.container-product .carousel .thumb-content {
+    padding: 15px;
+}
+.container-product .carousel .carousel-control {
+    height: 100px;
+    width: 40px;
+    background: none;
+    margin: auto 0;
+    background: rgba(0, 0, 0, 0.2);
+}
+.container-product .carousel .carousel-control i {
+    font-size: 30px;
+    position: absolute;
+    top: 50%;
+    display: inline-block;
+    margin: -16px 0 0 0;
+    z-index: 5;
+    left: 0;
+    right: 0;
+    color: rgba(0, 0, 0, 0.8);
+    text-shadow: none;
+    font-weight: bold;
+}
+.container-product .carousel .item-price {
+    font-size: 13px;
+    padding: 2px 0;
+}
+.container-product .carousel .item-price strike {
+    color: #999;
+    margin-right: 5px;
+}
+.container-product .carousel .item-price span {
+    color: #86bd57;
+    font-size: 110%;
+}
+.container-product .carousel .carousel-control.left i {
+    margin-left: -3px;
+}
+.container-product .carousel .carousel-control.left i {
+    margin-right: -3px;
+}
+.container-product .carousel .carousel-indicators {
+    top: 320px;
+}
+.container-product .carousel-indicators li, .container-product .carousel-indicators li.active {
+    width: 10px;
+    height: 10px;
+    margin: 4px;
+    border-radius: 50%;
+    border-color: transparent;
+}
+.container-product .carousel-indicators li { 
+    background: rgba(0, 0, 0, 0.2);
+}
+.container-product .carousel-indicators li.active {  
+    background: rgba(0, 0, 0, 0.6);
+}
+.container-product .carousel-control-prev {
+    left: -50px;
+}
+.container-product .carousel-control-next {
+    right: -50px;
+}
+.container-product a:link, a:visited {
+    color: black;
+}
+.container-product a:hover, a:active {
+    color: black;
+    text-decoration: none;
+}
+ol #indicators-product {
+    height: 50px;
+}
+.carousel-inner #slide-product {
+    height: 350px;
+}
+
+.footer-about a {
+    text-decoration: none;
+}
+
+.footer-about a:hover {
+    color: white;
+    text-decoration: none;
+}
+
+
+
+
