@@ -35,8 +35,8 @@
         <servlet-class>servlet.ProductListServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>GetProductServlet</servlet-name>
-        <servlet-class>servlet.GetProductServlet</servlet-class>
+        <servlet-name>GetProductDetailServlet</servlet-name>
+        <servlet-class>servlet.GetProductDetailServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AddItemToCartServlet</servlet-name>
@@ -111,10 +111,6 @@
         <url-pattern>/ProductList</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>GetProductServlet</servlet-name>
-        <url-pattern>/GetProduct</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>AddItemToCartServlet</servlet-name>
         <url-pattern>/AddItemToCart</url-pattern>
     </servlet-mapping>
@@ -161,6 +157,10 @@
     <servlet-mapping>
         <servlet-name>GetTracklistServlet</servlet-name>
         <url-pattern>/GetTracklist</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetProductDetailServlet</servlet-name>
+        <url-pattern>/GetProductDetail</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

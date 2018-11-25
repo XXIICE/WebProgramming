@@ -29,7 +29,7 @@ import jpa.model.controller.TracklistJpaController;
  *
  * @author ariya boonchoo
  */
-public class GetProductServlet extends HttpServlet {
+public class GetProductDetailServlet extends HttpServlet {
 
     @PersistenceUnit(unitName = "ImaginePU")
     EntityManagerFactory emf;
