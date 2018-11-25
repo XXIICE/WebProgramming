@@ -82,6 +82,10 @@
         <servlet-name>RecentViewServlet</servlet-name>
         <servlet-class>servlet.RecentViewServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetTracklistServlet</servlet-name>
+        <servlet-class>servlet.GetTracklistServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -153,6 +157,10 @@
     <servlet-mapping>
         <servlet-name>RecentViewServlet</servlet-name>
         <url-pattern>/RecentView</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetTracklistServlet</servlet-name>
+        <url-pattern>/GetTracklist</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

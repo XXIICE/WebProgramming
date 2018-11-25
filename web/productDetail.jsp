@@ -21,8 +21,9 @@
         </style>
     </head>
     <body>
-        <jsp:include page="include/Header.jsp?title=Product Detail :: "/>
-        <div class="container">
+       <div class="container"> 
+           <jsp:include page="include/Header.jsp?title=Product Detail :: "/>
+        
             <table>
                 <tr>
                     <td>Image : </td>
@@ -55,12 +56,13 @@
 
 
             </table>
-        </div>
+        
         <form action = "Review" method="post">
             review by ${custom.username}<input type="text" name="comment">
 
             <input type="submit" value="review">
         </form>
         <a href="ProductList"> Back to shop</a>
+        </div>
     </body>
 </html>

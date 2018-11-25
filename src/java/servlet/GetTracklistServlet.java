@@ -7,8 +7,7 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import javax.annotation.Resource;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
@@ -18,14 +17,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
-import jpa.model.Customer;
-import jpa.model.controller.CustomerJpaController;
+import jpa.model.Product;
+import jpa.model.Tracklist;
+import jpa.model.controller.ProductJpaController;
 
 /**
  *
  * @author ariya boonchoo
  */
-public class LoginServlet extends HttpServlet {
+public class GetTracklistServlet extends HttpServlet {
 
     @PersistenceUnit(unitName = "ImaginePU")
     EntityManagerFactory emf;
@@ -44,46 +44,26 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        
-        Customer custom = new Customer() ;
-        if (username != null && username.trim().length() > 0 
-                && password != null && password.trim().length() > 0) {
-            CustomerJpaController customJpaCtrl = new CustomerJpaController(utx, emf);
-            custom = customJpaCtrl.findCustomer(username);
-            session.setAttribute("msg", "username or password is incorrect,Please try again!!");
-            if (custom != null) {                
-                if (custom.getUsername().equals(username) && custom.getPassword().equals((cryptWithMD5(password)))) {
-                    if (session == null) {
-                        session = request.getSession(true);
-                    }else if(session != null){
-                        session.setAttribute("msg", "");
-                    }
-                   
-                    session.setAttribute("custom", custom);
-                    getServletContext().getRequestDispatcher("/ProductList").forward(request, response);
-                }
-            }
-        }
+//        String productid = request.getParameter("productid");
+        Product productObj = (Product) session.getAttribute("product");
 
-        getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
-    }
-    public static String cryptWithMD5(String pass) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] passBytes = pass.getBytes();
-            md.reset();
-            byte[] digested = md.digest(passBytes);
-            StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < digested.length; i++) {
-                sb.append(Integer.toHexString(0xff & digested[i]));
+//        if (productid != null) {
+
+if (productObj != null) {
+            ProductJpaController productJpaCtrl = new ProductJpaController(utx, emf);
+            Product product = productJpaCtrl.findProduct(productObj.getProductid());
+//            Product product = productJpaCtrl.findProduct(productid);
+
+            if (product != null) {
+                List<Tracklist> tracklist = product.getTracklistList();
+                session.setAttribute("tracklist", tracklist);
+                getServletContext().getRequestDispatcher("/productDetail.jsp").forward(request, response);
+//                getServletContext().getRequestDispatcher("/GetProduct").forward(request, response);
+
+//            }  
             }
-            return sb.toString();
-        } catch (NoSuchAlgorithmException ex) {
-            System.out.println(ex);
         }
-        return null;
+//getServletContext().getRequestDispatcher("/productDetail.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

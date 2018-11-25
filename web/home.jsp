@@ -54,7 +54,10 @@
             <tr>
                 <td>${vs.count}</td>
                 <td><img src="images/${p.genre}-${p.productid}.jpg" width="120"></td>
+            <!--<form action="RecentView" method="post">-->
+                <!--<input type="hidden" name="productid" value="productid" ${cookie.productid.value=='productid'?'onclick':''}>-->
                 <td><a href="GetProduct?productid=${p.productid}">${p.productid}</a></td>
+            <!--</form>-->    
                 <td>${p.productname}</a></td>
                 <td>${p.artist}</td>
                 <td>${p.genre}</td>
