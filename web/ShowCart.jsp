@@ -42,7 +42,7 @@
                 <%--<c:set var="bgColorY" value="white"/>--%>
                 <c:forEach items="${cart.lineItems}" var="p" varStatus="vs">
                     <tr>
-                        <td><img src="images/KPOP-${p.product.productid}.jpg" width="120"></td>
+                        <td><img src="images/${p.product.genre}-${p.product.productid}.jpg" width="120"></td>
                         <td>${vs.count}</td>
                         <td><a href="GetProduct?productId=${p.product.productid}">${p.product.productid}</a></td>
                         <td>${p.product.productname}</td>

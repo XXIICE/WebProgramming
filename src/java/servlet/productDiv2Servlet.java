@@ -7,7 +7,6 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
@@ -18,24 +17,19 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
 import jpa.model.Product;
-import jpa.model.Tracklist;
 import jpa.model.controller.ProductJpaController;
-import jpa.model.controller.TracklistJpaController;
 
 /**
  *
  * @author ariya boonchoo
  */
-public class GetProductDetailServlet extends HttpServlet {
-
-    @PersistenceUnit(unitName = "ImaginePU")
+public class productDiv2Servlet extends HttpServlet {
+ @PersistenceUnit(unitName = "ImaginePU")
     EntityManagerFactory emf;
     @Resource
     UserTransaction utx;
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -47,41 +41,17 @@ public class GetProductDetailServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
-        String productid = request.getParameter("productid");
-//        Product productObj = (Product) session.getAttribute("product");
-//        if (productObj != null) {
-
-        if (productid != null) {
-//         EntityManager em = emf.createEntityManager();
-//         Query q = em.createQuery("select * from Tracklist t group by t.songname,t.product_productid");
-            ProductJpaController productJpaCtrl = new ProductJpaController(utx, emf);
-            Product product = productJpaCtrl.findProduct(productid);
-            session.setAttribute("product", product);
-//            TracklistJpaController trackJpaCrl = new TracklistJpaController(utx, emf);
-//            List<Tracklist> tracklist = trackJpaCrl.findTracklistEntities();
-//            List<Tracklist> tracklist = product.getTracklistList();
-//            session.setAttribute("tracklist", tracklist);
-            getServletContext().getRequestDispatcher("/productDetail.jsp").forward(request, response);
-//TracklistJpaController trackJpaCrl = new TracklistJpaController(utx, emf);
-//List<Tracklist> tracklist = trackJpaCrl.findTracklistEntities();
-//List<Tracklist> tracklistList = new ArrayList<>();
-//            for (Tracklist tracklist1 : tracklistList) {
-//                if (tracklist1.getProduct().getProductid().equals(product.getProductid())) {
-//                  tracklistList.add(tracklist1);
-//                }
-//            }
-//            product.getTracklistList();
-//            product.setTracklistList(tracklistList);
-//            session.setAttribute("product", product);
-//            getServletContext().getRequestDispatcher("/GetTracklist").forward(request, response);
-//            if (product != null) {
-//                List<Tracklist> tracklist = product.getTracklistList();
-//                request.setAttribute("tracklist", tracklist);
-//                getServletContext().getRequestDispatcher("/productDetail.jsp").forward(request, response);
-//            }
-        }
-//          getServletContext().getRequestDispatcher("/productDetail.jsp").forward(request, response);
+         ProductJpaController productJpaCtrl = new ProductJpaController(utx, emf);
+        Product pro = new Product();
+//        String date = request.getParameter("releasedate");
+        EntityManager em = emf.createEntityManager();
+        Query q = em.createQuery("select p FROM Product p where p.releasedate <= '2018-11-28' and p.releasedate >='2018-11-14' order by p.releasedate desc");
+//        Query q = em.createNamedQuery("select p from Product p order by p.releasedate desc");
+//        q.setParameter("p.releasedate", date);
+//        List<Product>productList = productJpaCtrl.findProductEntities();
+        List<Product>productDiv2 =q.getResultList();
+        request.setAttribute("productDiv2", productDiv2);
+        getServletContext().getRequestDispatcher("/home.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

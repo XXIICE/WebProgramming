@@ -72,7 +72,7 @@
 
                         <c:choose>
                             <c:when test="${sessionScope.custom != null}">
-                                <a class="dropdown-item" href="ViewProfile">My Account</a>
+                                <a class="dropdown-item" href="profile.jsp">My Account</a>
                                 <a class="dropdown-item" href="ShowFavorite">Favorite</a>
                                 <a class="dropdown-item" href="#">My Order</a>
                                 <a class="dropdown-item" href="Logout">Logout</a>

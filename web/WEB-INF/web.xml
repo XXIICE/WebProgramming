@@ -94,6 +94,14 @@
         <servlet-name>FavoriteDetailServlet</servlet-name>
         <servlet-class>servlet.FavoriteDetailServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>productDiv1Servlet</servlet-name>
+        <servlet-class>servlet.productDiv1Servlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>productDiv2Servlet</servlet-name>
+        <servlet-class>servlet.productDiv2Servlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -177,6 +185,14 @@
     <servlet-mapping>
         <servlet-name>FavoriteDetailServlet</servlet-name>
         <url-pattern>/FavoriteDetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>productDiv1Servlet</servlet-name>
+        <url-pattern>/productDiv1</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>productDiv2Servlet</servlet-name>
+        <url-pattern>/productDiv2</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
