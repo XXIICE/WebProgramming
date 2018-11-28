@@ -7,18 +7,36 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.Resource;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.transaction.UserTransaction;
 import jpa.model.Customer;
+import jpa.model.Payment;
+import jpa.model.Productorder;
+import jpa.model.controller.PaymentJpaController;
+import jpa.model.controller.ProductorderJpaController;
+import jpa.model.controller.exceptions.PreexistingEntityException;
+import jpa.model.controller.exceptions.RollbackFailureException;
+import model.ShoppingCart2;
 
 /**
  *
  * @author ariya boonchoo
  */
 public class PaymentServlet extends HttpServlet {
+
+    @PersistenceUnit(unitName = "ImaginePU")
+    EntityManagerFactory emf;
+    @Resource
+    UserTransaction utx;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,9 +51,38 @@ public class PaymentServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         Customer custom = (Customer) session.getAttribute("custom");
-        if (session !=null) {
-            
+        ShoppingCart2 cart = (ShoppingCart2) session.getAttribute("cart");
+
+        if (session != null) {
+            if (cart != null) {
+                session.setAttribute("cart", cart);
+            }
+            if (custom != null) {
+
+                Payment pay = new Payment();
+                PaymentJpaController payJpaCtrl = new PaymentJpaController(utx, emf);
+                int idP = payJpaCtrl.getPaymentCount() + 1;
+                pay.setPaymentid(idP);
+                pay.setPaymentstatus("Not Confirm to Pay.");
+                Productorder productorder = new Productorder();
+                ProductorderJpaController productorderJpaCtrl = new ProductorderJpaController(utx, emf);
+
+//                pay.setProductorder(productorder);
+                pay.setProductorderOrderid(productorder);
+                try {
+                    payJpaCtrl.create(pay);
+                    session.setAttribute("pay", pay);
+                    getServletContext().getRequestDispatcher("/Payment.jsp").forward(request, response);
+                } catch (PreexistingEntityException ex) {
+                    Logger.getLogger(PaymentServlet.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (RollbackFailureException ex) {
+                    Logger.getLogger(PaymentServlet.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (Exception ex) {
+                    Logger.getLogger(PaymentServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
+        getServletContext().getRequestDispatcher("/Payment.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

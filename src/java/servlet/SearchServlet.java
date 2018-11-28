@@ -7,7 +7,9 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import javax.annotation.Resource;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
@@ -45,66 +47,60 @@ public class SearchServlet extends HttpServlet {
             throws ServletException, IOException {
 //        HttpSession session = request.getSession(false);
         String search = request.getParameter("search");
-        Product p = new Product();
-        Product productObj = (Product) request.getAttribute("productList");
-        ProductJpaController productJpaCtrl = new ProductJpaController(utx, emf);
+//        Product p = new Product();
+//        Product productObj = (Product) request.getAttribute("productList");
+//        ProductJpaController productJpaCtrl = new ProductJpaController(utx, emf);
 //        product = productJpaCtrl.findProduct(product.getProductname());
 
 //        request.setAttribute("productList", productList);
 //         Product product2 = productJpaCtrl.findProduct(productObj.getArtist());
-        if (search != null && search.length() > 0) {
-            System.out.println("22222222222222");
-//            System.out.println(productObj.getProductname());
-//            System.out.println(search.length());
-//            if (productObj != null) {       
-
-            try {
-//                search = productObj.getProductname().substring(0, search.length() - 1);
-//                String p1 = productObj.getProductname().substring(0, search.length()-1);
-//              p.setProductname(p1);
-                search = productObj.getProductname();
-                p = productJpaCtrl.findProduct(search);
-//                System.out.println(p.getProductname());
-//           System.out.println(search+p.getProductname().substring(search.length()));
-//                String prod = p.getProductname().substring(0, search.length() - 1);
-//            p.setProductname(prod);
-//            p = productJpaCtrl.findProduct(search+p.getProductname().substring(search.length()));
-//                System.out.println(search+p.getProductname().substring(search.length()));
-                if (p.getProductname().substring(0, search.length() - 1).equalsIgnoreCase(search.substring(0, search.length() - 1))
-//                        || p.getArtist().substring(0, search.length() - 1).equalsIgnoreCase(search.substring(0, search.length() - 1))
-                        ) {
-
-//            if (p.getArtist().equalsIgnoreCase(search.substring(0, search.length()-1))) {
-                    System.out.println("11111111111");
-                    List<Product> productList = productJpaCtrl.findProductEntities();
-//                request.setAttribute("productList", productList);
-                    request.setAttribute("productList", productList);
-//                getServletContext().getRequestDispatcher("/resultSearch.jsp").forward(request, response);
-                    getServletContext().getRequestDispatcher("/ProductList").forward(request, response);
-//            } else if (p.getArtist().equalsIgnoreCase(search)) {
-//                System.out.println("11111111111");
-//                List<Product> productList = productJpaCtrl.findProductEntities();
-////                request.setAttribute("productList", productList);
-//                session.setAttribute("productList", productList);
-////                getServletContext().getRequestDispatcher("/resultSearch.jsp").forward(request, response);
-//                getServletContext().getRequestDispatcher("/ProductList").forward(request, response);
+//        if (search != null && search.trim().length() > 0) {
+////            System.out.println("22222222222222");
+//            search = search.trim().toLowerCase();
+//            ProductJpaController productJpaCtrl = new ProductJpaController(utx, emf);
+//            List<Product> productList = productJpaCtrl.findProductEntities();
+//            List<Product> products = new ArrayList<>();
+//            if (productList != null) {
+//                for (Product product : productList) {
+//                    if (product.getProductname().toLowerCase().contains(search)
+//                            || product.getArtist().toLowerCase().contains(search)) {
+//                        products.add(product);
+//                    }
+//                }
+//                
 //            }
-                }
-//                search = productObj.getArtist().substring(0, search.length() - 1);
-                p = productJpaCtrl.findProduct(search);
-                if (p.getArtist().substring(0, search.length() - 1).equalsIgnoreCase(search.substring(0, search.length() - 1))) {
-                    System.out.println("11111111111");
-                    List<Product> productList = productJpaCtrl.findProductEntities();
-                    request.setAttribute("productList", productList);
-                    getServletContext().getRequestDispatcher("/ProductList").forward(request, response);
-                }
-            } catch (Exception ex) {
-
+//             
+//         
+//            if (products != null) {
+//                 for (Product product : products) {
+//                    if (!product.getProductname().equalsIgnoreCase(search)||
+//                            !product.getArtist().equalsIgnoreCase(search)) {
+//                        products.remove(product);
+//                    }
+//                }
+//            }
+//            
+//            request.setAttribute("products", products);
+//            getServletContext().getRequestDispatcher("/search.jsp").forward(request, response);
+//        }
+         ProductJpaController productJpaCtrl = new ProductJpaController(utx, emf);
+     List<Product> products =productJpaCtrl.findProductEntities();
+    if (search !=null) {
+   products=productJpaCtrl.findByProductname(search);
+        if (products.isEmpty()) {
+            products = productJpaCtrl.findByArtist(search);
+            if (products.isEmpty()) {
+                request.setAttribute("messageSearch", "Product '" + search+"' does not exist .");
+            }else{
+                request.setAttribute("productList", products);
             }
+        }else{
+            request.setAttribute("productList", products);
+           
         }
-        getServletContext().getRequestDispatcher("/ProductList").forward(request, response);
-    }
-
+}
+    getServletContext().getRequestDispatcher("/search.jsp").forward(request, response);
+}  
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

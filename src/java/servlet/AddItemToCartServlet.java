@@ -73,29 +73,29 @@ public class AddItemToCartServlet extends HttpServlet {
         Product p = productJpaCtrl.findProduct(productid);
         if (productid != null) {
             cart.add(p);
-            if (custom != null) {
-                Cart ca = new Cart();
-                CartJpaController cartJpaCtrl = new CartJpaController(utx, emf);
-                int idC = cartJpaCtrl.getCartCount()+1;
-                ca.setCartid(idC);
-//                    ca.setCartid(1);
-//                    ca.setLineitemList(lineitemList);
-                try {
-                    cartJpaCtrl.create(ca);
-                } catch (PreexistingEntityException ex) {
-                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (RollbackFailureException ex) {
-                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (Exception ex) {
-                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
-                }
+//            if (custom != null) {
+//                Cart ca = new Cart();
+//                CartJpaController cartJpaCtrl = new CartJpaController(utx, emf);
+//                int idC = cartJpaCtrl.getCartCount()+1;
+//                ca.setCartid(idC);
+////                    ca.setCartid(1);
+////                    ca.setLineitemList(lineitemList);
+//                try {
+//                    cartJpaCtrl.create(ca);
+//                } catch (PreexistingEntityException ex) {
+//                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                } catch (RollbackFailureException ex) {
+//                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                } catch (Exception ex) {
+//                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                }
             }
             session.setAttribute("cart", cart);
             getServletContext().getRequestDispatcher("/ProductList").forward(request, response);
 
         }
 
-    }
+//    }
 //        HttpSession session = request.getSession(false);
 //        String productid = request.getParameter("productid");
 //        ShoppingCart2 cart = (ShoppingCart2) session.getAttribute("cart");

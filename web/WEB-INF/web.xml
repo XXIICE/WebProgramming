@@ -102,6 +102,14 @@
         <servlet-name>productDiv2Servlet</servlet-name>
         <servlet-class>servlet.productDiv2Servlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>NewAddressServlet</servlet-name>
+        <servlet-class>servlet.NewAddressServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ConfirmToPayServlet</servlet-name>
+        <servlet-class>servlet.ConfirmToPayServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -193,6 +201,14 @@
     <servlet-mapping>
         <servlet-name>productDiv2Servlet</servlet-name>
         <url-pattern>/productDiv2</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NewAddressServlet</servlet-name>
+        <url-pattern>/NewAddress</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ConfirmToPayServlet</servlet-name>
+        <url-pattern>/ConfirmToPay</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

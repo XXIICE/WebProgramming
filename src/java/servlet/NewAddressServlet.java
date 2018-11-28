@@ -7,6 +7,8 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
@@ -18,24 +20,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
-import jpa.model.Cart;
 import jpa.model.Customer;
-import jpa.model.Product;
-import jpa.model.controller.CartJpaController;
-import jpa.model.controller.ProductJpaController;
-import jpa.model.controller.exceptions.PreexistingEntityException;
+import jpa.model.controller.CustomerJpaController;
+import jpa.model.controller.exceptions.NonexistentEntityException;
 import jpa.model.controller.exceptions.RollbackFailureException;
-import model.ShoppingCart2;
 
 /**
  *
  * @author ariya boonchoo
  */
-public class AddItemToCartDetailServlet extends HttpServlet {
-@PersistenceUnit(unitName = "ImaginePU")
+public class NewAddressServlet extends HttpServlet {
+
+    @PersistenceUnit(unitName = "ImaginePU")
     EntityManagerFactory emf;
     @Resource
     UserTransaction utx;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -48,41 +48,36 @@ public class AddItemToCartDetailServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
-        ShoppingCart2 cart = (ShoppingCart2) session.getAttribute("cart");
-        String productid = request.getParameter("productid");
-        Customer custom = (Customer) session.getAttribute("custom");
-        if (cart == null) {
-            cart = new ShoppingCart2();
-            session.setAttribute("cart", cart);
-        }
-        ProductJpaController productJpaCtrl = new ProductJpaController(utx, emf);
-        Product p = productJpaCtrl.findProduct(productid);
-        if (productid != null) {
-            cart.add(p);
-//            if (custom != null) {
-//                Cart ca = new Cart();
-//                CartJpaController cartJpaCtrl = new CartJpaController(utx, emf);
-//                int idC = cartJpaCtrl.getCartCount()+1;
-//                ca.setCartid(idC);
-////                    ca.setCartid(1);
-////                    ca.setLineitemList(lineitemList);
-//                try {
-//                    cartJpaCtrl.create(ca);
-//                } catch (PreexistingEntityException ex) {
-//                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
-//                } catch (RollbackFailureException ex) {
-//                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
-//                } catch (Exception ex) {
-//                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
-//                }
+        String newaddress = request.getParameter("newaddress");
+        if (session != null) {
+            Customer custom = (Customer) session.getAttribute("custom");
+            if (custom != null) {
+                CustomerJpaController customJpa = new CustomerJpaController(utx, emf);
+//                custom.setUsername(custom.getUsername());
+//                custom.setCreditcardnumber(custom.getCreditcardnumber());
+//                custom.setEmail(custom.getEmail());
+//                custom.setFirstname(custom.getFirstname());
+//                custom.setLastname(custom.getLastname());
+//                custom.setPassword(custom.getPassword());
+//                custom.setPoint(custom.getPoint());
+                custom.setAddress(newaddress);
+
+                try {
+                    customJpa.edit(custom);
+//                    customJpa.create(custom);
+                    session.setAttribute("custom", custom);
+                    getServletContext().getRequestDispatcher("/Payment.jsp").forward(request, response);
+                } catch (NonexistentEntityException ex) {
+                    Logger.getLogger(NewAddressServlet.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (RollbackFailureException ex) {
+                    Logger.getLogger(NewAddressServlet.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (Exception ex) {
+                    Logger.getLogger(NewAddressServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-            session.setAttribute("cart", cart);
-            getServletContext().getRequestDispatcher("/GetProductDetail").forward(request, response);
-
         }
-
-    
-    
+        getServletContext().getRequestDispatcher("/Payment.jsp").forward(request, response);
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

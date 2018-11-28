@@ -7,7 +7,6 @@ package jpa.model;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.UUID;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -65,9 +64,6 @@ public class Productorder implements Serializable {
     @JoinColumn(name = "CUSTOMER_USERNAME", referencedColumnName = "USERNAME")
     @ManyToOne(optional = false)
     private Customer customerUsername;
-    @JoinColumn(name = "PAYMENT_PAYMENTID", referencedColumnName = "PAYMENTID")
-    @OneToOne(optional = false)
-    private Payment paymentPaymentid;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productorderOrderid")
     private List<Orderitem> orderitemList;
 
@@ -81,7 +77,6 @@ public class Productorder implements Serializable {
     public Productorder(Integer orderid, String productstatus) {
         this.orderid = orderid;
         this.productstatus = productstatus;
-        this.trackingno = UUID.randomUUID().toString().replace("-","").substring(0,15);
     }
 
     public Integer getOrderid() {
@@ -138,14 +133,6 @@ public class Productorder implements Serializable {
 
     public void setCustomerUsername(Customer customerUsername) {
         this.customerUsername = customerUsername;
-    }
-
-    public Payment getPaymentPaymentid() {
-        return paymentPaymentid;
-    }
-
-    public void setPaymentPaymentid(Payment paymentPaymentid) {
-        this.paymentPaymentid = paymentPaymentid;
     }
 
     @XmlTransient

@@ -353,7 +353,7 @@
         <!--<h2>${custom.username}</h2><br>-->
         <!--<a href="Logout"> Logout </a><br>-->
 
-        <!--    <form action="Search" method="post">
+<!--            <form action="Search" method="post">
                     search : <input type="text" name="search">&nbsp;&nbsp;
                     <input type="submit">
                 </form>
@@ -371,6 +371,7 @@
         </thead>
         <c:forEach items="${productList}" var="p" varStatus="vs" >
             <tr>
+                 ${messageSearch}
                 <td>${vs.count}</td>
                 <td><img src="images/${p.genre}-${p.productid}.jpg" width="120"></td>
             <!--<form action="RecentView" method="post">-->

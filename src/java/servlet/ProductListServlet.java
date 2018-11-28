@@ -44,14 +44,14 @@ public class ProductListServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         ProductJpaController productJpaCtrl = new ProductJpaController(utx, emf);
-        Product pro = new Product();
+//        Product pro = new Product();
 //        String date = request.getParameter("releasedate");
-        EntityManager em = emf.createEntityManager();
-        Query q = em.createQuery("select p FROM Product p order by p.releasedate desc");
+//        EntityManager em = emf.createEntityManager();
+//        Query q = em.createQuery("select p FROM Product p order by p.releasedate desc");
 //        Query q = em.createNamedQuery("select p from Product p order by p.releasedate desc");
 //        q.setParameter("p.releasedate", date);
-//        List<Product>productList = productJpaCtrl.findProductEntities();
-        List<Product>productList =q.getResultList();
+        List<Product>productList = productJpaCtrl.findProductEntities();
+//        List<Product>productList =q.getResultList();
         request.setAttribute("productList", productList);
         getServletContext().getRequestDispatcher("/home.jsp").forward(request, response);
     }

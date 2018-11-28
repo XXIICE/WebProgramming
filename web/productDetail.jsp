@@ -59,7 +59,7 @@
     <td>Tracklist : </td>
                 <c:forEach items="${product.tracklistList}" var="p">
                 
-                    <td>${p.songname}</td>
+                    <td>${p.tracklistPK.songname}</td>
               
                        
                 </c:forEach>

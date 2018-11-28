@@ -7,7 +7,6 @@ package jpa.model;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -47,8 +46,6 @@ public class Payment implements Serializable {
     @JoinColumn(name = "PRODUCTORDER_ORDERID", referencedColumnName = "ORDERID")
     @OneToOne(optional = false)
     private Productorder productorderOrderid;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "paymentPaymentid")
-    private Productorder productorder;
 
     public Payment() {
     }
@@ -84,14 +81,6 @@ public class Payment implements Serializable {
 
     public void setProductorderOrderid(Productorder productorderOrderid) {
         this.productorderOrderid = productorderOrderid;
-    }
-
-    public Productorder getProductorder() {
-        return productorder;
-    }
-
-    public void setProductorder(Productorder productorder) {
-        this.productorder = productorder;
     }
 
     @Override
