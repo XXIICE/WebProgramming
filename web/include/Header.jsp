@@ -23,13 +23,13 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Department</a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Classic</a>
-                        <a class="dropdown-item" href="#">Country</a>
-                        <a class="dropdown-item" href="#">Dance/Soul</a>
-                        <a class="dropdown-item" href="#">J-Pop</a>
-                        <a class="dropdown-item" href="#">Jazz</a>
-                        <a class="dropdown-item" href="#">K-Pop</a>
-                        <a class="dropdown-item" href="#">Pop-Rock</a>
+                        <a class="dropdown-item" href="ProductGenreClassic">Classic</a>
+                        <a class="dropdown-item" href="ProductGenreCountry">Country</a>
+                        <a class="dropdown-item" href="ProductGenreDance">Dance/Soul</a>
+                        <a class="dropdown-item" href="ProductGenreJpop">J-Pop</a>
+                        <a class="dropdown-item" href="ProductGenreJazz">Jazz</a>
+                        <a class="dropdown-item" href="ProductGenre">K-Pop</a>
+                        <a class="dropdown-item" href="ProductGenrePop">Pop-Rock</a>
                     </div>
                 </li>
                 <li class="nav-item">
@@ -74,7 +74,7 @@
                             <c:when test="${sessionScope.custom != null}">
                                 <a class="dropdown-item" href="profile.jsp">My Account</a>
                                 <a class="dropdown-item" href="ShowFavorite">Favorite</a>
-                                <a class="dropdown-item" href="#">My Order</a>
+                                <a class="dropdown-item" href="ConfirmToPay">My Order</a>
                                 <a class="dropdown-item" href="Logout">Logout</a>
                             </c:when>
                             <c:otherwise>

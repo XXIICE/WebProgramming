@@ -425,6 +425,18 @@ public class ProductJpaController implements Serializable {
             em.close();
         }
     }
+     public List<Product> findByGenre(String genre) {
+        EntityManager em = getEntityManager();
+        Query query = em.createNamedQuery("Product.findByGenre");
+        query.setParameter("genre", "%" + genre+ "%");
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
 
     public List<Product> findProductEntities(int maxResults, int firstResult) {
         return findProductEntities(false, maxResults, firstResult);

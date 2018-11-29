@@ -114,6 +114,34 @@
         <servlet-name>AddItemToCartFavServlet</servlet-name>
         <servlet-class>servlet.AddItemToCartFavServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ProductGenreServlet</servlet-name>
+        <servlet-class>servlet.ProductGenreServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductGenreClassicServlet</servlet-name>
+        <servlet-class>servlet.ProductGenreClassicServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductGenreCountryServlet</servlet-name>
+        <servlet-class>servlet.ProductGenreCountryServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductGenreDanceServlet</servlet-name>
+        <servlet-class>servlet.ProductGenreDanceServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductGenreJpopServlet</servlet-name>
+        <servlet-class>servlet.ProductGenreJpopServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductGenreJazzServlet</servlet-name>
+        <servlet-class>servlet.ProductGenreJazzServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductGenrePopServlet</servlet-name>
+        <servlet-class>servlet.ProductGenrePopServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -217,6 +245,34 @@
     <servlet-mapping>
         <servlet-name>AddItemToCartFavServlet</servlet-name>
         <url-pattern>/AddItemToCartFav</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductGenreServlet</servlet-name>
+        <url-pattern>/ProductGenre</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductGenreClassicServlet</servlet-name>
+        <url-pattern>/ProductGenreClassic</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductGenreCountryServlet</servlet-name>
+        <url-pattern>/ProductGenreCountry</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductGenreDanceServlet</servlet-name>
+        <url-pattern>/ProductGenreDance</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductGenreJpopServlet</servlet-name>
+        <url-pattern>/ProductGenreJpop</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductGenreJazzServlet</servlet-name>
+        <url-pattern>/ProductGenreJazz</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductGenrePopServlet</servlet-name>
+        <url-pattern>/ProductGenrePop</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

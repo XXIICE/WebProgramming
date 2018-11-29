@@ -1,4 +1,4 @@
- /*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -7,8 +7,6 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
@@ -21,15 +19,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.UserTransaction;
 import jpa.model.Product;
-import jpa.model.controller.ProductJpaController;
 
 /**
  *
  * @author ariya boonchoo
  */
-public class ProductListServlet extends HttpServlet {
-
-    @PersistenceUnit(unitName = "ImaginePU")
+public class ProductGenreDanceServlet extends HttpServlet {
+@PersistenceUnit(unitName = "ImaginePU")
     EntityManagerFactory emf;
     @Resource
     UserTransaction utx;
@@ -45,17 +41,12 @@ public class ProductListServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ProductJpaController productJpaCtrl = new ProductJpaController(utx, emf);
-//        Product pro = new Product();
-//        String date = request.getParameter("releasedate");
-//        EntityManager em = emf.createEntityManager();
-//        Query q = em.createQuery("select p FROM Product p where p.genre = 'K-POP'");
 
-        List<Product> productList = productJpaCtrl.findProductEntities();
-//        List<Product>productgenre =q.getResultList();
-//        request.setAttribute("productList", productgenre);
-        request.setAttribute("productList", productList);
-        getServletContext().getRequestDispatcher("/productAll.jsp").forward(request, response);
+        EntityManager em = emf.createEntityManager();
+        Query q = em.createQuery("select p FROM Product p where p.genre = 'Dance-Soul'");
+        List<Product> productgenre = q.getResultList();
+        request.setAttribute("productgenre", productgenre);
+        getServletContext().getRequestDispatcher("/productgen.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

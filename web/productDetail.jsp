@@ -100,16 +100,18 @@
                     <hr class="my-5">
                     <div class="tracklist-detail">
                         <div class="row">
+                            <c:forEach items="${product.tracklistList}" var="p">
                             <div class="col-sm-5">
                                 <audio controls id="player" style="width:450px;">
-                                    <source src="music/P0001_Ko Ko Bop.mp3" type="audio/mpeg">
+                                    <source src="music/${p.tracklistPK.songname}.mp3" type="audio/mpeg">
                                 </audio>
                             </div>
                             <div class="col-sm-7 d-flex align-items-center">
-                                <p><b>${product.productname}</b></p>
+                                <p><b>${p.tracklistPK.songname}</b></p>
                             </div>
+                            </c:forEach>
                         </div> <!--row-->
-                        <div class="row">
+<!--                        <div class="row">
                             <div class="col-sm-5">
                                 <audio controls id="player" style="width:450px;">
                                     <source src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/15309/test.mp3" type="audio/mpeg">
@@ -118,7 +120,7 @@
                             <div class="col-sm-7 d-flex align-items-center">
                                 <p><b>${product.productname}</b></p>
                             </div>
-                        </div> <!--row-->
+                        </div> row-->
                     </div><!--tracklist-detail-->
                 </div> <!--tracklist-->
 

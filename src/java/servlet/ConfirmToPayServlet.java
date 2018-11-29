@@ -85,7 +85,8 @@ public class ConfirmToPayServlet extends HttpServlet {
 //                } catch (Exception ex) {
 //                    Logger.getLogger(NewAddressServlet.class.getName()).log(Level.SEVERE, null, ex);
 //                }
-            }
+            }getServletContext().getRequestDispatcher("/order.jsp").forward(request, response);
+   
         }
         getServletContext().getRequestDispatcher("/order.jsp").forward(request, response);
     }

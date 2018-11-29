@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-       
+
         <title>Imagine</title>
         <link rel="shortcut icon" href="images/icon.ico"/>
         <meta charset="utf-8">
@@ -32,9 +32,9 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
 
-   
+
     </head>
-   
+
     <body style="background-color:#f3f3f3;">
         <jsp:include page="include/Header.jsp"/>
 
@@ -78,7 +78,7 @@
                                         <strong class="align-self-center">${vs.count}</strong>
                                     </div>    
                                     <div class="col-sm-2 text-md-left">
-                                        <a class="thumbnail pull-left" href="GetProductDetail?productid=${p.product.productid}"> <img class="media-object" src="images/P0004.jpg" style="width: 150px;"> </a>
+                                        <a class="thumbnail pull-left" href="GetProductDetail?productid=${p.product.productid}"> <img class="media-object" src="images/${p.product.productid}.jpg" style="width: 150px;"> </a>
                                     </div>    
                                     <div class="col-sm-3">
                                         <div class="media-body text-md-left" style="line-height:20px;">
@@ -157,7 +157,13 @@
                                         Total price: <b><fmt:formatNumber value="${p.totalPrice}" pattern="#,###.00"/>฿</b>
                                     </div>
                                     <div class="d-inline-block" style="margin-top:2px;margin-right:5px;">
-                                        <a href="ConfirmToPay?productid=${p.product.productid}" class="btn btn-success" style="padding-left:40px;padding-right:40px;">Buy</a>
+                                        <form action="ConfirmToPay" method="post">
+                                            <input type="hidden" value="${p.product.productid}" name="productid"/>
+
+                                            <input type="submit" value="Confirm" class="btn btn-success" style="padding-left:40px;padding-right:40px;">
+
+                                        </form>
+                                      
                                     </div>
                                 </div>
                             </div>
@@ -168,81 +174,81 @@
             </div>
         </main>
 
-            </table>
-            <h4 align="right" > All Total Price : 
-                <fmt:formatNumber value="${cart.totalPrice}" pattern="#,###.00"/>
-                <%--<c:set var = "balance" value="${cart.totalPrice}"/>--%> 
-                <%--<fmt:formatNumber type = "number"  maxIntegerDigits = "10" value = "${balance}" />--%>  
-                ฿</h4><br>
-         
-        <table>
-<!--            <tr>
-                <td>Payment id : </td>
-                <td>${pay.paymentid}</td>
-            </tr>-->
-            <tr>
-                <td>Username : </td>
-                <td>${custom.username}</td>
-            </tr>
-             <tr>
-                <td>Name : </td>
-                <td>${custom.firstname} &nbsp;&nbsp;&nbsp;${custom.lastname}</td>
-            </tr>
-             <tr>
-                <td>Email : </td>
-                <td>${custom.email}</td>
-            </tr>
-             <tr>
-                <td>Address : </td>
-                <td>${custom.address}</td> 
-                <td>   or New address
-             <form action="NewAddress" method="post">
-                 <input type="text" name="newaddress" size="200">
-                 <input type="submit">
-            </form>
-                </td>
-            </tr>
-            
-           
-<!--             <tr>
-                <td>Payment Status : </td>
-                <td>${pay.paymentstatus}</td>
-            </tr>-->
-            <tr>
-                <td><form action="ConfirmToPay" method="post">
-                        <input type="hidden" value="${p.product.productid}" name="productid"/>
-                               
-                        <input type="submit" value="Confirm">
-                
-            </form>
-                </td>
-        </tr>
-        </table>
-=======
-        <!-- Footer -->
-        <footer class="py-5 bg-dark">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-8">
-                        <h1><a href="ProductList"><img src="images/logo-white.png" height="40px" class="imagine"></a></h1>
-                        <p style="color: #7e7e7e;font-size: 12px;">126 Pracha Uthit Rd., <br>Bang Mod, Thung Khru, <br>Bangkok 10140, <br>Thailand
-                            <br><span class="fa fa-phone-square"> +66 2470 8000</span>
-                            <br><span class="fa fa-envelope">  info@imagine.com</span>
-                        </p>
-                    </div>
-                    <div class="col-sm-4">
-                        <p style="font-size: 18px;font-weight: bold;color: #7e7e7e;padding-top: 20px;">About</p>
-                        <span class="footer-about"><a href="#" style="font-size: 12px;color: #7e7e7e;">Contact us</a><br>
-                            <a href="#" style="font-size: 12px;color: #7e7e7e;">Team</a></span>
-                        <p style="color: #7e7e7e;font-size: 12px;line-height: 80px;">&copy; imagine All rights reserved</p>
-                    </div>
+    </table>
+    <!--            <h4 align="right" > All Total Price : 
+    <fmt:formatNumber value="${cart.totalPrice}" pattern="#,###.00"/>
+    <%--<c:set var = "balance" value="${cart.totalPrice}"/>--%> 
+    <%--<fmt:formatNumber type = "number"  maxIntegerDigits = "10" value = "${balance}" />--%>  
+    ฿</h4><br>
+
+<table>
+<tr>
+    <td>Payment id : </td>
+    <td>${pay.paymentid}</td>
+</tr>
+<tr>
+    <td>Username : </td>
+    <td>${custom.username}</td>
+</tr>
+ <tr>
+    <td>Name : </td>
+    <td>${custom.firstname} &nbsp;&nbsp;&nbsp;${custom.lastname}</td>
+</tr>
+ <tr>
+    <td>Email : </td>
+    <td>${custom.email}</td>
+</tr>
+ <tr>
+    <td>Address : </td>
+    <td>${custom.address}</td> 
+    <td>   or New address
+ <form action="NewAddress" method="post">
+     <input type="text" name="newaddress" size="200">
+     <input type="submit">
+</form>
+    </td>
+</tr>
+
+
+ <tr>
+    <td>Payment Status : </td>
+    <td>${pay.paymentstatus}</td>
+</tr>
+<tr>
+    <td><form action="ConfirmToPay" method="post">
+            <input type="hidden" value="${p.product.productid}" name="productid"/>
+                   
+            <input type="submit" value="Confirm">
+    
+</form>
+    </td>
+</tr>
+</table>-->
+    =======
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8">
+                    <h1><a href="ProductList"><img src="images/logo-white.png" height="40px" class="imagine"></a></h1>
+                    <p style="color: #7e7e7e;font-size: 12px;">126 Pracha Uthit Rd., <br>Bang Mod, Thung Khru, <br>Bangkok 10140, <br>Thailand
+                        <br><span class="fa fa-phone-square"> +66 2470 8000</span>
+                        <br><span class="fa fa-envelope">  info@imagine.com</span>
+                    </p>
+                </div>
+                <div class="col-sm-4">
+                    <p style="font-size: 18px;font-weight: bold;color: #7e7e7e;padding-top: 20px;">About</p>
+                    <span class="footer-about"><a href="#" style="font-size: 12px;color: #7e7e7e;">Contact us</a><br>
+                        <a href="#" style="font-size: 12px;color: #7e7e7e;">Team</a></span>
+                    <p style="color: #7e7e7e;font-size: 12px;line-height: 80px;">&copy; imagine All rights reserved</p>
                 </div>
             </div>
-            <!-- /.container -->
-        </footer>
+        </div>
+        <!-- /.container -->
+    </footer>
 
-        <script src="vendor/jquery/jquery.min.js"></script>
-        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    </body>
+</body>
 </html>
