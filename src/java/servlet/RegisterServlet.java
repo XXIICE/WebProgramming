@@ -140,7 +140,7 @@ public class RegisterServlet extends HttpServlet {
 //                    }
             } if (!retypepassword.equals(password)) {
 
-                    request.setAttribute("messagere", "password not match.");
+                    request.setAttribute("messagere", "Your password is not match.");
                     getServletContext().getRequestDispatcher("/register.jsp").forward(request, response);
                     return;
                 }

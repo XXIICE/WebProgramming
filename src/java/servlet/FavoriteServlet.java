@@ -28,10 +28,12 @@ import model.ShoppingCart;
  * @author ariya boonchoo
  */
 public class FavoriteServlet extends HttpServlet {
-@PersistenceUnit(unitName = "ImaginePU")
+
+    @PersistenceUnit(unitName = "ImaginePU")
     EntityManagerFactory emf;
     @Resource
     UserTransaction utx;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -43,7 +45,7 @@ public class FavoriteServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            
+
         HttpSession session = request.getSession(false);
         Favorite fav = (Favorite) session.getAttribute("fav");
         String productid = request.getParameter("productid");
@@ -57,10 +59,10 @@ public class FavoriteServlet extends HttpServlet {
 
             Product p = productJpaCtrl.findProduct(productid);
             fav.add(p);
-           
+
             session.setAttribute("fav", fav);
-            getServletContext().getRequestDispatcher("/ProductList").forward(request, response);
-    }
+            getServletContext().getRequestDispatcher("/productDetail.jsp").forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
