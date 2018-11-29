@@ -89,39 +89,36 @@ public class AddItemToCartServlet extends HttpServlet {
                 line.setCartCartid(ca);
                 int idL = lineJpaCtrl.getLineitemCount() + 1;
                 line.setLineitemid(idL);
-                LineItem lines= new LineItem();
-                line.setQuantity(lines.getQuantity()+1);
-                line.setTotalprice(lines.getTotalPrice()+p.getPrice());
-                line.setProductProductid(p);
-                List<Lineitem> lineList = lineJpaCtrl.findLineitemEntities();
-                    for (Lineitem lineitem : lineList) {
-                        if (productid.equals(line.getProductProductid())) {
-                       lineList.add(line);
-                    }
+                LineItem lines = new LineItem();
+                line.setQuantity(lines.getQuantity() + 1);
+                        line.setTotalprice(lines.getTotalPrice() + p.getPrice());
+                        line.setProductProductid(p);
+                 if (productid.equals(line.getProductProductid())) {
+                        line.setTotalprice(lines.getTotalPrice());
                     }
                 try {
                     lineJpaCtrl.create(line);
-                    ca.setLineitemList(lineList);
-                     
                 } catch (Exception ex) {
                     Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
-//                List<Lineitem> lineList = lineJpaCtrl.findLineitemEntities();
-//                List<Lineitem> lines = new ArrayList<>();
-//                for (Lineitem line1 : lines) {
-//                    if (line1.getCartCartid().getCartid() == ca.getCartid()) {
-//                        lines.add(line);
-//                    }
-//                }
+                List<Lineitem> lineList = lineJpaCtrl.findLineitemEntities();
+                List<Lineitem> linesA = new ArrayList<>();
+                for (Lineitem line1 : linesA) {
+                    if (line1.getCartCartid().getCartid() == ca.getCartid()) {
+                        linesA.add(line);
+                    }
+                }
+                ca.setLineitemList(linesA);
+                try {
+                    cartJpaCtrl.create(ca); 
+                    session.setAttribute("cart", ca);
+            getServletContext().getRequestDispatcher("/ProductList").forward(request, response);
 
-//                ca.setLineitemList(lines);
-//                try {
-//                    cartJpaCtrl.create(ca); 
-//                } catch (RollbackFailureException ex) {
-//                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
-//                } catch (Exception ex) {
-//                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
-//                }
+                } catch (RollbackFailureException ex) {
+                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (Exception ex) {
+                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             session.setAttribute("cart", cart);
             getServletContext().getRequestDispatcher("/ProductList").forward(request, response);

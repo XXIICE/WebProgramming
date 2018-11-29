@@ -7,6 +7,7 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
@@ -26,7 +27,9 @@ import jpa.model.controller.CustomerJpaController;
 import jpa.model.controller.PaymentJpaController;
 import jpa.model.controller.ProductorderJpaController;
 import jpa.model.controller.exceptions.NonexistentEntityException;
+import jpa.model.controller.exceptions.PreexistingEntityException;
 import jpa.model.controller.exceptions.RollbackFailureException;
+import model.ShoppingCart2;
 
 /**
  *
@@ -51,40 +54,66 @@ public class ConfirmToPayServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
+        ShoppingCart2 cart = (ShoppingCart2) session.getAttribute("cart");
+
         if (session != null) {
             Customer custom = (Customer) session.getAttribute("custom");
-            if (custom != null) {
-                CustomerJpaController customJpa = new CustomerJpaController(utx, emf);
-                int point = custom.getPoint() + 10;
-                custom.setPoint(point);
-                Productorder productorder = new Productorder();
-                ProductorderJpaController productorderJpaCtrl = new ProductorderJpaController(utx, emf);
-                productorder.setCustomerUsername(custom);
-                int orderid = productorderJpaCtrl.getProductorderCount() + 1;
-                productorder.setOrderid(orderid);
-                Cart cart = (Cart) session.getAttribute("cart");
-                productorder.setCartCartid(cart);
-                Payment pay = new Payment();
-                PaymentJpaController payJpaCtrl = new PaymentJpaController(utx, emf);
-                pay.setPaymentstatus("Confirm");
-                productorder.setPayment(pay);
-                productorder.setProductstatus("Shipped");
-                try {
-                    customJpa.edit(custom);
-                    session.setAttribute("custom", custom);
-                    getServletContext().getRequestDispatcher("/Payment.jsp").forward(request, response);
-                } catch (NonexistentEntityException ex) {
-                    Logger.getLogger(NewAddressServlet.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (RollbackFailureException ex) {
-                    Logger.getLogger(NewAddressServlet.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (Exception ex) {
-                    Logger.getLogger(NewAddressServlet.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
+            if (cart != null) {
+                session.setAttribute("cart", cart);
+
+//            if (custom != null) {
+//                CustomerJpaController customJpa = new CustomerJpaController(utx, emf);
+//                int point = custom.getPoint()*cart.getTotalQuantity();
+//                custom.setPoint(point);
+//               Productorder productorder = new Productorder();
+//                    ProductorderJpaController productorderJpaCtrl = new ProductorderJpaController(utx, emf);
+//                    int orderid = productorderJpaCtrl.getProductorderCount() + 1;
+//                    productorder.setOrderid(orderid);
+//                    Cart c = new Cart();
+//                    productorder.setCartCartid(c);
+//                    productorder.setCustomerUsername(custom);
+//                    productorder.setTotalprice(cart.getTotalPrice());
+//                    String track = UUID.randomUUID().toString().replace("-", "").substring(0, 15);
+//                    productorder.setTrackingno(track);
+//                    productorder.setProductstatus("Shipped");
+//                     try {
+//                        productorderJpaCtrl.create(productorder);
+//                        session.setAttribute("order", productorder);
+//                    } catch (PreexistingEntityException ex) {
+//                        Logger.getLogger(PaymentServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                    } catch (RollbackFailureException ex) {
+//                        Logger.getLogger(PaymentServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                    } catch (Exception ex) {
+//                        Logger.getLogger(PaymentServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+//                Payment pay = new Payment();
+//                PaymentJpaController payJpaCtrl = new PaymentJpaController(utx, emf);
+//                pay.setPaymentstatus("Confirm");
+//                productorder.setPayment(pay);
+////                pay.setPaymentstatus("Not Confirm to Pay.");
+//                pay.setProductorderOrderid(productorder);
+////                productorder.setProductstatus("Shipped");
+//                
+//                try {
+//                    customJpa.edit(custom);
+//                    session.setAttribute("custom", custom);
+////////                    payJpaCtrl.create(pay);
+////////                    session.setAttribute("pay", pay);
+////                    getServletContext().getRequestDispatcher("/order.jsp").forward(request, response);
+//                } catch (NonexistentEntityException ex) {
+//                    Logger.getLogger(NewAddressServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                } catch (RollbackFailureException ex) {
+//                    Logger.getLogger(NewAddressServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                } catch (Exception ex) {
+//                    Logger.getLogger(NewAddressServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+        } }
+        getServletContext().getRequestDispatcher("/order.jsp").forward(request, response);
+       
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
