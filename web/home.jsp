@@ -182,112 +182,60 @@
                                         <li data-target="#carouselExample" data-slide-to="1"></li>
                                     </ol>     
                                     <!-- Wrapper for carousel items -->
-                                    <div class="carousel-inner">
-                                        <div class="item carousel-item active" id="slide-product">
-                                            <div class="row">
-                                                <div class="col-sm-3">
-                                                    <div class="thumb-wrapper">
-                                                        <div class="img-box">
-                                                            <a href="#"><img src="images/K-POP-P0001.jpg" class="img-responsive img-fluid" alt=""></a>
-                                                        </div>
-                                                        <div class="thumb-content">
-                                                            <h4><a href="#">The War</a></h4>
-                                                            <p class="item-price"><span>$369.00</span></p>
 
-                                                            <a href="#" class="btn btn-primary">Add to Cart</a>
-                                                        </div>                      
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-3">
-                                                    <div class="thumb-wrapper">
-                                                        <div class="img-box">
-                                                            <a href="#"><img src="images/K-POP-P0002.jpg" class="img-responsive img-fluid" alt=""></a>
+
+
+                                    <div class="carousel-inner">
+
+                                        <div class="item carousel-item active" id="slide-product">
+
+                                            <div class="row">
+                                                <c:forEach items="${productList}" var="p" varStatus="vs" > 
+                                                    <div class="col-sm-3">
+                                                        <div class="thumb-wrapper">
+                                                            <div class="img-box">
+                                                                <a href="GetProductDetail?productid=${p.productid}"><img src="images/${p.productid}.jpg" class="img-responsive img-fluid" alt="cover"></a>
+                                                            </div>
+                                                            <div class="thumb-content">
+                                                                <h4><a href="GetProductDetail?productid=${p.productid}">${p.productname}</a></h4>
+                                                                <p class="item-price"><span>${p.price} ฿</span></p>
+                                                                <div class="d-flex justify-content-center">
+                                                                    <form action="AddItemToCart" method="post">
+                                                                        <input type="hidden" value="${p.productid}" name="productid"/>
+                                                                        <button type="submit" class="btn btn-primary">Add To Cart</button>
+                                                                    </form>
+                                                                    <form action="FavoriteDetail" method="post">
+                                                                        <input type="hidden" value="${p.productid}" name="productid"/>
+                                                                        <button type="submit" id="fav" class="btn btn-danger"><i class="far fa-heart" style="color:#dd0505;"></i></button>
+                                                                    </form>
+                                                                </div>
+                                                            </div>                      
                                                         </div>
-                                                        <div class="thumb-content">
-                                                            <h4><a href="#">Summer Nights</a></h4>
-                                                            <p class="item-price"><span>$23.99</span></p>
-                                                            <a href="#" class="btn btn-primary">Add to Cart</a>
-                                                        </div>                      
                                                     </div>
-                                                </div>      
-                                                <div class="col-sm-3">
-                                                    <div class="thumb-wrapper">
-                                                        <div class="img-box">
-                                                            <a href="#"><img src="images/K-POP-P0003.jpg" class="img-responsive img-fluid" alt=""></a>
-                                                        </div>
-                                                        <div class="thumb-content">
-                                                            <h4><a href="#">BBI BBI</a></h4>
-                                                            <p class="item-price"><span>$649.00</span></p>
-                                                            <a href="#" class="btn btn-primary">Add to Cart</a>
-                                                        </div>                      
-                                                    </div>
-                                                </div>                              
-                                                <div class="col-sm-3">
-                                                    <div class="thumb-wrapper">
-                                                        <div class="img-box">
-                                                            <a href="#"><img src="images/K-POP-P0004.jpg" class="img-responsive img-fluid" alt=""></a>
-                                                        </div>
-                                                        <div class="thumb-content">
-                                                            <h4><a href="#">Regular-Irregular</a></h4>
-                                                            <p class="item-price"><span>$250.00</span></p>
-                                                            <a href="#" class="btn btn-primary">Add to Cart</a>
-                                                        </div>                      
-                                                    </div>
-                                                </div>
+                                                </c:forEach>
                                             </div>
                                         </div>
 
                                         <div class="item carousel-item" id="slide-product">
-                                            <div class="row">
-                                                <div class="col-sm-3">
-                                                    <div class="thumb-wrapper">
-                                                        <div class="img-box">
-                                                            <a href="#"><img src="images/K-POP-P0001.jpg" class="img-responsive img-fluid" alt=""></a>
-                                                        </div>
-                                                        <div class="thumb-content">
-                                                            <h4><a href="#">The War</a></h4>
-                                                            <p class="item-price"><span>$369.00</span></p>
 
-                                                            <a href="#" class="btn btn-primary">Add to Cart</a>
-                                                        </div>                      
+                                            <div class="row">
+                                                <c:forEach items="${productList}" var="p" varStatus="vs" > 
+                                                    <div class="col-sm-3">
+                                                        <div class="thumb-wrapper">
+                                                            <div class="img-box">
+                                                                <a href="GetProductDetail?productid=${p.productid}"><img src="images/${p.productid}.jpg" class="img-responsive img-fluid" alt="cover"></a>
+                                                            </div>
+                                                            <div class="thumb-content">
+                                                                <h4><a href="GetProductDetail?productid=${p.productid}">${p.productname}</a></h4>
+                                                                <p class="item-price"><span>${p.price} ฿</span></p>
+                                                                <form action="AddItemToCart" method="post">
+                                                                    <input type="hidden" value="${p.productid}" name="productid"/>
+                                                                    <input type="submit" class="btn btn-primary" value="Add To Cart">
+                                                                </form>
+                                                            </div>                      
+                                                        </div> 
                                                     </div>
-                                                </div>
-                                                <div class="col-sm-3">
-                                                    <div class="thumb-wrapper">
-                                                        <div class="img-box">
-                                                            <a href="#"><img src="images/K-POP-P0002.jpg" class="img-responsive img-fluid" alt=""></a>
-                                                        </div>
-                                                        <div class="thumb-content">
-                                                            <h4><a href="#">Summer Nights</a></h4>
-                                                            <p class="item-price"><span>$23.99</span></p>
-                                                            <a href="#" class="btn btn-primary">Add to Cart</a>
-                                                        </div>                      
-                                                    </div>
-                                                </div>      
-                                                <div class="col-sm-3">
-                                                    <div class="thumb-wrapper">
-                                                        <div class="img-box">
-                                                            <a href="#"><img src="images/K-POP-P0003.jpg" class="img-responsive img-fluid" alt=""></a>
-                                                        </div>
-                                                        <div class="thumb-content">
-                                                            <h4><a href="#">BBI BBI</a></h4>
-                                                            <p class="item-price"><span>$649.00</span></p>
-                                                            <a href="#" class="btn btn-primary">Add to Cart</a>
-                                                        </div>                      
-                                                    </div>
-                                                </div>                              
-                                                <div class="col-sm-3">
-                                                    <div class="thumb-wrapper">
-                                                        <div class="img-box">
-                                                            <a href="#"><img src="images/K-POP-P0004.jpg" class="img-responsive img-fluid" alt=""></a>
-                                                        </div>
-                                                        <div class="thumb-content">
-                                                            <h4><a href="#">Regular-Irregular</a></h4>
-                                                            <p class="item-price"><span>$250.00</span></p>
-                                                            <a href="#" class="btn btn-primary">Add to Cart</a>
-                                                        </div>                      
-                                                    </div>
-                                                </div>
+                                                </c:forEach>
                                             </div>
                                         </div>
 
@@ -310,204 +258,73 @@
                 </section>
                 <hr class="my-5">
             </div>
-        </main>
+        </main>    
 
-
-
-<!--older home-->
-
-
-        <%-- 
-    Document   : home
-    Created on : Nov 6, 2018, 3:43:57 PM
-    Author     : ariya boonchoo
---%>
-
-<%--<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>--%>
-<%--<%@page contentType="text/html" pageEncoding="UTF-8"%>--%>
-<!--<!DOCTYPE html>-->
-<!--<html>-->
-    <!--<head>-->
-        <!--<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">-->
-        <!--<title>JSP Page</title>-->
-
-        <!--<script src="https://code.jquery.com/jquery-3.3.1.js"></script>-->
-        <!--<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>-->
-        <!--<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>-->
-        <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
-        <!--<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">-->
-        <!--<style>-->
-            <!--/*@import url('https://fonts.googleapis.com/css?family=Abril+Fatface|Questrial');*/-->
-
-<!--            /*.container{*/
-                /*font-family: 'Abril Fatface', cursive;*/
-                /*font-family: 'Questrial', sans-serif;*/
-            /*}*/-->
-        <!--</style>-->
-    <!--</head>-->
-    <!--<body>--> 
-        <%--<jsp:include page="include/Header.jsp?title=Imagine ::"/>--%>
-        <!--<a href="profile.jsp">Profile</a><br>-->
-        <!--<a href="Register"> Register </a><br>-->
-        <!--<a href="Login"> Login </a><br>-->
-        <!--<h2>${custom.username}</h2><br>-->
-        <!--<a href="Logout"> Logout </a><br>-->
-
-        <!--    <form action="Search" method="post">
-                    search : <input type="text" name="search">&nbsp;&nbsp;
-                    <input type="submit">
-                </form>
-        -->
-
-        <table class="table" id="example" >
-            <thead>
-            <th>No.</th>
-            <th>Image</th>
-            <th>Product ID</th>
-            <th>Album Name</th>
-            <th>Artist</th>
-            <th>Gen</th>
-            <th>Price</th>
-        </thead>
-        <c:forEach items="${productList}" var="p" varStatus="vs" >
-            <tr>
-                <td>${vs.count}</td>
-                <td><img src="images/${p.genre}-${p.productid}.jpg" width="120"></td>
-            <!--<form action="RecentView" method="post">-->
-                <!--<input type="hidden" name="productid" value="productid" ${cookie.productid.value=='productid'?'onclick':''}>-->
-                <td><a href="GetProductDetail?productid=${p.productid}">${p.productid}</a></td>
-            <!--</form>-->    
-                <td>${p.productname}</a></td>
-                <td>${p.artist}</td>
-                <td>${p.genre}</td>
-                <td>${p.price} ฿</td>
-
-                <td><form action="AddItemToCart" method="post">
-                        <input type="hidden" value="${p.productid}" name="productid"/>
-
-                        <input type="submit" value="Add To Cart"/>
-                    </form>
-                </td>
-                <td><form action="Favorite" method="post">
-                        <input type="hidden" value="${p.productid}" name="productid"/>
-                        <input type="submit" value="Favorite"/>
-                    </form>
-                </td>
-            </tr>
-        </c:forEach>
-    </table>
-<!--    <h2>Recent View</h2>
-    <table  class="table" id="example" >
-        <thead>
-        <th>No.</th>
-        <th>Image</th>
-        <th>Product ID</th>
-        <th>Album Name</th>
-        <th>Artist</th>
-        <th>Gen</th>
-        <th>Price</th>
-    </thead>
-    <%--<c:forEach items="${cookie.productid.value}" var="p" varStatus="vs" >--%>
-        <tr>
-            <td>${vs.count}</td>
-            <td><img src="images/K-POP-${p.productid}.jpg" width="120"></td>
-            <td>${p.productid}</a></td>
-            <td><a href="GetProduct?productName=${p.productname}">${p.productname}</a></td>
-            <td>${p.artist}</td>
-            <td>${p.genre}</td>
-            <td>${p.price} ฿</td>
-
-            <td><form action="AddItemToCart" method="post">
-                    <input type="hidden" value="${p.productid}" name="productid"/>
-
-                    <input type="submit" value="Add To Cart"/>
-                </form>
-            </td>
-            <td><form action="Favorite" method="post">
-                    <input type="hidden" value="${p.productid}" name="productid"/>
-                    <input type="submit" value="Favorite"/>
-                </form>
-            </td>
-        </tr>
-    <%--</c:forEach>--%>
-</table>-->
-
-
-<!--<script>
-    $(document).ready(function () {
-        $('#example').DataTable();
-    });
-
-</script>
-</body>
-</html>-->
-
-
-    <!-- Footer -->
-    <footer class="py-5 bg-dark">
-        <div class="container">
-            <!--            <p class="m-0 text-center text-white">Copyright &copy; Your Website 2018</p>-->
-            <div class="row">
-                <div class="col-sm-8">
-                    <h1><a href="ProductList"><img src="images/logo-white.png" height="40px" class="imagine"></a></h1>
-                    <p style="color: #7e7e7e;font-size: 12px;">126 Pracha Uthit Rd., <br>Bang Mod, Thung Khru, <br>Bangkok 10140, <br>Thailand
-                        <br><span class="fa fa-phone-square"> +66 2470 8000</span>
-                        <br><span class="fa fa-envelope">  info@imagine.com</span>
-                    </p>
-                </div>
-                <div class="col-sm-4">
-                    <p style="font-size: 18px;font-weight: bold;color: #7e7e7e;padding-top: 20px;">About</p>
-                    <span class="footer-about"><a href="#" style="font-size: 12px;color: #7e7e7e;">Contact us</a><br>
-                        <a href="#" style="font-size: 12px;color: #7e7e7e;">Team</a></span>
-                    <p style="color: #7e7e7e;font-size: 12px;line-height: 80px;">&copy; imagine All rights reserved</p>
+        <!-- Footer -->
+        <footer class="py-5 bg-dark">
+            <div class="container">
+                <!--            <p class="m-0 text-center text-white">Copyright &copy; Your Website 2018</p>-->
+                <div class="row">
+                    <div class="col-sm-8">
+                        <h1><a href="ProductList"><img src="images/logo-white.png" height="40px" class="imagine"></a></h1>
+                        <p style="color: #7e7e7e;font-size: 12px;">126 Pracha Uthit Rd., <br>Bang Mod, Thung Khru, <br>Bangkok 10140, <br>Thailand
+                            <br><span class="fa fa-phone-square"> +66 2470 8000</span>
+                            <br><span class="fa fa-envelope">  info@imagine.com</span>
+                        </p>
+                    </div>
+                    <div class="col-sm-4">
+                        <p style="font-size: 18px;font-weight: bold;color: #7e7e7e;padding-top: 20px;">About</p>
+                        <span class="footer-about"><a href="#" style="font-size: 12px;color: #7e7e7e;">Contact us</a><br>
+                            <a href="#" style="font-size: 12px;color: #7e7e7e;">Team</a></span>
+                        <p style="color: #7e7e7e;font-size: 12px;line-height: 80px;">&copy; imagine All rights reserved</p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <!-- /.container -->
-    </footer>
+            <!-- /.container -->
+        </footer>
 
-    <!-- Bootstrap core JavaScript -->
-    <script type="text/javascript">
-        $('#carouselExample').on('slide.bs.carousel', function (e) {
-            var $e = $(e.relatedTarget);
-            var idx = $e.index();
-            var itemsPerSlide = 4;
-            var totalItems = $('.carousel-item').length;
+        <!-- Bootstrap core JavaScript -->
+        <script type="text/javascript">
+            $('#carouselExample').on('slide.bs.carousel', function (e) {
+                var $e = $(e.relatedTarget);
+                var idx = $e.index();
+                var itemsPerSlide = 4;
+                var totalItems = $('.carousel-item').length;
 
-            if (idx >= totalItems - (itemsPerSlide - 1)) {
-                var it = itemsPerSlide - (totalItems - idx);
-                for (var i = 0; i < it; i++) {
-                    // append slides to end
-                    if (e.direction == "left") {
-                        $('.carousel-item').eq(i).appendTo('.carousel-inner');
-                    } else {
-                        $('.carousel-item').eq(0).appendTo('.carousel-inner');
+                if (idx >= totalItems - (itemsPerSlide - 1)) {
+                    var it = itemsPerSlide - (totalItems - idx);
+                    for (var i = 0; i < it; i++) {
+                        // append slides to end
+                        if (e.direction == "left") {
+                            $('.carousel-item').eq(i).appendTo('.carousel-inner');
+                        } else {
+                            $('.carousel-item').eq(0).appendTo('.carousel-inner');
+                        }
                     }
                 }
-            }
-        });
-        $('#carouselExample2').on('slide.bs.carousel', function (e) {
+            });
+            $('#carouselExample2').on('slide.bs.carousel', function (e) {
 
-            var $e = $(e.relatedTarget);
-            var idx = $e.index();
-            var itemsPerSlide = 4;
-            var totalItems = $('.carousel-item').length;
+                var $e = $(e.relatedTarget);
+                var idx = $e.index();
+                var itemsPerSlide = 4;
+                var totalItems = $('.carousel-item').length;
 
-            if (idx >= totalItems - (itemsPerSlide - 1)) {
-                var it = itemsPerSlide - (totalItems - idx);
-                for (var i = 0; i < it; i++) {
-                    // append slides to end
-                    if (e.direction == "left") {
-                        $('.carousel-item').eq(i).appendTo('.carousel-inner');
-                    } else {
-                        $('.carousel-item').eq(0).appendTo('.carousel-inner');
+                if (idx >= totalItems - (itemsPerSlide - 1)) {
+                    var it = itemsPerSlide - (totalItems - idx);
+                    for (var i = 0; i < it; i++) {
+                        // append slides to end
+                        if (e.direction == "left") {
+                            $('.carousel-item').eq(i).appendTo('.carousel-inner');
+                        } else {
+                            $('.carousel-item').eq(0).appendTo('.carousel-inner');
+                        }
                     }
                 }
-            }
-        });
-    </script>
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+            });
+        </script>
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-</body>
+    </body>
 </html>

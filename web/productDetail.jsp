@@ -3,14 +3,13 @@
     Created on : Nov 6, 2018, 6:39:22 PM
     Author     : ariya boonchoo
 --%>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Imagine | ProductDetail</title>
+        <title>Imagine</title>
         <link rel="shortcut icon" href="images/icon.ico"/>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -26,73 +25,230 @@
         <!--Font awesome-->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 
-        <style>
-            @import url('https://fonts.googleapis.com/css?family=Abril+Fatface|Questrial');
-
-            .container{
-                font-family: 'Abril Fatface', cursive;
-                font-family: 'Questrial', sans-serif;
-            }
-        </style>
-        
     </head>
     <body>
-      
-           <jsp:include page="include/Header.jsp?title=Product Detail :: "/>
-         <div class="container"> 
-             <table style="margin-top: 80px;">
-                <tr>
-                    <td>Image : </td>
-                    <td><img src="images/${product.genre}-${product.productid}.jpg" width="120"></td>
-                </tr>
-                <tr>
-                    <td>Product Id: </td>
-                    <td>${product.productid}</td>
-                </tr>
-                <tr>
-                    <td>Product Name: </td>
-                    <td>${product.productname}</td>
-                </tr>
+        <jsp:include page="include/Header.jsp"/>
+        <main class="mt-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12" style="margin-bottom: 1%;margin-top: 2%;">Album Detail/ <b>${product.productname}</b></div>
+                </div>
+                <div class="card">
+                    <div class="row">
+                        <aside class="col-sm-5 border-right" style="padding-right:0 !important;">
+                            <article class="gallery-wrap"> 
+                                <div class="img-big-wrap">
+                                    <div><a href="images/${product.productid}.jpg"><img src="images/${product.productid}.jpg"></a></div>
+                                </div> <!-- slider-product.// -->
+                            </article> <!-- gallery-wrap .end// -->
+                        </aside>
+                        <aside class="col-sm-7">
+                            <article class="card-body p-5">
+                                <h3 class="title mb-3">${product.productname}</h3>
+
+                                <p class="price-detail-wrap"> 
+                                    <span class="price h3 text-warning"> 
+                                        <span class="num">${product.price}</span><span class="currency"> ฿</span>
+                                    </span> 
+                                </p> <!-- price-detail-wrap .// -->
+                                <dl class="item-property">
+                                    <dt>Description</dt>
+                                    <dd class="des"><p>Artist: ${product.artist}
+                                            <br>Genre: ${product.genre}
+                                            <br>Release Date: <fmt:formatDate value="${product.releasedate}" pattern="yyyy-MM-dd" />
+                                        </p></dd>
+                                </dl>
+                                <dl class="param param-feature">
+                                    <dt>Delivery</dt>
+                                    <dd class="des">EMS World Wide 490฿</dd>
+
+                                </dl>  <!-- item-property-hor .// -->
+                                <hr>
+                                <div class="row" style="margin-top:15px;">
+                                    <div class="col-sm-12" >         
+                                        <form action="Favorite" method="post">
+                                            <input type="hidden" value="${product.productid}" name="productid"/>
+                                            <button type="submit" class="btn btn-primary btn-danger">
+                                                <i class="fas fa-heart"></i> &nbsp;Favorite
+                                            </button>
+
+                                        </form>
+                                    </div> 
+                                </div>
+
+                                <div class="row" style="margin-top:7px;">            
+                                    <div class="col-sm-12">
+                                        <form action="AddItemToCart" method="post">
+                                            <input type="hidden" value="${product.productid}" name="productid"/>
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="fas fa-shopping-cart"></i> &nbsp;Add To Cart
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </article> <!-- card-body.// -->
+                        </aside> <!-- col.// -->
+                    </div> <!-- row.// -->
+                </div> <!-- card.// -->
+
+                <div class="tracklist">
+                    <div class="tracklist-head">
+                        <div class="row">
+                            <div class="col-sm-12" style="margin-bottom: 1%;margin-top: 2%;"><span class="tl-head">Tracklist</span></div>
+                        </div> <!--row-->
+                    </div>
+                    <hr class="my-5">
+                    <div class="tracklist-detail">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <audio controls id="player" style="width:450px;">
+                                    <source src="music/P0001_Ko Ko Bop.mp3" type="audio/mpeg">
+                                </audio>
+                            </div>
+                            <div class="col-sm-7 d-flex align-items-center">
+                                <p><b>${product.productname}</b></p>
+                            </div>
+                        </div> <!--row-->
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <audio controls id="player" style="width:450px;">
+                                    <source src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/15309/test.mp3" type="audio/mpeg">
+                                </audio>
+                            </div>
+                            <div class="col-sm-7 d-flex align-items-center">
+                                <p><b>${product.productname}</b></p>
+                            </div>
+                        </div> <!--row-->
+                    </div><!--tracklist-detail-->
+                </div> <!--tracklist-->
 
 
-<tr> 
-    <td>Tracklist : </td>
-                <c:forEach items="${product.tracklistList}" var="p">
-                <tr> 
-                    <td>${p.songname}</td>
-                  </tr>
-                       
-                </c:forEach>
-</tr>
-                <tr>
-                    <td>Price: </td>
-                    <td>${product.price}</td>
-                </tr>
-<tr>
-                    <td>Releasedate </td>
-                    <td>${product.releasedate}</td>
-                </tr>
-                <tr>
-<td><form action="AddItemToCartDetail" method="post">
-                        <input type="hidden" value="${product.productid}" name="productid"/>
+                <div class="review">
+                    <div class="review-head">
+                        <div class="row">
+                            <div class="col-sm-12" style="margin-bottom: 1%;margin-top: 2%;"><span class="tl-head">Review</span></div>
+                        </div> <!--row-->
+                    </div>
+                    <hr class="my-5">
+                    <div class="review-detail">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <p><fmt:formatDate value="${product.releasedate}" pattern="yyyy-MM-dd" /></p>
+                            </div>
+                            <div class="col-sm-3">
+                                <p>${product.productname}</p>
+                            </div>
+                            <div class="col-sm-7">
+                                <p>${product.productname}888888888888ddsfdmsflmdslm</p>
+                            </div>
+                        </div> <!--row-->
+                    </div><!--tracklist-detail-->
+                </div> <!--tracklist-->
 
-                        <input type="submit" value="Add To Cart"/>
-                    </form>
-                </td>
-                <td><form action="FavoriteDetail" method="post">
-                        <input type="hidden" value="${product.productid}" name="productid"/>
-                        <input type="submit" value="Favorite"/>
-                    </form>
-                </td>
-                </tr>
-            </table>
-        
-        <form action = "Review" method="post">
-            review by ${custom.username}<input type="text" name="comment">
+                <div class="back-btn" style="margin-bottom:20px;margin-top:70px;">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <a href="ProductList"><button type="button" class="btn btn-light btn-sm">Back</button></a>
+                        </div>
+                    </div> <!--row-->
+                </div> <!--tracklist-->
+            </div><!--container.//-->
+        </main>
 
-            <input type="submit" value="review">
-        </form>
-        <a href="ProductList"> Back to shop</a>
-        </div>
+
+        <!-- Footer -->
+        <footer class="py-5 bg-dark">
+            <div class="container">
+                <!--            <p class="m-0 text-center text-white">Copyright &copy; Your Website 2018</p>-->
+                <div class="row">
+                    <div class="col-sm-8">
+                        <h1><a href="ProductList"><img src="images/logo-white.png" height="40px" class="imagine"></a></h1>
+                        <p style="color: #7e7e7e;font-size: 12px;">126 Pracha Uthit Rd., <br>Bang Mod, Thung Khru, <br>Bangkok 10140, <br>Thailand
+                            <br><span class="fa fa-phone-square"> +66 2470 8000</span>
+                            <br><span class="fa fa-envelope">  info@imagine.com</span>
+                        </p>
+                    </div>
+                    <div class="col-sm-4">
+                        <p style="font-size: 18px;font-weight: bold;color: #7e7e7e;padding-top: 20px;">About</p>
+                        <span class="footer-about"><a href="#" style="font-size: 12px;color: #7e7e7e;">Contact us</a><br>
+                            <a href="#" style="font-size: 12px;color: #7e7e7e;">Team</a></span>
+                        <p style="color: #7e7e7e;font-size: 12px;line-height: 80px;">&copy; imagine All rights reserved</p>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container -->
+        </footer>
+
+        <!-- Bootstrap core JavaScript -->
+        <script type="text/javascript">
+            $('#carouselExample').on('slide.bs.carousel', function (e) {
+                var $e = $(e.relatedTarget);
+                var idx = $e.index();
+                var itemsPerSlide = 4;
+                var totalItems = $('.carousel-item').length;
+                if (idx >= totalItems - (itemsPerSlide - 1)) {
+                    var it = itemsPerSlide - (totalItems - idx);
+                    for (var i = 0; i < it; i++) {
+                        // append slides to end
+                        if (e.direction == "left") {
+                            $('.carousel-item').eq(i).appendTo('.carousel-inner');
+                        } else {
+                            $('.carousel-item').eq(0).appendTo('.carousel-inner');
+                        }
+                    }
+                }
+            });
+            $('#carouselExample2').on('slide.bs.carousel', function (e) {
+
+                var $e = $(e.relatedTarget);
+                var idx = $e.index();
+                var itemsPerSlide = 4;
+                var totalItems = $('.carousel-item').length;
+                if (idx >= totalItems - (itemsPerSlide - 1)) {
+                    var it = itemsPerSlide - (totalItems - idx);
+                    for (var i = 0; i < it; i++) {
+                        // append slides to end
+                        if (e.direction == "left") {
+                            $('.carousel-item').eq(i).appendTo('.carousel-inner');
+                        } else {
+                            $('.carousel-item').eq(0).appendTo('.carousel-inner');
+                        }
+                    }
+                }
+            });
+            var
+                    $player = $(".audio-ctrl"),
+                    $transcript = $(".audio-transcript");
+
+            $(".audio-ctrl").each(function () {
+
+                $(this).attr("aria-pressed", "false");
+
+                $(this).click(function (e) {
+                    e.preventDefault();
+
+                    $player.attr("aria-pressed", "false");
+
+                    if ($(this).hasClass("play")) {
+                        $(this).attr("aria-pressed", "true");
+                        // 2 sec delay to allow screen reader
+                        // to read button state
+                        setTimeout(function () {
+                            $("#player")[0].play();
+                        }, 2000);
+                    }
+                    if ($(this).hasClass("pause")) {
+                        $("#player")[0].pause();
+                        $(this).attr("aria-pressed", "true");
+                    }
+                    if ($(this).hasClass("read")) {
+                        $transcript.removeClass("visually-hidden").focus();
+                    }
+                });
+            });
+        </script>
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
     </body>
 </html>

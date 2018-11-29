@@ -52,10 +52,12 @@ public class LoginServlet extends HttpServlet {
                 && password != null && password.trim().length() > 0) {
             CustomerJpaController customJpaCtrl = new CustomerJpaController(utx, emf);
             custom = customJpaCtrl.findCustomer(username);
-            session.setAttribute("msg", "username or password is incorrect,Please try again!!");
-            if (custom != null) {                
+            session.setAttribute("msg", "username or password is incorrect, please try again.");
+            if (custom != null) { 
+                
                 if (custom.getUsername().equals(username) && custom.getPassword().equals((cryptWithMD5(password)))) {
                     if (session == null) {
+                        
                         session = request.getSession(true);
                     }else if(session != null){
                         session.setAttribute("msg", "");
