@@ -53,18 +53,24 @@ public class Orderitem implements Serializable {
     public Orderitem() {
     }
 
+    public Orderitem(Integer orderitemid) {
+        this.orderitemid = orderitemid;
+    }
+
     public Orderitem(Product product) {
         this(product, 1);
         
     }
-     public Orderitem(Product product, int quantity) {
+
+    public Orderitem(Product product, int quantity) {
         this.productProductid = product;
         this.quantity = quantity;
-        this.price = product.getPrice();
+//        this.salePrice = product.getPrice();
 
     }
-    public Orderitem(Integer orderitemid) {
-        this.orderitemid = orderitemid;
+
+    public double getTotalPrice() {
+        return this.quantity * this.price;
     }
 
     public Integer getOrderitemid() {
@@ -83,9 +89,6 @@ public class Orderitem implements Serializable {
         this.quantity = quantity;
     }
 
-     public double getTotalPrice() {
-        return this.quantity * this.price;
-    }
     public Double getPrice() {
         return price;
     }

@@ -48,6 +48,9 @@ public class Lineitem implements Serializable {
     @JoinColumn(name = "CART_CARTID", referencedColumnName = "CARTID")
     @ManyToOne(optional = false)
     private Cart cartCartid;
+    @JoinColumn(name = "PRODUCT_PRODUCTID", referencedColumnName = "PRODUCTID")
+    @ManyToOne(optional = false)
+    private Product productProductid;
 
     public Lineitem() {
     }
@@ -91,6 +94,14 @@ public class Lineitem implements Serializable {
 
     public void setCartCartid(Cart cartCartid) {
         this.cartCartid = cartCartid;
+    }
+
+    public Product getProductProductid() {
+        return productProductid;
+    }
+
+    public void setProductProductid(Product productProductid) {
+        this.productProductid = productProductid;
     }
 
     @Override

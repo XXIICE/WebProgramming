@@ -33,10 +33,12 @@ import jpa.model.controller.exceptions.RollbackFailureException;
  * @author ariya boonchoo
  */
 public class ConfirmToPayServlet extends HttpServlet {
- @PersistenceUnit(unitName = "ImaginePU")
+
+    @PersistenceUnit(unitName = "ImaginePU")
     EntityManagerFactory emf;
     @Resource
     UserTransaction utx;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -49,25 +51,24 @@ public class ConfirmToPayServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
-      if (session != null) {
+        if (session != null) {
             Customer custom = (Customer) session.getAttribute("custom");
-            if (custom!=null) {
+            if (custom != null) {
                 CustomerJpaController customJpa = new CustomerJpaController(utx, emf);
-                int point = custom.getPoint()+10;
+                int point = custom.getPoint() + 10;
                 custom.setPoint(point);
                 Productorder productorder = new Productorder();
                 ProductorderJpaController productorderJpaCtrl = new ProductorderJpaController(utx, emf);
                 productorder.setCustomerUsername(custom);
-                int orderid = productorderJpaCtrl.getProductorderCount()+1;
+                int orderid = productorderJpaCtrl.getProductorderCount() + 1;
                 productorder.setOrderid(orderid);
                 Cart cart = (Cart) session.getAttribute("cart");
                 productorder.setCartCartid(cart);
                 Payment pay = new Payment();
-            PaymentJpaController payJpaCtrl=new PaymentJpaController(utx, emf);
-           pay.setPaymentstatus("Confirm");
+                PaymentJpaController payJpaCtrl = new PaymentJpaController(utx, emf);
+                pay.setPaymentstatus("Confirm");
                 productorder.setPayment(pay);
-//                productorder.setPaymentPaymentid(pay);
-                productorder.setProductstatus("");
+                productorder.setProductstatus("Shipped");
                 try {
                     customJpa.edit(custom);
                     session.setAttribute("custom", custom);

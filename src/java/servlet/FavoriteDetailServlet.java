@@ -55,7 +55,7 @@ public class FavoriteDetailServlet extends HttpServlet {
             fav.add(p);
            
             session.setAttribute("fav", fav);
-            getServletContext().getRequestDispatcher("/ProductList").forward(request, response);
+            getServletContext().getRequestDispatcher("/productDetail.jsp").forward(request, response);
     }
     }
 

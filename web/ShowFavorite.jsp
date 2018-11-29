@@ -33,13 +33,13 @@
                 <th>Product ID</th>            
                 <th>Product Name</th> 
                 <th>Price per piece</th> 
-               
+                <th></th>
                 </thead>
                 <c:set var="Items" value="${sessionScope.fav.lineItems}"/>
                 
                 <c:forEach items="${fav.lineItems}" var="f" varStatus="vs">
                     <tr>
-                        <td><img src="images/KPOP-${f.product.productid}.jpg" width="120"></td>
+                        <td><img src="images/${f.product.genre}-${f.product.productid}.jpg" width="120"></td>
                         <td>${vs.count}</td>
                         <td><a href="GetProduct?productid=${f.product.productid}">${f.product.productid}</a></td>
                         <td>${f.product.productname}</td>
@@ -54,7 +54,12 @@
                                 </tr>
                             </table>
                         </td>
-                        
+                        <td><form action="AddItemToCartFav" method="post">
+                            <input type="hidden" value="${f.product.productid}" name="productid"/>
+
+                            <input type="submit" value="Add To Cart"/>
+                        </form>
+                    </td>
                     </tr>
                 </c:forEach>
             </table>

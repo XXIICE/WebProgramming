@@ -110,6 +110,10 @@
         <servlet-name>ConfirmToPayServlet</servlet-name>
         <servlet-class>servlet.ConfirmToPayServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddItemToCartFavServlet</servlet-name>
+        <servlet-class>servlet.AddItemToCartFavServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -209,6 +213,10 @@
     <servlet-mapping>
         <servlet-name>ConfirmToPayServlet</servlet-name>
         <url-pattern>/ConfirmToPay</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddItemToCartFavServlet</servlet-name>
+        <url-pattern>/AddItemToCartFav</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

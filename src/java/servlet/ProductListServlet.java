@@ -1,4 +1,4 @@
-/*
+ /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -28,10 +28,12 @@ import jpa.model.controller.ProductJpaController;
  * @author ariya boonchoo
  */
 public class ProductListServlet extends HttpServlet {
-  @PersistenceUnit(unitName = "ImaginePU")
+
+    @PersistenceUnit(unitName = "ImaginePU")
     EntityManagerFactory emf;
     @Resource
     UserTransaction utx;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -50,7 +52,7 @@ public class ProductListServlet extends HttpServlet {
 //        Query q = em.createQuery("select p FROM Product p order by p.releasedate desc");
 //        Query q = em.createNamedQuery("select p from Product p order by p.releasedate desc");
 //        q.setParameter("p.releasedate", date);
-        List<Product>productList = productJpaCtrl.findProductEntities();
+        List<Product> productList = productJpaCtrl.findProductEntities();
 //        List<Product>productList =q.getResultList();
         request.setAttribute("productList", productList);
         getServletContext().getRequestDispatcher("/home.jsp").forward(request, response);

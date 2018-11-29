@@ -34,13 +34,13 @@
                 font-family: 'Questrial', sans-serif;
             }
         </style>
-        
+
     </head>
     <body>
-      
-           <jsp:include page="include/Header.jsp?title=Product Detail :: "/>
-         <div class="container"> 
-             <table style="margin-top: 80px;">
+
+        <jsp:include page="include/Header.jsp?title=Product Detail :: "/>
+        <div class="container"> 
+            <table style="margin-top: 80px;">
                 <tr>
                     <td>Image : </td>
                     <td><img src="images/${product.genre}-${product.productid}.jpg" width="120"></td>
@@ -55,44 +55,44 @@
                 </tr>
 
 
-<tr> 
-    <td>Tracklist : </td>
-                <c:forEach items="${product.tracklistList}" var="p">
-                
-                    <td>${p.tracklistPK.songname}</td>
-              
-                       
-                </c:forEach>
-</tr>
+                <tr> 
+                    <td>Tracklist : </td>
+                    <c:forEach items="${product.tracklistList}" var="p">
+
+                        <td>${p.tracklistPK.songname}</td>
+
+
+                    </c:forEach>
+                </tr>
                 <tr>
                     <td>Price: </td>
                     <td>${product.price}</td>
                 </tr>
-<tr>
+                <tr>
                     <td>Releasedate </td>
                     <td>${product.releasedate}</td>
                 </tr>
                 <tr>
-<td><form action="AddItemToCartDetail" method="post">
-                        <input type="hidden" value="${product.productid}" name="productid"/>
+                    <td><form action="AddItemToCartDetail" method="post">
+                            <input type="hidden" value="${product.productid}" name="productid"/>
 
-                        <input type="submit" value="Add To Cart"/>
-                    </form>
-                </td>
-                <td><form action="FavoriteDetail" method="post">
-                        <input type="hidden" value="${product.productid}" name="productid"/>
-                        <input type="submit" value="Favorite"/>
-                    </form>
-                </td>
+                            <input type="submit" value="Add To Cart"/>
+                        </form>
+                    </td>
+                    <td><form action="FavoriteDetail" method="post">
+                            <input type="hidden" value="${product.productid}" name="productid"/>
+                            <input type="submit" value="Favorite"/>
+                        </form>
+                    </td>
                 </tr>
             </table>
-        
-        <form action = "Review" method="post">
-            review by ${custom.username}<input type="text" name="comment">
 
-            <input type="submit" value="review">
-        </form>
-        <a href="ProductList"> Back to shop</a>
+<!--            <form action = "Review" method="post">
+                review by ${custom.username}<input type="text" name="comment">
+
+                <input type="submit" value="review">
+            </form>-->
+            <a href="ProductList"> Back to shop</a>
         </div>
     </body>
 </html>

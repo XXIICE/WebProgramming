@@ -34,11 +34,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p")
     , @NamedQuery(name = "Product.findByProductid", query = "SELECT p FROM Product p WHERE p.productid = :productid")
-    , @NamedQuery(name = "Product.findByProductname", query = "SELECT p FROM Product p WHERE lower(p.productname) Like :productname")//change
-    , @NamedQuery(name = "Product.findByArtist", query = "SELECT p FROM Product p WHERE lower(p.artist) Like :artist")//change
+    , @NamedQuery(name = "Product.findByProductname", query = "SELECT p FROM Product p WHERE lower(p.productname) Like :productname")
+    , @NamedQuery(name = "Product.findByArtist", query = "SELECT p FROM Product p WHERE lower(p.artist) Like :artist")
     , @NamedQuery(name = "Product.findByGenre", query = "SELECT p FROM Product p WHERE p.genre = :genre")
-    , @NamedQuery(name = "Product.findByReleasedate", query = "SELECT p FROM Product p WHERE p.releasedate = :releasedate")
-    , @NamedQuery(name = "Product.findByPrice", query = "SELECT p FROM Product p WHERE p.price = :price")})
+    , @NamedQuery(name = "Product.findByPrice", query = "SELECT p FROM Product p WHERE p.price = :price")
+    , @NamedQuery(name = "Product.findByReleasedate", query = "SELECT p FROM Product p WHERE p.releasedate = :releasedate")})
 public class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -61,12 +61,13 @@ public class Product implements Serializable {
     @Size(max = 20)
     @Column(name = "GENRE")
     private String genre;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "PRICE")
+    private double price;
     @Column(name = "RELEASEDATE")
     @Temporal(TemporalType.DATE)
     private Date releasedate;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "PRICE")
-    private Double price;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productProductid")
     private List<Review> reviewList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
@@ -75,6 +76,8 @@ public class Product implements Serializable {
     private List<Favorite> favoriteList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productProductid")
     private List<Orderitem> orderitemList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productProductid")
+    private List<Lineitem> lineitemList;
 
     public Product() {
     }
@@ -83,10 +86,11 @@ public class Product implements Serializable {
         this.productid = productid;
     }
 
-    public Product(String productid, String productname, String artist) {
+    public Product(String productid, String productname, String artist, double price) {
         this.productid = productid;
         this.productname = productname;
         this.artist = artist;
+        this.price = price;
     }
 
     public String getProductid() {
@@ -121,20 +125,20 @@ public class Product implements Serializable {
         this.genre = genre;
     }
 
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
     public Date getReleasedate() {
         return releasedate;
     }
 
     public void setReleasedate(Date releasedate) {
         this.releasedate = releasedate;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
     }
 
     @XmlTransient
@@ -171,6 +175,15 @@ public class Product implements Serializable {
 
     public void setOrderitemList(List<Orderitem> orderitemList) {
         this.orderitemList = orderitemList;
+    }
+
+    @XmlTransient
+    public List<Lineitem> getLineitemList() {
+        return lineitemList;
+    }
+
+    public void setLineitemList(List<Lineitem> lineitemList) {
+        this.lineitemList = lineitemList;
     }
 
     @Override

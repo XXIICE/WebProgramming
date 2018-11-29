@@ -56,7 +56,7 @@ public class PaymentServlet extends HttpServlet {
         if (session != null) {
             if (cart != null) {
                 session.setAttribute("cart", cart);
-            }
+            
             if (custom != null) {
 
                 Payment pay = new Payment();
@@ -66,7 +66,8 @@ public class PaymentServlet extends HttpServlet {
                 pay.setPaymentstatus("Not Confirm to Pay.");
                 Productorder productorder = new Productorder();
                 ProductorderJpaController productorderJpaCtrl = new ProductorderJpaController(utx, emf);
-
+                int orderid = productorderJpaCtrl.getProductorderCount() + 1;
+                productorder.setOrderid(orderid);
 //                pay.setProductorder(productorder);
                 pay.setProductorderOrderid(productorder);
                 try {
@@ -81,7 +82,7 @@ public class PaymentServlet extends HttpServlet {
                     Logger.getLogger(PaymentServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        }
+        }}
         getServletContext().getRequestDispatcher("/Payment.jsp").forward(request, response);
     }
 

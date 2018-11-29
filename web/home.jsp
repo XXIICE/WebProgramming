@@ -374,10 +374,10 @@
                  ${messageSearch}
                 <td>${vs.count}</td>
                 <td><img src="images/${p.genre}-${p.productid}.jpg" width="120"></td>
-            <!--<form action="RecentView" method="post">-->
-                <!--<input type="hidden" name="productid" value="productid" ${cookie.productid.value=='productid'?'onclick':''}>-->
+            <form action="RecentView" method="post">
+                <input type="hidden" name="productid" value="productid" ${cookie.productid.value=='productid'?'checked':''}>
                 <td><a href="GetProductDetail?productid=${p.productid}">${p.productid}</a></td>
-            <!--</form>-->    
+            </form>    
                 <td>${p.productname}</a></td>
                 <td>${p.artist}</td>
                 <td>${p.genre}</td>
@@ -397,9 +397,12 @@
             </tr>
         </c:forEach>
     </table>
-<!--    <h2>Recent View</h2>
-    <table  class="table" id="example" >
-        <thead>
+    <h2>Recent View</h2>
+    <div class="re">
+        ${cookie.productid.value}
+    </div>
+    <!--<table  class="table" id="example" >-->
+<!--        <thead>
         <th>No.</th>
         <th>Image</th>
         <th>Product ID</th>
@@ -407,13 +410,13 @@
         <th>Artist</th>
         <th>Gen</th>
         <th>Price</th>
-    </thead>
+    </thead>-->
     <%--<c:forEach items="${cookie.productid.value}" var="p" varStatus="vs" >--%>
-        <tr>
+<!--        <tr>
             <td>${vs.count}</td>
-            <td><img src="images/K-POP-${p.productid}.jpg" width="120"></td>
-            <td>${p.productid}</a></td>
-            <td><a href="GetProduct?productName=${p.productname}">${p.productname}</a></td>
+            <td><img src="images/${p.genre}-${p.productid}.jpg" width="120"></td>
+            <td><a href="GetProductDetail?productid=${p.productid}">${p.productid}</a></td>
+            <td>${p.productname}</td>
             <td>${p.artist}</td>
             <td>${p.genre}</td>
             <td>${p.price} ฿</td>
@@ -432,7 +435,7 @@
         </tr>
     <%--</c:forEach>--%>
 </table>-->
-
+    <!--<a href="RecentView">Re</a>-->
 
 <!--<script>
     $(document).ready(function () {

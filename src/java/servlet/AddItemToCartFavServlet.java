@@ -7,7 +7,6 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.annotation.Resource;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
@@ -17,21 +16,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
+import jpa.model.Customer;
 import jpa.model.Product;
-import jpa.model.Tracklist;
 import jpa.model.controller.ProductJpaController;
+import model.ShoppingCart2;
 
 /**
  *
  * @author ariya boonchoo
  */
-public class GetTracklistServlet extends HttpServlet {
-
-    @PersistenceUnit(unitName = "ImaginePU")
+public class AddItemToCartFavServlet extends HttpServlet {
+  @PersistenceUnit(unitName = "ImaginePU")
     EntityManagerFactory emf;
     @Resource
     UserTransaction utx;
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -44,27 +42,38 @@ public class GetTracklistServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
-//        String productid = request.getParameter("productid");
-        Product productObj = (Product) session.getAttribute("product");
-
-//        if (productid != null) {
-
-if (productObj != null) {
-            ProductJpaController productJpaCtrl = new ProductJpaController(utx, emf);
-            Product product = productJpaCtrl.findProduct(productObj.getProductid());
-//            Product product = productJpaCtrl.findProduct(productid);
-
-            if (product != null) {
-                List<Tracklist> tracklist = product.getTracklistList();
-                session.setAttribute("tracklist", tracklist);
-                getServletContext().getRequestDispatcher("/productDetail.jsp").forward(request, response);
-//                getServletContext().getRequestDispatcher("/GetProduct").forward(request, response);
-
-//            }  
-            }
+        ShoppingCart2 cart = (ShoppingCart2) session.getAttribute("cart");
+        String productid = request.getParameter("productid");
+        Customer custom = (Customer) session.getAttribute("custom");
+        if (cart == null) {
+            cart = new ShoppingCart2();
+            session.setAttribute("cart", cart);
         }
-//getServletContext().getRequestDispatcher("/productDetail.jsp").forward(request, response);
-    }
+        ProductJpaController productJpaCtrl = new ProductJpaController(utx, emf);
+        Product p = productJpaCtrl.findProduct(productid);
+        if (productid != null) {
+            cart.add(p);
+//            if (custom != null) {
+//                Cart ca = new Cart();
+//                CartJpaController cartJpaCtrl = new CartJpaController(utx, emf);
+//                int idC = cartJpaCtrl.getCartCount()+1;
+//                ca.setCartid(idC);
+////                    ca.setCartid(1);
+////                    ca.setLineitemList(lineitemList);
+//                try {
+//                    cartJpaCtrl.create(ca);
+//                } catch (PreexistingEntityException ex) {
+//                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                } catch (RollbackFailureException ex) {
+//                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                } catch (Exception ex) {
+//                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+            }
+            session.setAttribute("cart", cart);
+            getServletContext().getRequestDispatcher("/ShowFavorite").forward(request, response);
+
+        }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
