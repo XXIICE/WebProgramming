@@ -9,29 +9,27 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import javax.annotation.Resource;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
+import javax.persistence.Query;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
 import jpa.model.Product;
-import jpa.model.Tracklist;
 import jpa.model.controller.ProductJpaController;
 
 /**
  *
  * @author ariya boonchoo
  */
-public class GetTracklistServlet extends HttpServlet {
-
-    @PersistenceUnit(unitName = "ImaginePU")
+public class productDiv2Servlet extends HttpServlet {
+ @PersistenceUnit(unitName = "ImaginePU")
     EntityManagerFactory emf;
     @Resource
     UserTransaction utx;
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -43,27 +41,17 @@ public class GetTracklistServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
-//        String productid = request.getParameter("productid");
-        Product productObj = (Product) session.getAttribute("product");
-
-//        if (productid != null) {
-
-if (productObj != null) {
-            ProductJpaController productJpaCtrl = new ProductJpaController(utx, emf);
-            Product product = productJpaCtrl.findProduct(productObj.getProductid());
-//            Product product = productJpaCtrl.findProduct(productid);
-
-            if (product != null) {
-                List<Tracklist> tracklist = product.getTracklistList();
-                session.setAttribute("tracklist", tracklist);
-                getServletContext().getRequestDispatcher("/productDetail.jsp").forward(request, response);
-//                getServletContext().getRequestDispatcher("/GetProduct").forward(request, response);
-
-//            }  
-            }
-        }
-//getServletContext().getRequestDispatcher("/productDetail.jsp").forward(request, response);
+         ProductJpaController productJpaCtrl = new ProductJpaController(utx, emf);
+        Product pro = new Product();
+//        String date = request.getParameter("releasedate");
+        EntityManager em = emf.createEntityManager();
+        Query q = em.createQuery("select p FROM Product p where p.releasedate <= '2018-11-28' and p.releasedate >='2018-11-14' order by p.releasedate desc");
+//        Query q = em.createNamedQuery("select p from Product p order by p.releasedate desc");
+//        q.setParameter("p.releasedate", date);
+//        List<Product>productList = productJpaCtrl.findProductEntities();
+        List<Product>productDiv2 =q.getResultList();
+        request.setAttribute("productDiv2", productDiv2);
+        getServletContext().getRequestDispatcher("/home.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

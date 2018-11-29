@@ -7,6 +7,10 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
@@ -16,19 +20,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
-import jpa.model.Product;
-import jpa.model.controller.ProductJpaController;
-import model.Favorite;
+import jpa.model.Customer;
+import jpa.model.controller.CustomerJpaController;
+import jpa.model.controller.exceptions.NonexistentEntityException;
+import jpa.model.controller.exceptions.RollbackFailureException;
 
 /**
  *
  * @author ariya boonchoo
  */
-public class FavoriteDetailServlet extends HttpServlet {
-@PersistenceUnit(unitName = "ImaginePU")
+public class NewAddressServlet extends HttpServlet {
+
+    @PersistenceUnit(unitName = "ImaginePU")
     EntityManagerFactory emf;
     @Resource
     UserTransaction utx;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,23 +47,36 @@ public class FavoriteDetailServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         HttpSession session = request.getSession(false);
-        Favorite fav = (Favorite) session.getAttribute("fav");
-        String productid = request.getParameter("productid");
+        HttpSession session = request.getSession(false);
+        String newaddress = request.getParameter("newaddress");
         if (session != null) {
+            Customer custom = (Customer) session.getAttribute("custom");
+            if (custom != null) {
+                CustomerJpaController customJpa = new CustomerJpaController(utx, emf);
+//                custom.setUsername(custom.getUsername());
+//                custom.setCreditcardnumber(custom.getCreditcardnumber());
+//                custom.setEmail(custom.getEmail());
+//                custom.setFirstname(custom.getFirstname());
+//                custom.setLastname(custom.getLastname());
+//                custom.setPassword(custom.getPassword());
+//                custom.setPoint(custom.getPoint());
+                custom.setAddress(newaddress);
 
-            if (fav == null) {
-                fav = new Favorite();
-                session.setAttribute("fav", fav);
+                try {
+                    customJpa.edit(custom);
+//                    customJpa.create(custom);
+                    session.setAttribute("custom", custom);
+                    getServletContext().getRequestDispatcher("/Payment.jsp").forward(request, response);
+                } catch (NonexistentEntityException ex) {
+                    Logger.getLogger(NewAddressServlet.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (RollbackFailureException ex) {
+                    Logger.getLogger(NewAddressServlet.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (Exception ex) {
+                    Logger.getLogger(NewAddressServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-            ProductJpaController productJpaCtrl = new ProductJpaController(utx, emf);
-
-            Product p = productJpaCtrl.findProduct(productid);
-            fav.add(p);
-           
-            session.setAttribute("fav", fav);
-            getServletContext().getRequestDispatcher("/productDetail.jsp").forward(request, response);
-    }
+        }
+        getServletContext().getRequestDispatcher("/Payment.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -58,6 +58,8 @@ public class GetProductDetailServlet extends HttpServlet {
             ProductJpaController productJpaCtrl = new ProductJpaController(utx, emf);
             Product product = productJpaCtrl.findProduct(productid);
             session.setAttribute("product", product);
+//            TracklistJpaController trackJpaCrl = new TracklistJpaController(utx, emf);
+//            List<Tracklist> tracklist = trackJpaCrl.findTracklistEntities();
 //            List<Tracklist> tracklist = product.getTracklistList();
 //            session.setAttribute("tracklist", tracklist);
             getServletContext().getRequestDispatcher("/productDetail.jsp").forward(request, response);

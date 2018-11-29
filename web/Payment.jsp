@@ -3,12 +3,17 @@
     Created on : Nov 15, 2018, 6:23:36 PM
     Author     : ariya boonchoo
 --%>
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
+        <<<<<<< HEAD
         <title>Imagine</title>
         <link rel="shortcut icon" href="images/icon.ico"/>
         <meta charset="utf-8">
@@ -25,7 +30,15 @@
         <!--Font awesome-->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 
+        =======
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Imagine | Payment</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
+
+        >>>>>>> origin/master
     </head>
+    <<<<<<< HEAD
     <body style="background-color:#f3f3f3;">
         <jsp:include page="include/Header.jsp"/>
 
@@ -62,44 +75,37 @@
                                 </div>  
                             </div> 
                             <hr class="md-5">
-                            <div class="row" style="font-size:14px;">   
-                                <div class="col-sm-1">
-                                    <strong class="align-self-center">1</strong>
-                                </div>    
-                                <div class="col-sm-2 text-md-left">
-                                    <a class="thumbnail pull-left" href="#"> <img class="media-object" src="images/P0004.jpg" style="width: 150px;"> </a>
-                                </div>    
-                                <div class="col-sm-3">
-                                    <div class="media-body text-md-left" style="line-height:20px;">
-                                        <strong><a href="GetProductDetail?productid=${p.productid}" style="font-size:18px;">Product name</a></strong><br>
-                                        <span> by Brand name</span><br>
-                                        <span>Status: </span><span class="text-success"><strong>In Stock</strong></span>
-                                    </div>
-                                </div>    
-                                <div class="col-sm-2">
-                                    <p>5</p>
-                                </div>    
-                                <div class="col-sm-2">
-                                    <p>256</p>
-                                </div>    
-                                <div class="col-sm-2">
-                                    <p>245558</p>
-                                </div>  
-                            </div>
+                            <c:set var="Items" value="${sessionScope.cart.lineItems}"/>
+                            <c:forEach items="${cart.lineItems}" var="p" varStatus="vs">
+                                <div class="row" style="font-size:14px;">   
+                                    <div class="col-sm-1">
+                                        <strong class="align-self-center">${vs.count}</strong>
+                                    </div>    
+                                    <div class="col-sm-2 text-md-left">
+                                        <a class="thumbnail pull-left" href="GetProductDetail?productid=${p.product.productid}"> <img class="media-object" src="images/P0004.jpg" style="width: 150px;"> </a>
+                                    </div>    
+                                    <div class="col-sm-3">
+                                        <div class="media-body text-md-left" style="line-height:20px;">
+                                            <strong><a hhref="GetProductDetail?productid=${p.product.productid}" style="font-size:18px;">${p.product.productname}</a></strong><br>
+                                            <span> by ${p.product.artist}</span><br>
+                                            <span>Status: </span><span class="text-success"><strong>In Stock</strong></span>
+                                        </div>
+                                    </div>    
+                                    <div class="col-sm-3">
+                                        <p>${p.quantity}</p>
+                                    </div>    
+                                    <div class="col-sm-3">
+                                        <p>${p.salePrice} ฿</p>
+                                    </div>    
+                                </div>
+                            </c:forEach>
                             <hr class="md-5">
                             <div class="row">
                                 <div class="col-sm-1"></div>
                                 <div class="col-sm-2"></div>
                                 <div class="col-sm-3"></div>
-                                <div class="col-sm-2"></div>
-                                <div class="col-sm-2"></div>
-                                <div class="col-sm-2">
-                                    <!--                                    <div class="d-flex align-items-center" style="text-align:right;margin:5px;">
-                                                                            <div class="" style="margin:5px;line-height:17px;width:100%">
-                                                                                Total price: <b><fmt:formatNumber value="" pattern="#,##0.00"/>0.00฿</b><br>
-                                                                                <small style="font-size:11px;color:#950514;"> + Shipping cost 490฿</small>
-                                                                            </div>
-                                                                        </div>-->
+                                <div class="col-sm-3"></div>
+                                <div class="col-sm-3">
                                 </div>
                             </div>
                         </div>
@@ -115,10 +121,10 @@
                                     <div class="text-md-left" style="margin:3%;">
                                         <div class="row" style="margin-bottom:2%;">
                                             <div class="col-4">
-                                                <strong style="font-size:18px;">Name</strong><br><span style="font-size:14px;">Waranya Orrachai</span>
+                                                <strong style="font-size:18px;">Name</strong><br><span style="font-size:14px;">${custom.firstname} &nbsp;&nbsp;&nbsp;${custom.lastname}</span>
                                             </div>
                                             <div class="col-6">
-                                                <strong style="font-size:18px;">E-mail</strong><br><span style="font-size:14px;">sadafsf@gmail.com</span>
+                                                <strong style="font-size:18px;">E-mail</strong><br><span style="font-size:14px;">${custom.email}</span>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -126,7 +132,7 @@
                                                 <strong style="font-size:18px;">Address</strong><br>
                                                 <input type="radio" name="address" size="200" data-toggle="collapse" data-target="#demo1"><span style="font-size:14px;"> Primary Address</span><br>
                                                 <div id="demo1" class="collapse">
-                                                    <span style="padding-left:18px;"><small>87/2dasjdlkaczcs</small></span>
+                                                    <span style="padding-left:18px;"><small>${custom.address}</small></span>
                                                 </div>
                                                 <input type="radio" name="address" size="200" data-toggle="collapse" data-target="#demo2"><span style="font-size:14px;"> New Address</span>
                                                 <div id="demo2" class="collapse" style="width:500px;">
@@ -137,7 +143,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-6">
-                                                <strong style="font-size:18px;">Credit Card</strong><br><span style="font-size:14px;">4523685625632145</span>
+                                                <strong style="font-size:18px;">Credit Card</strong><br><span style="font-size:14px;">${custom.creditcardnumber}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -146,56 +152,22 @@
                         </div>
                     </div>
                     <br>
-                    <div class="row">
-                        <div class="col-sm-12">
-                        <div class="d-flex align-items-center" style="text-align:right;margin:5px;">
-                            <div class="" style="margin:5px;line-height:17px;width:100%">
-                                <small style="font-size:11px;color:#950514;">Discount by 2000 Point</small><br>
-                                Total price: <b><fmt:formatNumber value="${cart.totalPrice}" pattern="#,##0.00"/>฿</b>
-                            </div>
-                            <div class="d-inline-block" style="margin-top:2px;margin-right:5px;">
-                                <a href="Payment?productid=${p.product.productid}" class="btn btn-success" style="padding-left:40px;padding-right:40px;">Buy</a>
+                    <c:forEach items="${cart.lineItems}" var="p" varStatus="vs">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="d-flex align-items-center" style="text-align:right;margin:5px;">
+                                    <div class="" style="margin:5px;line-height:17px;width:100%">
+                                        <small style="font-size:11px;color:#950514;">Discount by ${custom.point} Point</small><br>
+                                        Total price: <b><fmt:formatNumber value="${p.totalPrice}" pattern="#,###.00"/>฿</b>
+                                    </div>
+                                    <div class="d-inline-block" style="margin-top:2px;margin-right:5px;">
+                                        <a href="ConfirmToPay?productid=${p.product.productid}" class="btn btn-success" style="padding-left:40px;padding-right:40px;">Buy</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    </div>
+                    </c:forEach>  
                     <br>
-
-
-
-                    <!--                            <table class="table table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                            <th class="text-md-left" style="padding-left:8%;">Product</th>
-                                                            <th class="text-center">Quantity</th>
-                                                            <th class="text-center">Price</th>
-                                                            <th class="text-center">Total</th>
-                                                            <th> </th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        
-                                                        <tr>
-                                                            <td class="col-sm-8 col-md-6">
-                                                                <div class="media" style="margin-left:10%;">
-                                                                    <a class="thumbnail pull-left" href="#"> <img class="media-object" src="images/P0004.jpg" style="width: 100px;"> </a>
-                                                                    <div class="media-body text-md-left" style="margin-left:3%;line-height:15px;">
-                                                                        <h4><a href="#">Product name</a></h4>
-                                                                        <h5> by <a href="#">Brand name</a></h5>
-                                                                        <span>Status: </span><span class="text-success"><strong>In Stock</strong></span>
-                                                                    </div>
-                                                                </div></td>
-                                                            <td class="col-sm-1 col-md-1 text-center"><strong>5</strong></td>
-                                                            <td class="col-sm-1 col-md-1 text-center"><strong>$4.87</strong></td>
-                                                            <td class="col-sm-1 col-md-1 text-center"><strong>$14.61</strong></td>
-                                                        </tr>
-                                                        
-                                                    </tbody>
-                                                </table>
-                                                <hr>-->
-
-
-
                 </section>
             </div>
         </main>

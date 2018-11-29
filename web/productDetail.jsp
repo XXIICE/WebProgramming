@@ -136,7 +136,7 @@
                                 <p><fmt:formatDate value="${product.releasedate}" pattern="yyyy-MM-dd" /></p>
                             </div>
                             <div class="col-sm-3">
-                                <p>${product.productname}</p>
+                                <p>${custom.username}</p>
                             </div>
                             <div class="col-sm-7">
                                 <p>${product.productname}888888888888ddsfdmsflmdslm</p>

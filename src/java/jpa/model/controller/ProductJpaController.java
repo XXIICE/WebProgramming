@@ -19,6 +19,7 @@ import javax.transaction.UserTransaction;
 import jpa.model.Tracklist;
 import jpa.model.Favorite;
 import jpa.model.Orderitem;
+import jpa.model.Lineitem;
 import jpa.model.Product;
 import jpa.model.controller.exceptions.IllegalOrphanException;
 import jpa.model.controller.exceptions.NonexistentEntityException;
@@ -55,6 +56,9 @@ public class ProductJpaController implements Serializable {
         if (product.getOrderitemList() == null) {
             product.setOrderitemList(new ArrayList<Orderitem>());
         }
+        if (product.getLineitemList() == null) {
+            product.setLineitemList(new ArrayList<Lineitem>());
+        }
         EntityManager em = null;
         try {
             utx.begin();
@@ -83,6 +87,12 @@ public class ProductJpaController implements Serializable {
                 attachedOrderitemList.add(orderitemListOrderitemToAttach);
             }
             product.setOrderitemList(attachedOrderitemList);
+            List<Lineitem> attachedLineitemList = new ArrayList<Lineitem>();
+            for (Lineitem lineitemListLineitemToAttach : product.getLineitemList()) {
+                lineitemListLineitemToAttach = em.getReference(lineitemListLineitemToAttach.getClass(), lineitemListLineitemToAttach.getLineitemid());
+                attachedLineitemList.add(lineitemListLineitemToAttach);
+            }
+            product.setLineitemList(attachedLineitemList);
             em.persist(product);
             for (Review reviewListReview : product.getReviewList()) {
                 Product oldProductProductidOfReviewListReview = reviewListReview.getProductProductid();
@@ -120,6 +130,15 @@ public class ProductJpaController implements Serializable {
                     oldProductProductidOfOrderitemListOrderitem = em.merge(oldProductProductidOfOrderitemListOrderitem);
                 }
             }
+            for (Lineitem lineitemListLineitem : product.getLineitemList()) {
+                Product oldProductProductidOfLineitemListLineitem = lineitemListLineitem.getProductProductid();
+                lineitemListLineitem.setProductProductid(product);
+                lineitemListLineitem = em.merge(lineitemListLineitem);
+                if (oldProductProductidOfLineitemListLineitem != null) {
+                    oldProductProductidOfLineitemListLineitem.getLineitemList().remove(lineitemListLineitem);
+                    oldProductProductidOfLineitemListLineitem = em.merge(oldProductProductidOfLineitemListLineitem);
+                }
+            }
             utx.commit();
         } catch (Exception ex) {
             try {
@@ -152,6 +171,8 @@ public class ProductJpaController implements Serializable {
             List<Favorite> favoriteListNew = product.getFavoriteList();
             List<Orderitem> orderitemListOld = persistentProduct.getOrderitemList();
             List<Orderitem> orderitemListNew = product.getOrderitemList();
+            List<Lineitem> lineitemListOld = persistentProduct.getLineitemList();
+            List<Lineitem> lineitemListNew = product.getLineitemList();
             List<String> illegalOrphanMessages = null;
             for (Review reviewListOldReview : reviewListOld) {
                 if (!reviewListNew.contains(reviewListOldReview)) {
@@ -185,6 +206,14 @@ public class ProductJpaController implements Serializable {
                     illegalOrphanMessages.add("You must retain Orderitem " + orderitemListOldOrderitem + " since its productProductid field is not nullable.");
                 }
             }
+            for (Lineitem lineitemListOldLineitem : lineitemListOld) {
+                if (!lineitemListNew.contains(lineitemListOldLineitem)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain Lineitem " + lineitemListOldLineitem + " since its productProductid field is not nullable.");
+                }
+            }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
@@ -216,6 +245,13 @@ public class ProductJpaController implements Serializable {
             }
             orderitemListNew = attachedOrderitemListNew;
             product.setOrderitemList(orderitemListNew);
+            List<Lineitem> attachedLineitemListNew = new ArrayList<Lineitem>();
+            for (Lineitem lineitemListNewLineitemToAttach : lineitemListNew) {
+                lineitemListNewLineitemToAttach = em.getReference(lineitemListNewLineitemToAttach.getClass(), lineitemListNewLineitemToAttach.getLineitemid());
+                attachedLineitemListNew.add(lineitemListNewLineitemToAttach);
+            }
+            lineitemListNew = attachedLineitemListNew;
+            product.setLineitemList(lineitemListNew);
             product = em.merge(product);
             for (Review reviewListNewReview : reviewListNew) {
                 if (!reviewListOld.contains(reviewListNewReview)) {
@@ -258,6 +294,17 @@ public class ProductJpaController implements Serializable {
                     if (oldProductProductidOfOrderitemListNewOrderitem != null && !oldProductProductidOfOrderitemListNewOrderitem.equals(product)) {
                         oldProductProductidOfOrderitemListNewOrderitem.getOrderitemList().remove(orderitemListNewOrderitem);
                         oldProductProductidOfOrderitemListNewOrderitem = em.merge(oldProductProductidOfOrderitemListNewOrderitem);
+                    }
+                }
+            }
+            for (Lineitem lineitemListNewLineitem : lineitemListNew) {
+                if (!lineitemListOld.contains(lineitemListNewLineitem)) {
+                    Product oldProductProductidOfLineitemListNewLineitem = lineitemListNewLineitem.getProductProductid();
+                    lineitemListNewLineitem.setProductProductid(product);
+                    lineitemListNewLineitem = em.merge(lineitemListNewLineitem);
+                    if (oldProductProductidOfLineitemListNewLineitem != null && !oldProductProductidOfLineitemListNewLineitem.equals(product)) {
+                        oldProductProductidOfLineitemListNewLineitem.getLineitemList().remove(lineitemListNewLineitem);
+                        oldProductProductidOfLineitemListNewLineitem = em.merge(oldProductProductidOfLineitemListNewLineitem);
                     }
                 }
             }
@@ -324,6 +371,13 @@ public class ProductJpaController implements Serializable {
                 }
                 illegalOrphanMessages.add("This Product (" + product + ") cannot be destroyed since the Orderitem " + orderitemListOrphanCheckOrderitem + " in its orderitemList field has a non-nullable productProductid field.");
             }
+            List<Lineitem> lineitemListOrphanCheck = product.getLineitemList();
+            for (Lineitem lineitemListOrphanCheckLineitem : lineitemListOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Product (" + product + ") cannot be destroyed since the Lineitem " + lineitemListOrphanCheckLineitem + " in its lineitemList field has a non-nullable productProductid field.");
+            }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
@@ -345,6 +399,31 @@ public class ProductJpaController implements Serializable {
 
     public List<Product> findProductEntities() {
         return findProductEntities(true, -1, -1);
+    }
+
+    public List<Product> findByProductname(String productname) {
+        EntityManager em = getEntityManager();
+        Query query = em.createNamedQuery("Product.findByProductname");
+        query.setParameter("productname", "%" + productname.toLowerCase() + "%");
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+     public List<Product> findByArtist(String artist) {
+        EntityManager em = getEntityManager();
+        Query query = em.createNamedQuery("Product.findByArtist");
+        query.setParameter("productname", "%" + artist.toLowerCase() + "%");
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        } finally {
+            em.close();
+        }
     }
 
     public List<Product> findProductEntities(int maxResults, int firstResult) {
@@ -388,5 +467,5 @@ public class ProductJpaController implements Serializable {
             em.close();
         }
     }
-    
+
 }

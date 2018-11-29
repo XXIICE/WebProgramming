@@ -24,12 +24,14 @@ import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
 import jpa.model.Cart;
 import jpa.model.Customer;
+import jpa.model.Lineitem;
 import jpa.model.Orderitem;
 import jpa.model.Orderitem;
 import jpa.model.Product;
 import jpa.model.Productorder;
 import jpa.model.controller.CartJpaController;
 import jpa.model.controller.CustomerJpaController;
+import jpa.model.controller.LineitemJpaController;
 import jpa.model.controller.OrderitemJpaController;
 import jpa.model.controller.ProductJpaController;
 import jpa.model.controller.ProductorderJpaController;
@@ -76,19 +78,50 @@ public class AddItemToCartServlet extends HttpServlet {
             if (custom != null) {
                 Cart ca = new Cart();
                 CartJpaController cartJpaCtrl = new CartJpaController(utx, emf);
-                int idC = cartJpaCtrl.getCartCount()+1;
-                ca.setCartid(idC);
-//                    ca.setCartid(1);
-//                    ca.setLineitemList(lineitemList);
+                ca.setCartid(1);
                 try {
                     cartJpaCtrl.create(ca);
-                } catch (PreexistingEntityException ex) {
-                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (RollbackFailureException ex) {
-                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (Exception ex) {
                     Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                Lineitem line = new Lineitem();
+                LineitemJpaController lineJpaCtrl = new LineitemJpaController(utx, emf);
+                line.setCartCartid(ca);
+                int idL = lineJpaCtrl.getLineitemCount() + 1;
+                line.setLineitemid(idL);
+                LineItem lines= new LineItem();
+                line.setQuantity(lines.getQuantity()+1);
+                line.setTotalprice(lines.getTotalPrice()+p.getPrice());
+                line.setProductProductid(p);
+                List<Lineitem> lineList = lineJpaCtrl.findLineitemEntities();
+                    for (Lineitem lineitem : lineList) {
+                        if (productid.equals(line.getProductProductid())) {
+                       lineList.add(line);
+                    }
+                    }
+                try {
+                    lineJpaCtrl.create(line);
+                    ca.setLineitemList(lineList);
+                     
+                } catch (Exception ex) {
+                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+//                List<Lineitem> lineList = lineJpaCtrl.findLineitemEntities();
+//                List<Lineitem> lines = new ArrayList<>();
+//                for (Lineitem line1 : lines) {
+//                    if (line1.getCartCartid().getCartid() == ca.getCartid()) {
+//                        lines.add(line);
+//                    }
+//                }
+
+//                ca.setLineitemList(lines);
+//                try {
+//                    cartJpaCtrl.create(ca); 
+//                } catch (RollbackFailureException ex) {
+//                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                } catch (Exception ex) {
+//                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                }
             }
             session.setAttribute("cart", cart);
             getServletContext().getRequestDispatcher("/ProductList").forward(request, response);
@@ -225,8 +258,8 @@ public class AddItemToCartServlet extends HttpServlet {
 //                }
 //            }
 //        }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *

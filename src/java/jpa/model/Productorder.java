@@ -7,7 +7,6 @@ package jpa.model;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.UUID;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -35,9 +34,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Productorder.findAll", query = "SELECT p FROM Productorder p")
     , @NamedQuery(name = "Productorder.findByOrderid", query = "SELECT p FROM Productorder p WHERE p.orderid = :orderid")
+    , @NamedQuery(name = "Productorder.findByTotalprice", query = "SELECT p FROM Productorder p WHERE p.totalprice = :totalprice")
     , @NamedQuery(name = "Productorder.findByProductstatus", query = "SELECT p FROM Productorder p WHERE p.productstatus = :productstatus")
-    , @NamedQuery(name = "Productorder.findByTrackingno", query = "SELECT p FROM Productorder p WHERE p.trackingno = :trackingno")
-    , @NamedQuery(name = "Productorder.findByTotalprice", query = "SELECT p FROM Productorder p WHERE p.totalprice = :totalprice")})
+    , @NamedQuery(name = "Productorder.findByTrackingno", query = "SELECT p FROM Productorder p WHERE p.trackingno = :trackingno")})
 public class Productorder implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -46,6 +45,9 @@ public class Productorder implements Serializable {
     @NotNull
     @Column(name = "ORDERID")
     private Integer orderid;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "TOTALPRICE")
+    private Double totalprice;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -54,9 +56,6 @@ public class Productorder implements Serializable {
     @Size(max = 50)
     @Column(name = "TRACKINGNO")
     private String trackingno;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "TOTALPRICE")
-    private Double totalprice;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "productorderOrderid")
     private Payment payment;
     @JoinColumn(name = "CART_CARTID", referencedColumnName = "CARTID")
@@ -65,9 +64,6 @@ public class Productorder implements Serializable {
     @JoinColumn(name = "CUSTOMER_USERNAME", referencedColumnName = "USERNAME")
     @ManyToOne(optional = false)
     private Customer customerUsername;
-    @JoinColumn(name = "PAYMENT_PAYMENTID", referencedColumnName = "PAYMENTID")
-    @OneToOne(optional = false)
-    private Payment paymentPaymentid;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productorderOrderid")
     private List<Orderitem> orderitemList;
 
@@ -81,7 +77,6 @@ public class Productorder implements Serializable {
     public Productorder(Integer orderid, String productstatus) {
         this.orderid = orderid;
         this.productstatus = productstatus;
-        this.trackingno = UUID.randomUUID().toString().replace("-","").substring(0,15);
     }
 
     public Integer getOrderid() {
@@ -90,6 +85,14 @@ public class Productorder implements Serializable {
 
     public void setOrderid(Integer orderid) {
         this.orderid = orderid;
+    }
+
+    public Double getTotalprice() {
+        return totalprice;
+    }
+
+    public void setTotalprice(Double totalprice) {
+        this.totalprice = totalprice;
     }
 
     public String getProductstatus() {
@@ -106,14 +109,6 @@ public class Productorder implements Serializable {
 
     public void setTrackingno(String trackingno) {
         this.trackingno = trackingno;
-    }
-
-    public Double getTotalprice() {
-        return totalprice;
-    }
-
-    public void setTotalprice(Double totalprice) {
-        this.totalprice = totalprice;
     }
 
     public Payment getPayment() {
@@ -138,14 +133,6 @@ public class Productorder implements Serializable {
 
     public void setCustomerUsername(Customer customerUsername) {
         this.customerUsername = customerUsername;
-    }
-
-    public Payment getPaymentPaymentid() {
-        return paymentPaymentid;
-    }
-
-    public void setPaymentPaymentid(Payment paymentPaymentid) {
-        this.paymentPaymentid = paymentPaymentid;
     }
 
     @XmlTransient

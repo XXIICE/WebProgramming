@@ -46,31 +46,39 @@ public class LoginServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        
-        Customer custom = new Customer() ;
-        if (username != null && username.trim().length() > 0 
+
+        Customer custom = new Customer();
+        if (username != null && username.trim().length() > 0
                 && password != null && password.trim().length() > 0) {
             CustomerJpaController customJpaCtrl = new CustomerJpaController(utx, emf);
             custom = customJpaCtrl.findCustomer(username);
             session.setAttribute("msg", "username or password is incorrect, please try again.");
-            if (custom != null) { 
-                
-                if (custom.getUsername().equals(username) && custom.getPassword().equals((cryptWithMD5(password)))) {
-                    if (session == null) {
-                        
-                        session = request.getSession(true);
-                    }else if(session != null){
-                        session.setAttribute("msg", "");
+            if (custom != null) {
+
+                if (custom != null) {
+
+                    if (custom.getUsername().equals(username) && custom.getPassword().equals((cryptWithMD5(password)))) {
+                        if (session == null) {
+
+                            session = request.getSession(true);
+                            request.setAttribute("msg", "");
+                        }
+
+                        session.setAttribute("custom", custom);
+                        getServletContext().getRequestDispatcher("/ProductList").forward(request, response);
+                    } else if (!custom.getUsername().equals(username) || !custom.getPassword().equals((cryptWithMD5(password)))) {
+
+                        request.setAttribute("msg", "username or password is incorrect,Please try again!!");
+
                     }
-                   
-                    session.setAttribute("custom", custom);
-                    getServletContext().getRequestDispatcher("/ProductList").forward(request, response);
+
                 }
             }
-        }
 
-        getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
+            getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
+        }
     }
+
     public static String cryptWithMD5(String pass) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");

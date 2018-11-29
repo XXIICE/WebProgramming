@@ -59,29 +59,29 @@ public class AddItemToCartDetailServlet extends HttpServlet {
         Product p = productJpaCtrl.findProduct(productid);
         if (productid != null) {
             cart.add(p);
-            if (custom != null) {
-                Cart ca = new Cart();
-                CartJpaController cartJpaCtrl = new CartJpaController(utx, emf);
-                int idC = cartJpaCtrl.getCartCount()+1;
-                ca.setCartid(idC);
-//                    ca.setCartid(1);
-//                    ca.setLineitemList(lineitemList);
-                try {
-                    cartJpaCtrl.create(ca);
-                } catch (PreexistingEntityException ex) {
-                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (RollbackFailureException ex) {
-                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (Exception ex) {
-                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
-                }
+//            if (custom != null) {
+//                Cart ca = new Cart();
+//                CartJpaController cartJpaCtrl = new CartJpaController(utx, emf);
+//                int idC = cartJpaCtrl.getCartCount()+1;
+//                ca.setCartid(idC);
+////                    ca.setCartid(1);
+////                    ca.setLineitemList(lineitemList);
+//                try {
+//                    cartJpaCtrl.create(ca);
+//                } catch (PreexistingEntityException ex) {
+//                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                } catch (RollbackFailureException ex) {
+//                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                } catch (Exception ex) {
+//                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                }
             }
             session.setAttribute("cart", cart);
             getServletContext().getRequestDispatcher("/GetProductDetail").forward(request, response);
 
         }
 
-    }
+    
     
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

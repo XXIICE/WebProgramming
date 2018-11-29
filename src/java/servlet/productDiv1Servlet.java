@@ -7,25 +7,26 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.annotation.Resource;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
+import javax.persistence.Query;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
 import jpa.model.Product;
 import jpa.model.controller.ProductJpaController;
-import model.Favorite;
 
 /**
  *
  * @author ariya boonchoo
  */
-public class FavoriteDetailServlet extends HttpServlet {
-@PersistenceUnit(unitName = "ImaginePU")
+public class productDiv1Servlet extends HttpServlet {
+ @PersistenceUnit(unitName = "ImaginePU")
     EntityManagerFactory emf;
     @Resource
     UserTransaction utx;
@@ -40,24 +41,19 @@ public class FavoriteDetailServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         HttpSession session = request.getSession(false);
-        Favorite fav = (Favorite) session.getAttribute("fav");
-        String productid = request.getParameter("productid");
-        if (session != null) {
-
-            if (fav == null) {
-                fav = new Favorite();
-                session.setAttribute("fav", fav);
-            }
-            ProductJpaController productJpaCtrl = new ProductJpaController(utx, emf);
-
-            Product p = productJpaCtrl.findProduct(productid);
-            fav.add(p);
-           
-            session.setAttribute("fav", fav);
-            getServletContext().getRequestDispatcher("/productDetail.jsp").forward(request, response);
+       ProductJpaController productJpaCtrl = new ProductJpaController(utx, emf);
+        Product pro = new Product();
+//        String date = request.getParameter("releasedate");
+        EntityManager em = emf.createEntityManager();
+        Query q = em.createQuery("select p FROM Product p where p.releasedate >= '2018-12-05' order by p.releasedate desc");
+//        Query q = em.createNamedQuery("select p from Product p order by p.releasedate desc");
+//        q.setParameter("p.releasedate", date);
+//        List<Product>productList = productJpaCtrl.findProductEntities();
+        List<Product>productDiv1 =q.getResultList();
+        request.setAttribute("productDiv1", productDiv1);
+        getServletContext().getRequestDispatcher("/home.jsp").forward(request, response);
     }
-    }
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
