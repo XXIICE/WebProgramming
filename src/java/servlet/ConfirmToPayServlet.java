@@ -27,6 +27,7 @@ import jpa.model.controller.PaymentJpaController;
 import jpa.model.controller.ProductorderJpaController;
 import jpa.model.controller.exceptions.NonexistentEntityException;
 import jpa.model.controller.exceptions.RollbackFailureException;
+import model.ShoppingCart2;
 
 /**
  *
@@ -51,37 +52,42 @@ public class ConfirmToPayServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
+        Customer custom = (Customer) session.getAttribute("custom");
+        ShoppingCart2 cart = (ShoppingCart2) session.getAttribute("cart");
+
         if (session != null) {
-            Customer custom = (Customer) session.getAttribute("custom");
-            if (custom != null) {
-                CustomerJpaController customJpa = new CustomerJpaController(utx, emf);
-                int point = custom.getPoint() + 10;
-                custom.setPoint(point);
-                Productorder productorder = new Productorder();
-                ProductorderJpaController productorderJpaCtrl = new ProductorderJpaController(utx, emf);
-                productorder.setCustomerUsername(custom);
-                int orderid = productorderJpaCtrl.getProductorderCount() + 1;
-                productorder.setOrderid(orderid);
-                Cart cart = (Cart) session.getAttribute("cart");
-                productorder.setCartCartid(cart);
-                Payment pay = new Payment();
-                PaymentJpaController payJpaCtrl = new PaymentJpaController(utx, emf);
-                pay.setPaymentstatus("Confirm");
-                productorder.setPayment(pay);
-                productorder.setProductstatus("Shipped");
-                try {
-                    customJpa.edit(custom);
-                    session.setAttribute("custom", custom);
-                    getServletContext().getRequestDispatcher("/Payment.jsp").forward(request, response);
-                } catch (NonexistentEntityException ex) {
-                    Logger.getLogger(NewAddressServlet.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (RollbackFailureException ex) {
-                    Logger.getLogger(NewAddressServlet.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (Exception ex) {
-                    Logger.getLogger(NewAddressServlet.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            if (cart != null) {
+                session.setAttribute("cart", cart);
+//            if (custom != null) {
+//                CustomerJpaController customJpa = new CustomerJpaController(utx, emf);
+//                int point = custom.getPoint() + 10;
+//                custom.setPoint(point);
+//                Productorder productorder = new Productorder();
+//                ProductorderJpaController productorderJpaCtrl = new ProductorderJpaController(utx, emf);
+//                productorder.setCustomerUsername(custom);
+//                int orderid = productorderJpaCtrl.getProductorderCount() + 1;
+//                productorder.setOrderid(orderid);
+//                Cart cart = (Cart) session.getAttribute("cart");
+//                productorder.setCartCartid(cart);
+//                Payment pay = new Payment();
+//                PaymentJpaController payJpaCtrl = new PaymentJpaController(utx, emf);
+//                pay.setPaymentstatus("Confirm");
+//                productorder.setPayment(pay);
+//                productorder.setProductstatus("Shipped");
+//                try {
+//                    customJpa.edit(custom);
+//                    session.setAttribute("custom", custom);
+//                    getServletContext().getRequestDispatcher("/Payment.jsp").forward(request, response);
+//                } catch (NonexistentEntityException ex) {
+//                    Logger.getLogger(NewAddressServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                } catch (RollbackFailureException ex) {
+//                    Logger.getLogger(NewAddressServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                } catch (Exception ex) {
+//                    Logger.getLogger(NewAddressServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                }
             }
         }
+        getServletContext().getRequestDispatcher("/order.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

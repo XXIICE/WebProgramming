@@ -1,6 +1,6 @@
 <%-- 
-    Document   : Payment
-    Created on : Nov 15, 2018, 6:23:36 PM
+    Document   : order
+    Created on : Nov 30, 2018, 4:09:03 AM
     Author     : ariya boonchoo
 --%>
 
@@ -11,13 +11,10 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Imagine | Payment</title>
-          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
-       
+        <title>JSP Page</title>
     </head>
     <body>
-        <h1>Payment</h1>
+        <h1>Your Order</h1>
         <table class="table" id="example" >
                 <thead>
                <th>Images</th>
@@ -57,48 +54,5 @@
                 <%--<fmt:formatNumber type = "number"  maxIntegerDigits = "10" value = "${balance}" />--%>  
                 ฿</h4><br>
          
-        <table>
-<!--            <tr>
-                <td>Payment id : </td>
-                <td>${pay.paymentid}</td>
-            </tr>-->
-            <tr>
-                <td>Username : </td>
-                <td>${custom.username}</td>
-            </tr>
-             <tr>
-                <td>Name : </td>
-                <td>${custom.firstname} &nbsp;&nbsp;&nbsp;${custom.lastname}</td>
-            </tr>
-             <tr>
-                <td>Email : </td>
-                <td>${custom.email}</td>
-            </tr>
-             <tr>
-                <td>Address : </td>
-                <td>${custom.address}</td> 
-                <td>   or New address
-             <form action="NewAddress" method="post">
-                 <input type="text" name="newaddress" size="200">
-                 <input type="submit">
-            </form>
-                </td>
-            </tr>
-            
-           
-<!--             <tr>
-                <td>Payment Status : </td>
-                <td>${pay.paymentstatus}</td>
-            </tr>-->
-            <tr>
-                <td><form action="ConfirmToPay" method="post">
-                        <input type="hidden" value="${p.product.productid}" name="productid"/>
-                               
-                        <input type="submit" value="Confirm">
-                
-            </form>
-                </td>
-        </tr>
-        </table>
     </body>
 </html>

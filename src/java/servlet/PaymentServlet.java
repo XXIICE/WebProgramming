@@ -57,31 +57,31 @@ public class PaymentServlet extends HttpServlet {
             if (cart != null) {
                 session.setAttribute("cart", cart);
             
-            if (custom != null) {
-
-                Payment pay = new Payment();
-                PaymentJpaController payJpaCtrl = new PaymentJpaController(utx, emf);
-                int idP = payJpaCtrl.getPaymentCount() + 1;
-                pay.setPaymentid(idP);
-                pay.setPaymentstatus("Not Confirm to Pay.");
-                Productorder productorder = new Productorder();
-                ProductorderJpaController productorderJpaCtrl = new ProductorderJpaController(utx, emf);
-                int orderid = productorderJpaCtrl.getProductorderCount() + 1;
-                productorder.setOrderid(orderid);
-//                pay.setProductorder(productorder);
-                pay.setProductorderOrderid(productorder);
-                try {
-                    payJpaCtrl.create(pay);
-                    session.setAttribute("pay", pay);
-                    getServletContext().getRequestDispatcher("/Payment.jsp").forward(request, response);
-                } catch (PreexistingEntityException ex) {
-                    Logger.getLogger(PaymentServlet.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (RollbackFailureException ex) {
-                    Logger.getLogger(PaymentServlet.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (Exception ex) {
-                    Logger.getLogger(PaymentServlet.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+//            if (custom != null) {
+//
+//                Payment pay = new Payment();
+//                PaymentJpaController payJpaCtrl = new PaymentJpaController(utx, emf);
+//                int idP = payJpaCtrl.getPaymentCount() + 1;
+//                pay.setPaymentid(idP);
+//                pay.setPaymentstatus("Not Confirm to Pay.");
+//                Productorder productorder = new Productorder();
+//                ProductorderJpaController productorderJpaCtrl = new ProductorderJpaController(utx, emf);
+//                int orderid = productorderJpaCtrl.getProductorderCount() + 1;
+//                productorder.setOrderid(orderid);
+////                pay.setProductorder(productorder);
+//                pay.setProductorderOrderid(productorder);
+//                try {
+//                    payJpaCtrl.create(pay);
+//                    session.setAttribute("pay", pay);
+//                    getServletContext().getRequestDispatcher("/Payment.jsp").forward(request, response);
+//                } catch (PreexistingEntityException ex) {
+//                    Logger.getLogger(PaymentServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                } catch (RollbackFailureException ex) {
+//                    Logger.getLogger(PaymentServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                } catch (Exception ex) {
+//                    Logger.getLogger(PaymentServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
         }}
         getServletContext().getRequestDispatcher("/Payment.jsp").forward(request, response);
     }
