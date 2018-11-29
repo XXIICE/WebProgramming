@@ -371,7 +371,7 @@
         </thead>
         <c:forEach items="${productList}" var="p" varStatus="vs" >
             <tr>
-              
+                 ${messageSearch}
                 <td>${vs.count}</td>
                 <td><img src="images/${p.genre}-${p.productid}.jpg" width="120"></td>
             <form action="RecentView" method="post">

@@ -55,19 +55,6 @@ public class Lineitem implements Serializable {
     public Lineitem() {
     }
 
-//     public Lineitem(Product product) {
-//        this(product, 1);
-//        
-//    }
-//
-//    public Lineitem(Product product, int quantity) {
-//        this.productProductid = product;
-//        this.quantity = quantity;
-//
-//    }
-//     public double getTotalPrice() {
-//        return this.quantity * this.productProductid.getPrice();
-//    }
     public Lineitem(Integer lineitemid) {
         this.lineitemid = lineitemid;
     }

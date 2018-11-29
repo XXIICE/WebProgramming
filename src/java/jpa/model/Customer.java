@@ -164,9 +164,6 @@ public class Customer implements Serializable {
         return point;
     }
 
-     public Integer getPoints() {
-        return point+10;
-    }
     public void setPoint(Integer point) {
         this.point = point;
     }

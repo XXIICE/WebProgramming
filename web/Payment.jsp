@@ -58,10 +58,10 @@
                 ฿</h4><br>
          
         <table>
-<!--            <tr>
+            <tr>
                 <td>Payment id : </td>
                 <td>${pay.paymentid}</td>
-            </tr>-->
+            </tr>
             <tr>
                 <td>Username : </td>
                 <td>${custom.username}</td>
@@ -86,14 +86,12 @@
             </tr>
             
            
-<!--             <tr>
+             <tr>
                 <td>Payment Status : </td>
                 <td>${pay.paymentstatus}</td>
-            </tr>-->
+            </tr>
             <tr>
                 <td><form action="ConfirmToPay" method="post">
-                        <input type="hidden" value="${p.product.productid}" name="productid"/>
-                               
                         <input type="submit" value="Confirm">
                 
             </form>
