@@ -9,14 +9,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Imagine | Search</title>
+        <title>Imagine</title>
         <link rel="shortcut icon" href="images/icon.ico"/>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
         <title>Full Slider - Start Bootstrap Template</title>
- 
+
         <!-- Bootstrap core CSS -->
         <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -25,73 +24,111 @@
 
         <!--Font awesome-->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-        
-        <style>
-            @import url('https://fonts.googleapis.com/css?family=Abril+Fatface|Questrial');
 
-            .container{
-                font-family: 'Abril Fatface', cursive;
-                font-family: 'Questrial', sans-serif;
-                
-            }
-        </style>
     </head>
     <body>
-         <jsp:include page="include/Header.jsp"/>
-         
-        
-                     <form action="Search" method="post">
-                    search : <input type="text" name="search">&nbsp;&nbsp;
-                    <input type="submit">
-                </form>
-        
+        <jsp:include page="include/Header.jsp"/>
 
-         <table class="table" id="example" style="margin-top: 100px;">
-            <thead>
-            <th>No.</th>
-            <th>Image</th>
-            <th>Product ID</th>
-            <th>Album Name</th>
-            <th>Artist</th>
-            <th>Gen</th>
-            <th>Price</th>
-        </thead> 
-        
-        <c:forEach items="${productList}" var="p" varStatus="vs" >
-            <tr>
-                
-                <td>${vs.count}</td>
-                <td><img src="images/${p.genre}-${p.productid}.jpg" width="120"></td>
-            <form action="RecentView" method="post">
-                <input type="hidden" name="productid" value="productid" ${cookie.productid.value=='productid'?'onclick':''}>
-                <td><a href="GetProductDetail?productid=${p.productid}">${p.productid}</a></td>
-            </form>    
-                <td>${p.productname}</a></td>
-                <td>${p.artist}</td>
-                <td>${p.genre}</td>
-                <td>${p.price} ฿</td>
+        <main class="mt-5">
+            <div class="container">
+                <c:forEach items="${productList}" var="p" varStatus="vs" >
+                    <div class="row">
+                        <div class="col-sm-12" style="margin-bottom: 1%;margin-top: 2%;"><b>${p.productname}</b></div>
+                    </div>
+                    <div class="card">
+                        <div class="row">
+                            <aside class="col-sm-5 border-right" style="padding-right:0 !important;">
+                                <article class="gallery-wrap"> 
+                                    <div class="img-big-wrap">
+                                        <div><a href="images/${p.productid}.jpg"><img src="images/${p.productid}.jpg"></a></div>
+                                    </div> <!-- slider-p.// -->
+                                </article> <!-- gallery-wrap .end// -->
+                            </aside>
+                            <aside class="col-sm-7">
+                                <article class="card-body p-5">
+                                    <h3 class="title mb-3">${p.productname}</h3>
 
-                <td><form action="AddItemToCart" method="post">
-                        <input type="hidden" value="${p.productid}" name="productid"/>
+                                    <p class="price-detail-wrap"> 
+                                        <span class="price h3 text-warning"> 
+                                            <span class="num">${p.price}</span><span class="currency"> ฿</span>
+                                        </span> 
+                                    </p> <!-- price-detail-wrap .// -->
+                                    <dl class="item-property">
+                                        <dt>Description</dt>
+                                        <dd class="des"><p>Artist: ${p.artist}
+                                                <br>Genre: ${p.genre}
+                                        <br>Release Date: <fmt:formatDate value="${p.releasedate}" pattern="yyyy-MM-dd" />
+                                        </p></dd>
+                                    </dl>
+                                    <dl class="param param-feature">
+                                        <dt>Delivery</dt>
+                                        <dd class="des">EMS World Wide 490฿</dd>
 
-                        <input type="submit" value="Add To Cart"/>
-                    </form>
-                </td>
-                <td><form action="Favorite" method="post">
-                        <input type="hidden" value="${p.productid}" name="productid"/>
-                        <input type="submit" value="Favorite"/>
-                    </form>
-                </td>
-            </tr>
-        </c:forEach>
-          
-    </table>
-         <h2>${messageSearch}</h2>
-   <script>
-    $(document).ready(function () {
-        $('#example').DataTable();
-    });
+                                    </dl>  <!-- item-property-hor .// -->
+                                    <hr>
+                                    <div class="row" style="margin-top:15px;">
+                                        <div class="col-sm-12" >         
+                                            <form action="FavoriteDetail" method="post">
+                                                <input type="hidden" value="${p.productid}" name="productid"/>
+                                                <button type="submit" class="btn btn-primary btn-danger">
+                                                    <i class="fas fa-heart"></i> &nbsp;Favorite
+                                                </button>
 
-</script>
+                                            </form>
+                                        </div> 
+                                    </div>
+
+                                    <div class="row" style="margin-top:7px;">            
+                                        <div class="col-sm-12">
+                                            <form action="AddItemToCart" method="post">
+                                                <input type="hidden" value="${p.productid}" name="productid"/>
+                                                <button type="submit" class="btn btn-primary">
+                                                    <i class="fas fa-shopping-cart"></i> &nbsp;Add To Cart
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </article> <!-- card-body.// -->
+                            </aside> <!-- col.// -->
+                        </div> <!-- row.// -->
+                    </div> <!-- card.// -->
+                </c:forEach>
+                <div class="back-btn" style="margin-bottom:20px;margin-top:70px;">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <a href="ProductList"><button type="button" class="btn btn-light btn-sm">Back</button></a>
+                        </div>
+                    </div> <!--row-->
+                </div> <!--tracklist-->
+            </div><!--container.//-->
+        </main>
+        <!-- Footer -->
+        <footer class="py-5 bg-dark">
+            <div class="container">
+                <!--            <p class="m-0 text-center text-white">Copyright &copy; Your Website 2018</p>-->
+                <div class="row">
+                    <div class="col-sm-8">
+                        <h1><a href="ProductList"><img src="images/logo-white.png" height="40px" class="imagine"></a></h1>
+                        <p style="color: #7e7e7e;font-size: 12px;">126 Pracha Uthit Rd., <br>Bang Mod, Thung Khru, <br>Bangkok 10140, <br>Thailand
+                            <br><span class="fa fa-phone-square"> +66 2470 8000</span>
+                            <br><span class="fa fa-envelope">  info@imagine.com</span>
+                        </p>
+                    </div>
+                    <div class="col-sm-4">
+                        <p style="font-size: 18px;font-weight: bold;color: #7e7e7e;padding-top: 20px;">About</p>
+                        <span class="footer-about"><a href="#" style="font-size: 12px;color: #7e7e7e;">Contact us</a><br>
+                            <a href="#" style="font-size: 12px;color: #7e7e7e;">Team</a></span>
+                        <p style="color: #7e7e7e;font-size: 12px;line-height: 80px;">&copy; imagine All rights reserved</p>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container -->
+        </footer>
+        <script>
+            $(document).ready(function () {
+                $('#example').DataTable();
+            });
+
+        </script>
     </body>
 </html>

@@ -25,142 +25,84 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 
     </head>
-    <body>
+    <body style="background-color:#f3f3f3;">
+        <jsp:include page="include/Header.jsp"/>
+        <main class="mt-5" style="margin-bottom: 5%;">
+            <div class="container">
+                <section id="examples" class="text-center" style="margin-top:9%;">
 
-        <div class="page-header header-filter" data-parallax="true" style="background-image:url('http://wallpapere.org/wp-content/uploads/2012/02/black-and-white-city-night.png');"></div>
-        <div class="main main-raised">
-            <div class="profile-content">
-                <div class="container">
+                    <!-- Heading -->
                     <div class="row">
-                        <div class="col-md-6 ml-auto mr-auto">
-                            <div class="profile">
-                                <div class="avatar">
-                                    <img src="https://www.biography.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cg_face%2Cq_auto:good%2Cw_300/MTU0NjQzOTk4OTQ4OTkyMzQy/ansel-elgort-poses-for-a-portrait-during-the-baby-driver-premiere-2017-sxsw-conference-and-festivals-on-march-11-2017-in-austin-texas-photo-by-matt-winkelmeyer_getty-imagesfor-sxsw-square.jpg" alt="Circle Image" class="img-raised rounded-circle img-fluid">
-                                </div>
-                                <div class="name">
-                                    <h3 class="title">Christian Louboutin</h3>
-                                    <h6>Designer</h6>
-                                    <a href="#pablo" class="btn btn-just-icon btn-link btn-dribbble"><i class="fa fa-dribbble"></i></a>
-                                    <a href="#pablo" class="btn btn-just-icon btn-link btn-twitter"><i class="fa fa-twitter"></i></a>
-                                    <a href="#pablo" class="btn btn-just-icon btn-link btn-pinterest"><i class="fa fa-pinterest"></i></a>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="col-sm-12 text-md-left" style="margin-bottom:1%;margin-top:2%;font-size:25px;"><b>Profile</b></div>
                     </div>
-                    <div class="description text-center">
-                        <p>An artist of considerable range, Chet Faker — the name taken by Melbourne-raised, Brooklyn-based Nick Murphy — writes, performs and records all of his own music, giving it a warm, intimate feel with a solid groove structure. </p>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 ml-auto mr-auto">
-                            <div class="profile-tabs">
-                                <ul class="nav nav-pills nav-pills-icons justify-content-center" role="tablist">
-                                    <li class="nav-item">
-                                        <a class="nav-link active" href="#studio" role="tab" data-toggle="tab">
-                                            <i class="material-icons">camera</i>
-                                            Studio
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#works" role="tab" data-toggle="tab">
-                                            <i class="material-icons">palette</i>
-                                            Work
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#favorite" role="tab" data-toggle="tab">
-                                            <i class="material-icons">favorite</i>
-                                            Favorite
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tab-content tab-space">
-                        <div class="tab-pane active text-center gallery" id="studio">
+                    <div class="card">
+                        <div class="card-body">
+                            <!-- PRODUCT -->
                             <div class="row">
-                                <div class="col-md-3 ml-auto">
-                                    <img src="https://images.unsplash.com/photo-1524498250077-390f9e378fc0?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=83079913579babb9d2c94a5941b2e69d&auto=format&fit=crop&w=751&q=80" class="rounded">
-                                    <img src="https://images.unsplash.com/photo-1528249227670-9ba48616014f?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=66b8e7db17b83084f16fdeadfc93b95b&auto=format&fit=crop&w=357&q=80" class="rounded">
+                                <div class="col-2">
+                                    <div class="text-md-left" style="margin:5%;"><img src="images/user.png" width="100px;"></div>
                                 </div>
-                                <div class="col-md-3 mr-auto">
-                                    <img src="https://images.unsplash.com/photo-1521341057461-6eb5f40b07ab?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=72da2f550f8cbd0ec252ad6fb89c96b2&auto=format&fit=crop&w=334&q=80" class="rounded">
-                                    <img src="https://images.unsplash.com/photo-1506667527953-22eca67dd919?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6326214b7ce18d74dde5e88db4a12dd5&auto=format&fit=crop&w=750&q=80" class="rounded">
+                                <div class="col-3 text-md-left">
+                                    <strong style="font-size:18px;">Username</strong><br><span style="font-size:14px;">${custom.username}</span>
                                 </div>
+                                <div class="col-3 text-md-left">
+                                    <strong style="font-size:18px;">Name</strong><br><span style="font-size:14px;">${custom.firstname}&nbsp;&nbsp;&nbsp; ${custom.lastname}</span>
+                                </div>  
+                                <div class="col-2 text-md-left">
+                                    <c:if test="${fav!=null}">
+                                        <a href="ShowFavorite"><img src="images/heart-i.png" width="50px;"></a>
+                                        </c:if>
+                                </div>  
+                                <div class="col-2 text-md-left">
+                                    <a href="order.jsp"><img src="images/cart-i.png" width="50px;"></a>
+                                </div>  
                             </div>
-                        </div>
-                        <div class="tab-pane text-center gallery" id="works">
                             <div class="row">
-                                <div class="col-md-3 ml-auto">
-                                    <img src="https://images.unsplash.com/photo-1524498250077-390f9e378fc0?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=83079913579babb9d2c94a5941b2e69d&auto=format&fit=crop&w=751&q=80" class="rounded">
-                                    <img src="https://images.unsplash.com/photo-1506667527953-22eca67dd919?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6326214b7ce18d74dde5e88db4a12dd5&auto=format&fit=crop&w=750&q=80" class="rounded">
-                                    <img src="https://images.unsplash.com/photo-1505784045224-1247b2b29cf3?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=ec2bdc92a9687b6af5089b335691830e&auto=format&fit=crop&w=750&q=80" class="rounded">  					</div>
-                                <div class="col-md-3 mr-auto">
-                                    <img src="https://images.unsplash.com/photo-1504346466600-714572c4b726?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6754ded479383b7e3144de310fa88277&auto=format&fit=crop&w=750&q=80" class="rounded">
-                                    <img src="https://images.unsplash.com/photo-1494028698538-2cd52a400b17?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=83bf0e71786922a80c420c17b664a1f5&auto=format&fit=crop&w=334&q=80" class="rounded">
+                                <div class="col-2">
+
                                 </div>
+                                <div class="col-3 text-md-left">
+                                    <strong style="font-size:18px;">E-mail</strong><br><span style="font-size:14px;">${custom.email}</span>
+                                </div>
+                                <div class="col-3 text-md-left">
+                                    <strong style="font-size:18px;">Address</strong><br><span style="font-size:14px;">${custom.address}</span>
+                                </div>  
                             </div>
                         </div>
-                        <div class="tab-pane text-center gallery" id="favorite">
-                            <div class="row">
-                                <div class="col-md-3 ml-auto">
-                                    <img src="https://images.unsplash.com/photo-1504346466600-714572c4b726?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6754ded479383b7e3144de310fa88277&auto=format&fit=crop&w=750&q=80" class="rounded">
-                                    <img src="https://images.unsplash.com/photo-1494028698538-2cd52a400b17?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=83bf0e71786922a80c420c17b664a1f5&auto=format&fit=crop&w=334&q=80" class="rounded">
-                                </div>
-                                <div class="col-md-3 mr-auto">
-                                    <img src="https://images.unsplash.com/photo-1505784045224-1247b2b29cf3?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=ec2bdc92a9687b6af5089b335691830e&auto=format&fit=crop&w=750&q=80" class="rounded">  					
-                                    <img src="https://images.unsplash.com/photo-1524498250077-390f9e378fc0?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=83079913579babb9d2c94a5941b2e69d&auto=format&fit=crop&w=751&q=80" class="rounded">
-                                    <img src="https://images.unsplash.com/photo-1506667527953-22eca67dd919?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6326214b7ce18d74dde5e88db4a12dd5&auto=format&fit=crop&w=750&q=80" class="rounded">
-                                </div>
-                            </div>
-                        </div>
+                        <!-- END PRODUCT -->
                     </div>
+                </section>
+                <hr class="my-5">
+                <div class="text-md-left">
+                    <a href="productDiv1"><button class="btn btn-light btn-sm">Back</button></a>
+                </div><br>
+            </div>
 
+        </main>
 
+        <!-- Footer -->
+        <footer class="py-5 bg-dark">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <h1><a href="ProductList"><img src="images/logo-white.png" height="40px" class="imagine"></a></h1>
+                        <p style="color: #7e7e7e;font-size: 12px;">126 Pracha Uthit Rd., <br>Bang Mod, Thung Khru, <br>Bangkok 10140, <br>Thailand
+                            <br><span class="fa fa-phone-square"> +66 2470 8000</span>
+                            <br><span class="fa fa-envelope">  info@imagine.com</span>
+                        </p>
+                    </div>
+                    <div class="col-sm-4">
+                        <p style="font-size: 18px;font-weight: bold;color: #7e7e7e;padding-top: 20px;">About</p>
+                        <span class="footer-about"><a href="#" style="font-size: 12px;color: #7e7e7e;">Contact us</a><br>
+                            <a href="#" style="font-size: 12px;color: #7e7e7e;">Team</a></span>
+                        <p style="color: #7e7e7e;font-size: 12px;line-height: 80px;">&copy; imagine All rights reserved</p>
+                    </div>
                 </div>
             </div>
-        </div>
-
-
-
-
-
-
-
-        <div class="container">
-            <h1>Profile</h1>
-            <table>
-                <tr>
-                    <th>Username : </th>
-                    <td>${custom.username}</td>
-                </tr>
-                <tr>
-                    <th>Name : </th>
-                    <td>${custom.firstname}
-                        &nbsp;&nbsp;&nbsp; ${custom.lastname}</td>
-                </tr>
-                <tr>
-                    <th>Email : </th> 
-                    <td>${custom.email}</td>
-                </tr>
-                <tr>
-                    <th>Address : </th>
-                    <td>${custom.address}</td>
-                </tr>
-
-                </tr>
-                <tr>
-                    <th>Point</th>
-                    <td>${custom.point}</td>
-                </tr>
-
-
-            </table>
-            <c:if test="${fav!=null}">
-                <a href="ShowFavorite.jsp">See Your Favorite</a>
-            </c:if>
-            <a href="ProductList">Back to home</a>
-        </div>
+            <!-- /.container -->
+        </footer>
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     </body>
+  
 </html>

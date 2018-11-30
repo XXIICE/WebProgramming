@@ -142,6 +142,10 @@
         <servlet-name>ProductGenrePopServlet</servlet-name>
         <servlet-class>servlet.ProductGenrePopServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddItemToCartGenreServlet</servlet-name>
+        <servlet-class>servlet.AddItemToCartAllServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -273,6 +277,10 @@
     <servlet-mapping>
         <servlet-name>ProductGenrePopServlet</servlet-name>
         <url-pattern>/ProductGenrePop</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddItemToCartGenreServlet</servlet-name>
+        <url-pattern>/AddItemToCartGenre</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

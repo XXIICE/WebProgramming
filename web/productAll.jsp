@@ -10,7 +10,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-       
         <title>Imagine</title>
         <link rel="shortcut icon" href="images/icon.ico"/>
         <meta charset="utf-8">
@@ -27,14 +26,8 @@
         <!--Font awesome-->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Imagine | Payment</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
-
-   
     </head>
-   
+
     <body style="background-color:#f3f3f3;">
         <jsp:include page="include/Header.jsp"/>
 
@@ -43,10 +36,9 @@
                 <section id="examples" class="text-center" style="margin-top:9%;">
 
                     <!-- Heading -->
-                    <h3 class="mb-4 font-weight-bold" style="background-color:#e5e5e5;padding-top:10px;padding-bottom:10px;letter-spacing:5px;">Product all</h3>
 
                     <div class="row">
-                        <div class="col-sm-12 text-md-left" style="margin-bottom:1%;margin-top:2%;font-size:20px;"><b>All</b></div>
+                        <div class="col-sm-12 text-md-left" style="margin-bottom:1%;margin-top:2%;font-size:20px;"><b>All Albums</b></div>
                     </div>
                     <div class="card">
                         <div class="card-body">
@@ -60,12 +52,12 @@
                                 <div class="col-sm-3 text-md-left">
                                     <strong></strong>
                                 </div>    
-                               
+
                                 <div class="col-sm-2">
                                     <strong>Price</strong>
                                 </div>    
-                                <div class="col-sm-2">
-                                    <strong>Total</strong>
+                                <div class="col-sm-4">
+                                    <strong></strong>
                                 </div>  
                             </div> 
                             <hr class="md-5">
@@ -85,9 +77,29 @@
                                             <span>Status: </span><span class="text-success"><strong>In Stock</strong></span>
                                         </div>
                                     </div>    
-                                        
-                                    <div class="col-sm-3">
+
+                                    <div class="col-sm-2">
                                         <p>${p.price} ฿</p>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="row" style="">
+                                            <div class="col-sm-6 text-md-right" >         
+                                                <form action="FavoriteDetail" method="post">
+                                                    <input type="hidden" value="${product.productid}" name="productid"/>
+                                                    <button type="submit" class="btn btn-primary btn-danger">
+                                                        <i class="fas fa-heart"></i> &nbsp;Favorite
+                                                    </button>
+                                                </form>
+                                            </div>          
+                                            <div class="col-sm-6 text-md-left">
+                                                <form action="AddItemToCartDetail" method="post">
+                                                    <input type="hidden" value="${product.productid}" name="productid"/>
+                                                    <button type="submit" class="btn btn-primary">
+                                                        <i class="fas fa-shopping-cart"></i> &nbsp;Add To Cart
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
                                     </div>    
                                 </div>
                             </c:forEach>
@@ -102,7 +114,17 @@
                             </div>
                         </div>
                     </div>
-<script src="vendor/jquery/jquery.min.js"></script>
+                    <div class="back-btn" style="margin-bottom:20px;margin-top:70px;">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <a href="productDiv1"><button type="button" class="btn btn-light btn-sm">Back</button></a>
+                            </div>
+                        </div> <!--row-->
+                    </div> <!--tracklist-->
+                </section>
+            </div>
+        </main>
+        <script src="vendor/jquery/jquery.min.js"></script>
         <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     </body>

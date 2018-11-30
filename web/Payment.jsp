@@ -10,7 +10,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-
         <title>Imagine</title>
         <link rel="shortcut icon" href="images/icon.ico"/>
         <meta charset="utf-8">
@@ -26,12 +25,6 @@
 
         <!--Font awesome-->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Imagine | Payment</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
-
 
     </head>
 
@@ -87,15 +80,15 @@
                                             <span>Status: </span><span class="text-success"><strong>In Stock</strong></span>
                                         </div>
                                     </div>    
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-2">
                                         <p>${p.quantity}</p>
                                     </div>    
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-2">
                                         <p>${p.salePrice} ฿</p>
                                     </div> 
-                                    <div class="col-sm-3">
-                                    <p>${p.totalPrice} ฿</p>
-                                </div>  
+                                    <div class="col-sm-2">
+                                        <p>${p.totalPrice} ฿</p>
+                                    </div>  
                                 </div>
                             </c:forEach>
                             <hr class="md-5">
@@ -114,7 +107,7 @@
                         <div class="col-sm-12 text-md-left" style="margin-bottom:1%;margin-top:2%;font-size:20px;"><b>Payment Information</b></div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12" style="padding=0.5em;">
+                        <div class="col-md-12" style="padding:0.5em;">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="text-md-left" style="margin:3%;">
@@ -129,11 +122,9 @@
                                         <div class="row">
                                             <div class="col-4">
                                                 <strong style="font-size:18px;">Address</strong><br>
-                                                <input type="radio" name="address" size="200" data-toggle="collapse" data-target="#demo1"><span style="font-size:14px;"> Primary Address</span><br>
-                                                <div id="demo1" class="collapse">
-                                                    <span style="padding-left:18px;"><small>${custom.address}</small></span>
-                                                </div>
-                                                <input type="radio" name="address" size="200" data-toggle="collapse" data-target="#demo2"><span style="font-size:14px;"> New Address</span>
+                                                <input type="radio" name="address" size="200"><span style="font-size:14px;"> Primary Address</span><br>
+                                                
+                                                <input type="radio" name="address" size="120" data-toggle="collapse" data-target="#demo2"><span style="font-size:14px;"> New Address</span>
                                                 <div id="demo2" class="collapse" style="width:500px;">
                                                     <form action="NewAddress">
                                                         <textarea name="newaddress" class="form-control" id="exampleTextarea" rows="3" style="margin-left:18px;margin-top:6px;"></textarea>
@@ -152,25 +143,25 @@
                     </div>
                     <br>
                     <%--<c:forEach items="${cart.lineItems}" var="p" varStatus="vs">--%>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="d-flex align-items-center" style="text-align:right;margin:5px;">
-                                    <div class="" style="margin:5px;line-height:17px;width:100%">
-                                        <small style="font-size:11px;color:#950514;">Discount by ${custom.point} Point</small><br>
-                                        Total price: <b><fmt:formatNumber value="${cart.totalPrice}" pattern="#,###.00"/>฿</b>
-                                    </div>
-                                    <div class="d-inline-block" style="margin-top:2px;margin-right:5px;">
-                                        <form action="ConfirmToPay" method="post">
-                                            <input type="hidden" value="${lineItems.product.productid}" name="productid"/>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="d-flex align-items-center" style="text-align:right;margin:5px;">
+                                <div class="" style="margin:5px;line-height:17px;width:100%">
+                                    <small style="font-size:11px;color:#950514;">+ Shipment cost 490฿</small><br>
+                                    Total price: <b><fmt:formatNumber value="${cart.totalPrice}" pattern="#,###.00"/>฿</b>
+                                </div>
+                                <div class="d-inline-block" style="margin-top:2px;margin-right:5px;">
+                                    <form action="ConfirmToPay" method="post">
+                                        <input type="hidden" value="${lineItems.product.productid}" name="productid"/>
 
-                                            <input type="submit" value="Confirm" class="btn btn-success" style="padding-left:40px;padding-right:40px;">
+                                        <input type="submit" value="Confirm" class="btn btn-success" style="padding-left:40px;padding-right:40px;">
 
-                                        </form>
-                                      
-                                    </div>
+                                    </form>
+
                                 </div>
                             </div>
                         </div>
+                    </div>
                     <%--</c:forEach>--%>  
                     <br>
                 </section>
@@ -178,56 +169,7 @@
         </main>
 
     </table>
-    <!--            <h4 align="right" > All Total Price : 
-    <%--<fmt:formatNumber value="${cart.totalPrice}" pattern="#,###.00"/>--%>
-    <%--<c:set var = "balance" value="${cart.totalPrice}"/>--%> 
-    <%--<fmt:formatNumber type = "number"  maxIntegerDigits = "10" value = "${balance}" />--%>  
-    ฿</h4><br>
 
-<table>
-<tr>
-    <td>Payment id : </td>
-    <td>${pay.paymentid}</td>
-</tr>
-<tr>
-    <td>Username : </td>
-    <td>${custom.username}</td>
-</tr>
- <tr>
-    <td>Name : </td>
-    <td>${custom.firstname} &nbsp;&nbsp;&nbsp;${custom.lastname}</td>
-</tr>
- <tr>
-    <td>Email : </td>
-    <td>${custom.email}</td>
-</tr>
- <tr>
-    <td>Address : </td>
-    <td>${custom.address}</td> 
-    <td>   or New address
- <form action="NewAddress" method="post">
-     <input type="text" name="newaddress" size="200">
-     <input type="submit">
-</form>
-    </td>
-</tr>
-
-
- <tr>
-    <td>Payment Status : </td>
-    <td>${pay.paymentstatus}</td>
-</tr>
-<tr>
-    <td><form action="ConfirmToPay" method="post">
-            <input type="hidden" value="${p.product.productid}" name="productid"/>
-                   
-            <input type="submit" value="Confirm">
-    
-</form>
-    </td>
-</tr>
-</table>-->
-    
     <!-- Footer -->
     <footer class="py-5 bg-dark">
         <div class="container">
@@ -241,8 +183,8 @@
                 </div>
                 <div class="col-sm-4">
                     <p style="font-size: 18px;font-weight: bold;color: #7e7e7e;padding-top: 20px;">About</p>
-                    <span class="footer-about"><a href="#" style="font-size: 12px;color: #7e7e7e;">Contact us</a><br>
-                        <a href="#" style="font-size: 12px;color: #7e7e7e;">Team</a></span>
+                    <span class="footer-about"><a href="contact.jsp" style="font-size: 12px;color: #7e7e7e;">Contact us</a><br>
+                        <a href="team.jsp" style="font-size: 12px;color: #7e7e7e;">Team</a></span>
                     <p style="color: #7e7e7e;font-size: 12px;line-height: 80px;">&copy; imagine All rights reserved</p>
                 </div>
             </div>

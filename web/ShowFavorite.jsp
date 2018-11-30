@@ -77,9 +77,18 @@
                         </div>
                     </div>
                 </section>
+                
+                <div class="back-btn" style="margin-bottom:20px;margin-top:70px;">
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <a href="productDiv1"><button type="button" class="btn btn-light btn-sm">Back</button></a>
+                        </div>
+                    </div> <!--row-->
+                </div>
             </div>
         </main>
-                                                
+
         <!-- Footer -->
         <footer class="py-5 bg-dark">
             <div class="container">

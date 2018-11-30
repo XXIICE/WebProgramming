@@ -65,7 +65,7 @@ public class LoginServlet extends HttpServlet {
                         }
 
                         session.setAttribute("custom", custom);
-                        getServletContext().getRequestDispatcher("/ProductList").forward(request, response);
+                        getServletContext().getRequestDispatcher("/productDiv1").forward(request, response);
                     } else if (!custom.getUsername().equals(username) || !custom.getPassword().equals((cryptWithMD5(password)))) {
 
                         request.setAttribute("msg", "username or password is incorrect,Please try again!!");

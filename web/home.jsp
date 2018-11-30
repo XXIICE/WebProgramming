@@ -37,52 +37,27 @@
                     <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
                     <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
                     <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                    <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
-                    <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
-                    <li data-target="#carouselExampleIndicators" data-slide-to="5"></li>
                 </ol>
                 <div class="carousel-inner" role="listbox">
                     <!-- Slide One - Set the background image for this slide in the line below -->
-                    <div class="carousel-item active" style="background-image: url('images/01.jpg')">
+                    <div class="carousel-item active" style="background-image: url('images/home-01.jpg')">
                         <div class="carousel-caption d-none d-md-block">
                             <h3>CLASSIC</h3>
                             <p>Heard melodies are sweet, but those unheard are sweeter. Therefore, ye soft pipes, play on.</p>
                         </div>
                     </div>
                     <!-- Slide Two - Set the background image for this slide in the line below -->
-                    <div class="carousel-item" style="background-image: url('images/02.jpg')">
+                    <div class="carousel-item" style="background-image: url('images/home-02.jpg')">
                         <div class="carousel-caption d-none d-md-block">
                             <h3>COUNTRY</h3>
                             <p>True country music is honesty, sincerity, and real life to the hilt. </p>
                         </div>
                     </div>
                     <!-- Slide Three - Set the background image for this slide in the line below -->
-                    <div class="carousel-item" style="background-image: url('images/03.jpg')">
+                    <div class="carousel-item" style="background-image: url('images/home-03.jpg')">
                         <div class="carousel-caption d-none d-md-block">
                             <h3>DANCE / SOUL</h3>
                             <p>Longevity and reaching and touching people on a human level - and that's never going to get lost.</p>
-                        </div>
-                    </div>
-                    <!-- Slide Three - Set the background image for this slide in the line below -->
-                    <div class="carousel-item" style="background-image: url('images/04.jpg')">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h3>J-POP</h3>
-                            <p>One good thing about J-Pop. When it hits you, you feel no pain.</p>
-                        </div>
-                    </div>
-                    <!-- Slide Three - Set the background image for this slide in the line below -->
-                    <div class="carousel-item" style="background-image: url('images/05.jpg')">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h3>K-POP</h3>
-                            <p>You can just enjoy music without understanding it, muusic is a universal language.</p>
-                        </div>
-                    </div>
-                    <!-- Slide Three - Set the background image for this slide in the line below -->
-                    <div class="carousel-item" style="background-image: url('images/06.jpg')">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h3>POP / ROCK</h3>
-                            <p>Good fashion is like rock music: all anarchy and revolt.
-                            </p>
                         </div>
                     </div>
                 </div>
@@ -108,7 +83,7 @@
                 <section id="best-features" class="text-center">
 
                     <!-- Heading -->
-                    <h2 class="mb-5 font-weight-bold">Imagine</h2>
+                    <h2 class="mb-2 font-weight-bold">Imagine</h2>
 
                     <!--Grid row-->
                     <div class="row d-flex justify-content-center mb-4">
@@ -117,7 +92,7 @@
                         <div class="col-md-8">
 
                             <!-- Description -->
-                            <p class="grey-text">...</p>
+                            <p class="grey-text">Online Album Shopping</p>
 
                         </div>
                         <!--Grid column-->
@@ -132,9 +107,7 @@
                         <div class="col-md-4 mb-5">
                             <i class="fa fa-music fa-4x orange-text" style="color:#0061aa;"></i>
                             <h4 class="my-4 font-weight-bold">Music</h4>
-                            <p class="grey-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit maiores nam,
-                                aperiam minima
-                                assumenda deleniti hic.</p>
+                            <p class="grey-text">The music you love on the go.</p>
                         </div>
                         <!--Grid column-->
 
@@ -142,9 +115,7 @@
                         <div class="col-md-4 mb-1">
                             <i class="fa fa-heart fa-4x orange-text" style="color:#0061aa;"></i>
                             <h4 class="my-4 font-weight-bold">Happiness</h4>
-                            <p class="grey-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit maiores nam,
-                                aperiam minima
-                                assumenda deleniti hic.</p>
+                            <p class="grey-text">Discover songs you’ll love <br> from album just for you.</p>
                         </div>
                         <!--Grid column-->
 
@@ -152,9 +123,7 @@
                         <div class="col-md-4 mb-1">
                             <i class="fa fa-archive fa-4x orange-text" style="color:#0061aa;"></i>
                             <h4 class="my-4 font-weight-bold">Shipping</h4>
-                            <p class="grey-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit maiores nam,
-                                aperiam minima
-                                assumenda deleniti hic.</p>
+                            <p class="grey-text">Enjoy shopping with Imagine.</p>
                         </div>
                         <!--Grid column-->
 
@@ -253,10 +222,16 @@
                         </div>
                     </div>
                 </section>
-                <hr class="my-5">
+                <hr>
+                <div class="back-btn text-center" style="margin-bottom:20px;">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <a href="ProductList"><button type="button" class="btn btn-light btn-sm"><strong>See More Album</strong></button></a>
+                        </div>
+                    </div> <!--row-->
+                </div>
             </div>
         </main>    
-        <h2><a href="ProductList">See All Product</a></h2>
         <!-- Footer -->
         <footer class="py-5 bg-dark">
             <div class="container">
