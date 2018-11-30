@@ -57,7 +57,7 @@ public class ConfirmToPayServlet extends HttpServlet {
 
         if (session != null) {
             if (cart != null) {
-                session.setAttribute("cart", cart);
+                session.setAttribute("order", cart);
 //            if (custom != null) {
 //                CustomerJpaController customJpa = new CustomerJpaController(utx, emf);
 //                int point = custom.getPoint() + 10;

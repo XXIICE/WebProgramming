@@ -66,7 +66,7 @@
                                 <hr>
                                 <div class="row" style="margin-top:15px;">
                                     <div class="col-sm-12" >         
-                                        <form action="Favorite" method="post">
+                                        <form action="FavoriteDetail" method="post">
                                             <input type="hidden" value="${product.productid}" name="productid"/>
                                             <button type="submit" class="btn btn-primary btn-danger">
                                                 <i class="fas fa-heart"></i> &nbsp;Favorite
@@ -78,7 +78,7 @@
 
                                 <div class="row" style="margin-top:7px;">            
                                     <div class="col-sm-12">
-                                        <form action="AddItemToCart" method="post">
+                                        <form action="AddItemToCartDetail" method="post">
                                             <input type="hidden" value="${product.productid}" name="productid"/>
                                             <button type="submit" class="btn btn-primary">
                                                 <i class="fas fa-shopping-cart"></i> &nbsp;Add To Cart
@@ -103,7 +103,7 @@
                             <c:forEach items="${product.tracklistList}" var="p">
                             <div class="col-sm-5">
                                 <audio controls id="player" style="width:450px;">
-                                    <source src="music/${p.tracklistPK.songname}.mp3" type="audio/mpeg">
+                                    <source src="music/${product.productid}_${p.tracklistPK.songname}.mp3" type="audio/mpeg">
                                 </audio>
                             </div>
                             <div class="col-sm-7 d-flex align-items-center">

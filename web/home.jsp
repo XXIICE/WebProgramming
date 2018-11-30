@@ -108,7 +108,7 @@
                 <section id="best-features" class="text-center">
 
                     <!-- Heading -->
-                    <h2 class="mb-5 font-weight-bold">Best Features</h2>
+                    <h2 class="mb-5 font-weight-bold">Imagine</h2>
 
                     <!--Grid row-->
                     <div class="row d-flex justify-content-center mb-4">
@@ -117,10 +117,7 @@
                         <div class="col-md-8">
 
                             <!-- Description -->
-                            <p class="grey-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quasi voluptate hic
-                                provident nulla repellat
-                                facere esse molestiae ipsa labore porro minima quam quaerat rem, natus repudiandae debitis est
-                                sit pariatur.</p>
+                            <p class="grey-text">...</p>
 
                         </div>
                         <!--Grid column-->
@@ -190,7 +187,7 @@
                                         <div class="item carousel-item active" id="slide-product">
 
                                             <div class="row">
-                                                <c:forEach items="${productList}" var="p" varStatus="vs" > 
+                                                <c:forEach items="${productDiv1}" var="p" varStatus="vs" > 
                                                     <div class="col-sm-3">
                                                         <div class="thumb-wrapper">
                                                             <div class="img-box">
@@ -199,16 +196,16 @@
                                                             <div class="thumb-content">
                                                                 <h4><a href="GetProductDetail?productid=${p.productid}">${p.productname}</a></h4>
                                                                 <p class="item-price"><span>${p.price} ฿</span></p>
-                                                                <div class="d-flex justify-content-center">
-                                                                    <form action="AddItemToCart" method="post">
+                                                                <!--<div class="d-flex justify-content-center">-->
+<!--                                                                    <form action="AddItemToCart" method="post">
                                                                         <input type="hidden" value="${p.productid}" name="productid"/>
                                                                         <button type="submit" class="btn btn-primary">Add To Cart</button>
                                                                     </form>
                                                                     <form action="FavoriteDetail" method="post">
                                                                         <input type="hidden" value="${p.productid}" name="productid"/>
                                                                         <button type="submit" id="fav" class="btn btn-danger"><i class="far fa-heart" style="color:#dd0505;"></i></button>
-                                                                    </form>
-                                                                </div>
+                                                                    </form>-->
+                                                                <!--</div>-->
                                                             </div>                      
                                                         </div>
                                                     </div>
@@ -219,7 +216,7 @@
                                         <div class="item carousel-item" id="slide-product">
 
                                             <div class="row">
-                                                <c:forEach items="${productList}" var="p" varStatus="vs" > 
+                                                <c:forEach items="${productDiv2}" var="p" varStatus="vs" > 
                                                     <div class="col-sm-3">
                                                         <div class="thumb-wrapper">
                                                             <div class="img-box">
@@ -228,10 +225,10 @@
                                                             <div class="thumb-content">
                                                                 <h4><a href="GetProductDetail?productid=${p.productid}">${p.productname}</a></h4>
                                                                 <p class="item-price"><span>${p.price} ฿</span></p>
-                                                                <form action="AddItemToCart" method="post">
+<!--                                                                <form action="AddItemToCart" method="post">
                                                                     <input type="hidden" value="${p.productid}" name="productid"/>
                                                                     <input type="submit" class="btn btn-primary" value="Add To Cart">
-                                                                </form>
+                                                                </form>-->
                                                             </div>                      
                                                         </div> 
                                                     </div>
@@ -259,7 +256,7 @@
                 <hr class="my-5">
             </div>
         </main>    
-
+        <h2><a href="ProductList">See All Product</a></h2>
         <!-- Footer -->
         <footer class="py-5 bg-dark">
             <div class="container">

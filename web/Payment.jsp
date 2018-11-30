@@ -92,7 +92,10 @@
                                     </div>    
                                     <div class="col-sm-3">
                                         <p>${p.salePrice} ฿</p>
-                                    </div>    
+                                    </div> 
+                                    <div class="col-sm-3">
+                                    <p>${p.totalPrice} ฿</p>
+                                </div>  
                                 </div>
                             </c:forEach>
                             <hr class="md-5">
@@ -148,17 +151,17 @@
                         </div>
                     </div>
                     <br>
-                    <c:forEach items="${cart.lineItems}" var="p" varStatus="vs">
+                    <%--<c:forEach items="${cart.lineItems}" var="p" varStatus="vs">--%>
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="d-flex align-items-center" style="text-align:right;margin:5px;">
                                     <div class="" style="margin:5px;line-height:17px;width:100%">
                                         <small style="font-size:11px;color:#950514;">Discount by ${custom.point} Point</small><br>
-                                        Total price: <b><fmt:formatNumber value="${p.totalPrice}" pattern="#,###.00"/>฿</b>
+                                        Total price: <b><fmt:formatNumber value="${cart.totalPrice}" pattern="#,###.00"/>฿</b>
                                     </div>
                                     <div class="d-inline-block" style="margin-top:2px;margin-right:5px;">
                                         <form action="ConfirmToPay" method="post">
-                                            <input type="hidden" value="${p.product.productid}" name="productid"/>
+                                            <input type="hidden" value="${lineItems.product.productid}" name="productid"/>
 
                                             <input type="submit" value="Confirm" class="btn btn-success" style="padding-left:40px;padding-right:40px;">
 
@@ -168,7 +171,7 @@
                                 </div>
                             </div>
                         </div>
-                    </c:forEach>  
+                    <%--</c:forEach>--%>  
                     <br>
                 </section>
             </div>
@@ -176,7 +179,7 @@
 
     </table>
     <!--            <h4 align="right" > All Total Price : 
-    <fmt:formatNumber value="${cart.totalPrice}" pattern="#,###.00"/>
+    <%--<fmt:formatNumber value="${cart.totalPrice}" pattern="#,###.00"/>--%>
     <%--<c:set var = "balance" value="${cart.totalPrice}"/>--%> 
     <%--<fmt:formatNumber type = "number"  maxIntegerDigits = "10" value = "${balance}" />--%>  
     ฿</h4><br>
@@ -224,7 +227,7 @@
     </td>
 </tr>
 </table>-->
-    =======
+    
     <!-- Footer -->
     <footer class="py-5 bg-dark">
         <div class="container">

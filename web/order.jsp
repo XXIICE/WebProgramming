@@ -65,8 +65,8 @@
                                 </div>  
                             </div> 
                             <hr class="md-5">
-                            <c:set var="Items" value="${sessionScope.cart.lineItems}"/>
-                            <c:forEach items="${cart.lineItems}" var="p" varStatus="vs">
+                            <c:set var="Items" value="${sessionScope.order.lineItems}"/>
+                            <c:forEach items="${order.lineItems}" var="p" varStatus="vs">
                                 <div class="row" style="font-size:14px;">   
                                     <div class="col-sm-1">
                                         <strong class="align-self-center">${vs.count}</strong>
@@ -142,7 +142,7 @@
                         </div>
                     </div>
                     <br>
-                    <%--<c:forEach items="${cart.lineItems}" var="p" varStatus="vs">--%>
+                    <%--<c:forEach items="${order.lineItems}" var="p" varStatus="vs">--%>
 <!--                        <div class="row">
                             <div class="col-sm-12">
                                 <div class="d-flex align-items-center" style="text-align:right;margin:5px;">
@@ -164,8 +164,8 @@
 
     </table>
 <!--     <h4 align="right" > All Total Price : 
-                <fmt:formatNumber value="${cart.totalPrice}" pattern="#,###.00"/>
-                <%--<c:set var = "balance" value="${cart.totalPrice}"/>--%> 
+                <fmt:formatNumber value="${order.totalPrice}" pattern="#,###.00"/>
+                <%--<c:set var = "balance" value="${order.totalPrice}"/>--%> 
                 <%--<fmt:formatNumber type = "number"  maxIntegerDigits = "10" value = "${balance}" />--%>  
                 ฿</h4><br>
          -->

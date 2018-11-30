@@ -51,6 +51,10 @@ public class productDiv1Servlet extends HttpServlet {
 //        List<Product>productList = productJpaCtrl.findProductEntities();
         List<Product>productDiv1 =q.getResultList();
         request.setAttribute("productDiv1", productDiv1);
+//         EntityManager em = emf.createEntityManager();
+        Query q2 = em.createQuery("select p FROM Product p where p.releasedate <= '2018-11-28' and p.releasedate >='2018-11-14' order by p.releasedate desc");
+List<Product>productDiv2 =q2.getResultList();
+request.setAttribute("productDiv2", productDiv2);
         getServletContext().getRequestDispatcher("/home.jsp").forward(request, response);
     }
     
