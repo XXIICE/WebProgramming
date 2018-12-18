@@ -44,6 +44,8 @@ public class ShowFavoriteServlet extends HttpServlet {
             if (fav != null) {
                 getServletContext().getRequestDispatcher("/ShowFavorite.jsp").forward(request, response);
                 return;
+            } else {
+                getServletContext().getRequestDispatcher("/ShowFavorite.jsp").forward(request, response);
             }
         }
     }

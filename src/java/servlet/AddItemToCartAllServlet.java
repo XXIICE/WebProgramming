@@ -112,7 +112,7 @@ public class AddItemToCartAllServlet extends HttpServlet {
 //                }
             }
             session.setAttribute("cart", cart);
-            getServletContext().getRequestDispatcher("/productgen.jsp").forward(request, response);
+            getServletContext().getRequestDispatcher("/search.jsp").forward(request, response);
 
         }
     }

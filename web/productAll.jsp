@@ -84,16 +84,16 @@
                                     <div class="col-sm-4">
                                         <div class="row" style="">
                                             <div class="col-sm-6 text-md-right" >         
-                                                <form action="FavoriteDetail" method="post">
-                                                    <input type="hidden" value="${product.productid}" name="productid"/>
+                                                <form action="Favorite" method="post">
+                                                    <input type="hidden" value="${p.productid}" name="productid"/>
                                                     <button type="submit" class="btn btn-primary btn-danger">
                                                         <i class="fas fa-heart"></i> &nbsp;Favorite
                                                     </button>
                                                 </form>
                                             </div>          
                                             <div class="col-sm-6 text-md-left">
-                                                <form action="AddItemToCartDetail" method="post">
-                                                    <input type="hidden" value="${product.productid}" name="productid"/>
+                                                <form action="AddItemToCart" method="post">
+                                                    <input type="hidden" value="${p.productid}" name="productid"/>
                                                     <button type="submit" class="btn btn-primary">
                                                         <i class="fas fa-shopping-cart"></i> &nbsp;Add To Cart
                                                     </button>
@@ -124,6 +124,33 @@
                 </section>
             </div>
         </main>
+
+        <!-- Footer -->
+        <footer class="py-5 bg-dark">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <h1><a href="ProductList"><img src="images/logo-white.png" height="40px" class="imagine"></a></h1>
+                        <p style="color: #7e7e7e;font-size: 12px;">126 Pracha Uthit Rd., <br>Bang Mod, Thung Khru, <br>Bangkok 10140, <br>Thailand
+                            <br><span class="fa fa-phone-square"> +66 2470 8000</span>
+                            <br><span class="fa fa-envelope">  info@imagine.com</span>
+                        </p>
+                    </div>
+                    <div class="col-sm-4">
+                        <p style="font-size: 18px;font-weight: bold;color: #7e7e7e;padding-top: 20px;">About</p>
+                        <span class="footer-about"><a href="contact.jsp" style="font-size: 12px;color: #7e7e7e;">Contact us</a><br>
+                            <a href="team.jsp" style="font-size: 12px;color: #7e7e7e;">Team</a></span>
+                        <p style="color: #7e7e7e;font-size: 12px;line-height: 80px;">&copy; imagine All rights reserved</p>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container -->
+        </footer>
+        <script>
+            $(document).ready(function () {
+                $('#example').DataTable();
+            });
+        </script>
         <script src="vendor/jquery/jquery.min.js"></script>
         <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 

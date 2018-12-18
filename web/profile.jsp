@@ -51,7 +51,7 @@
                                 <div class="col-2 text-md-left">
                                     <c:if test="${fav!=null}">
                                         <a href="ShowFavorite"><img src="images/heart-i.png" width="50px;"></a>
-                                        </c:if>
+                                    </c:if>
                                 </div>  
                                 <div class="col-2 text-md-left">
                                     <a href="order.jsp"><img src="images/cart-i.png" width="50px;"></a>
@@ -93,8 +93,8 @@
                     </div>
                     <div class="col-sm-4">
                         <p style="font-size: 18px;font-weight: bold;color: #7e7e7e;padding-top: 20px;">About</p>
-                        <span class="footer-about"><a href="#" style="font-size: 12px;color: #7e7e7e;">Contact us</a><br>
-                            <a href="#" style="font-size: 12px;color: #7e7e7e;">Team</a></span>
+                        <span class="footer-about"><a href="contact.jsp" style="font-size: 12px;color: #7e7e7e;">Contact us</a></span><br>
+                            <a href="team.jsp" style="font-size: 12px;color: #7e7e7e;">Team</a>
                         <p style="color: #7e7e7e;font-size: 12px;line-height: 80px;">&copy; imagine All rights reserved</p>
                     </div>
                 </div>
@@ -104,5 +104,5 @@
         <script src="vendor/jquery/jquery.min.js"></script>
         <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     </body>
-  
+
 </html>

@@ -23,6 +23,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Department</a>
                     <div class="dropdown-menu">
+                        <a class="dropdown-item" href="ProductList">All</a>
                         <a class="dropdown-item" href="ProductGenreClassic">Classic</a>
                         <a class="dropdown-item" href="ProductGenreCountry">Country</a>
                         <a class="dropdown-item" href="ProductGenreDance">Dance/Soul</a>
@@ -33,7 +34,7 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
+                    <a class="nav-link" href="contact.jsp">Contact</a>
                 </li>             
                 <li class="nav-item">
                     <a class="nav-link" href="ShowCart">

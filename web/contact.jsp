@@ -48,7 +48,7 @@
                                             info@imagine.com</p>
 
                                         <p>Office Hours: Mondays to Fridays, 10:00 - 17:00<br>
-                                        Our office do not operate on weekends, so we will respond to your emails on the next business day, Monday.</p>
+                                            Our office do not operate on weekends, so we will respond to your emails on the next business day, Monday.</p>
                                     </div>
                                 </div>
                             </div>
@@ -64,9 +64,6 @@
 
         </main>
 
-
-
-
         <!-- Footer -->
         <footer class="py-5 bg-dark">
             <div class="container">
@@ -80,8 +77,8 @@
                     </div>
                     <div class="col-sm-4">
                         <p style="font-size: 18px;font-weight: bold;color: #7e7e7e;padding-top: 20px;">About</p>
-                        <span class="footer-about"><a href="#" style="font-size: 12px;color: #7e7e7e;">Contact us</a><br>
-                            <a href="#" style="font-size: 12px;color: #7e7e7e;">Team</a></span>
+                        <span class="footer-about"><a href="contact.jsp" style="font-size: 12px;color: #7e7e7e;">Contact us</a><br>
+                            <a href="team.jsp" style="font-size: 12px;color: #7e7e7e;">Team</a></span>
                         <p style="color: #7e7e7e;font-size: 12px;line-height: 80px;">&copy; imagine All rights reserved</p>
                     </div>
                 </div>

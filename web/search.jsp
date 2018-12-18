@@ -31,10 +31,11 @@
 
         <main class="mt-5">
             <div class="container">
+                <div class="row">
+                    <div class="col-sm-12 text-sm-center" style="margin-bottom:1%;margin-top:4%;margin-bottom:4%;font-size:18px;">Search: <b>${msg}</b></div>
+                </div>
                 <c:forEach items="${productList}" var="p" varStatus="vs" >
-                    <div class="row">
-                        <div class="col-sm-12" style="margin-bottom: 1%;margin-top: 2%;"><b>${p.productname}</b></div>
-                    </div>
+
                     <div class="card">
                         <div class="row">
                             <aside class="col-sm-5 border-right" style="padding-right:0 !important;">
@@ -80,7 +81,7 @@
 
                                     <div class="row" style="margin-top:7px;">            
                                         <div class="col-sm-12">
-                                            <form action="AddItemToCart" method="post">
+                                            <form action="AddItemToCartDetail" method="post">
                                                 <input type="hidden" value="${p.productid}" name="productid"/>
                                                 <button type="submit" class="btn btn-primary">
                                                     <i class="fas fa-shopping-cart"></i> &nbsp;Add To Cart
@@ -92,6 +93,7 @@
                             </aside> <!-- col.// -->
                         </div> <!-- row.// -->
                     </div> <!-- card.// -->
+                    <hr class="my-5">
                 </c:forEach>
                 <div class="back-btn" style="margin-bottom:20px;margin-top:70px;">
                     <div class="row">
@@ -105,7 +107,6 @@
         <!-- Footer -->
         <footer class="py-5 bg-dark">
             <div class="container">
-                <!--            <p class="m-0 text-center text-white">Copyright &copy; Your Website 2018</p>-->
                 <div class="row">
                     <div class="col-sm-8">
                         <h1><a href="ProductList"><img src="images/logo-white.png" height="40px" class="imagine"></a></h1>
@@ -116,8 +117,8 @@
                     </div>
                     <div class="col-sm-4">
                         <p style="font-size: 18px;font-weight: bold;color: #7e7e7e;padding-top: 20px;">About</p>
-                        <span class="footer-about"><a href="#" style="font-size: 12px;color: #7e7e7e;">Contact us</a><br>
-                            <a href="#" style="font-size: 12px;color: #7e7e7e;">Team</a></span>
+                        <span class="footer-about"><a href="contact.jsp" style="font-size: 12px;color: #7e7e7e;">Contact us</a><br>
+                            <a href="team.jsp" style="font-size: 12px;color: #7e7e7e;">Team</a></span>
                         <p style="color: #7e7e7e;font-size: 12px;line-height: 80px;">&copy; imagine All rights reserved</p>
                     </div>
                 </div>
@@ -130,5 +131,7 @@
             });
 
         </script>
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

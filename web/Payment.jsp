@@ -90,18 +90,29 @@
                                         <p>${p.totalPrice} ฿</p>
                                     </div>  
                                 </div>
+                                <hr>
                             </c:forEach>
-                            <hr class="md-5">
                             <div class="row">
                                 <div class="col-sm-1"></div>
                                 <div class="col-sm-2"></div>
                                 <div class="col-sm-3"></div>
-                                <div class="col-sm-3"></div>
-                                <div class="col-sm-3">
-                                </div>
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-2"></div>
                             </div>
                         </div>
                     </div>
+                            
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="d-flex align-items-center" style="text-align:right;margin:5px;">
+                                <div class="" style="margin:5px;line-height:17px;width:100%">
+                                    Total: <b><fmt:formatNumber value="${cart.totalPrice}" pattern="#,##0.00"/>฿</b>
+                                </div>
+ 
+                            </div>
+                        </div>
+                    </div>        
 
                     <div class="row">
                         <div class="col-sm-12 text-md-left" style="margin-bottom:1%;margin-top:2%;font-size:20px;"><b>Payment Information</b></div>
@@ -123,7 +134,7 @@
                                             <div class="col-4">
                                                 <strong style="font-size:18px;">Address</strong><br>
                                                 <input type="radio" name="address" size="200"><span style="font-size:14px;"> Primary Address</span><br>
-                                                
+                                                <span style="margin-left:18px;margin-top:6px;">${custom.address}</span><br>
                                                 <input type="radio" name="address" size="120" data-toggle="collapse" data-target="#demo2"><span style="font-size:14px;"> New Address</span>
                                                 <div id="demo2" class="collapse" style="width:500px;">
                                                     <form action="NewAddress">
@@ -148,7 +159,7 @@
                             <div class="d-flex align-items-center" style="text-align:right;margin:5px;">
                                 <div class="" style="margin:5px;line-height:17px;width:100%">
                                     <small style="font-size:11px;color:#950514;">+ Shipment cost 490฿</small><br>
-                                    Total price: <b><fmt:formatNumber value="${cart.totalPrice}" pattern="#,###.00"/>฿</b>
+                                    Total Price: <b><fmt:formatNumber value="${cart.totalShipping}" pattern="#,###.00"/>฿</b>
                                 </div>
                                 <div class="d-inline-block" style="margin-top:2px;margin-right:5px;">
                                     <form action="ConfirmToPay" method="post">

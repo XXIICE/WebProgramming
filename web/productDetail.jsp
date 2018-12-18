@@ -101,41 +101,41 @@
                     <div class="tracklist-detail">
                         <div class="row">
                             <c:forEach items="${product.tracklistList}" var="p">
-                            <div class="col-sm-5">
-                                <audio controls id="player" style="width:450px;">
-                                    <source src="music/${product.productid}_${p.tracklistPK.songname}.mp3" type="audio/mpeg">
-                                </audio>
-                            </div>
-                            <div class="col-sm-7 d-flex align-items-center">
-                                <p><b>${p.tracklistPK.songname}</b></p>
-                            </div>
+                                <div class="col-sm-5">
+                                    <audio controls id="player" style="width:450px;">
+                                        <source src="music/${product.productid}_${p.tracklistPK.songname}.mp3" type="audio/mpeg">
+                                    </audio>
+                                </div>
+                                <div class="col-sm-7 d-flex align-items-center">
+                                    <p><b>${p.tracklistPK.songname}</b></p>
+                                </div>
                             </c:forEach>
                         </div> <!--row-->
                     </div><!--tracklist-detail-->
                 </div> <!--tracklist-->
 
 
-<!--                <div class="review">
-                    <div class="review-head">
-                        <div class="row">
-                            <div class="col-sm-12" style="margin-bottom: 1%;margin-top: 2%;"><span class="tl-head">Review</span></div>
-                        </div> row
-                    </div>
-                    <hr class="my-5">
-                    <div class="review-detail">
-                        <div class="row">
-                            <div class="col-sm-2">
-                                <p><fmt:formatDate value="${product.releasedate}" pattern="yyyy-MM-dd" /></p>
-                            </div>
-                            <div class="col-sm-3">
-                                <p>${custom.username}</p>
-                            </div>
-                            <div class="col-sm-7">
-                                <p>${product.productname}888888888888ddsfdmsflmdslm</p>
-                            </div>
-                        </div> row
-                    </div>tracklist-detail
-                </div> tracklist-->
+                <!--                <div class="review">
+                                    <div class="review-head">
+                                        <div class="row">
+                                            <div class="col-sm-12" style="margin-bottom: 1%;margin-top: 2%;"><span class="tl-head">Review</span></div>
+                                        </div> row
+                                    </div>
+                                    <hr class="my-5">
+                                    <div class="review-detail">
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                <p><fmt:formatDate value="${product.releasedate}" pattern="yyyy-MM-dd" /></p>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <p>${custom.username}</p>
+                                            </div>
+                                            <div class="col-sm-7">
+                                                <p>${product.productname}888888888888ddsfdmsflmdslm</p>
+                                            </div>
+                                        </div> row
+                                    </div>tracklist-detail
+                                </div> tracklist-->
 
                 <div class="back-btn" style="margin-bottom:20px;margin-top:70px;">
                     <div class="row">
@@ -151,7 +151,6 @@
         <!-- Footer -->
         <footer class="py-5 bg-dark">
             <div class="container">
-                <!--            <p class="m-0 text-center text-white">Copyright &copy; Your Website 2018</p>-->
                 <div class="row">
                     <div class="col-sm-8">
                         <h1><a href="ProductList"><img src="images/logo-white.png" height="40px" class="imagine"></a></h1>
@@ -162,8 +161,8 @@
                     </div>
                     <div class="col-sm-4">
                         <p style="font-size: 18px;font-weight: bold;color: #7e7e7e;padding-top: 20px;">About</p>
-                        <span class="footer-about"><a href="#" style="font-size: 12px;color: #7e7e7e;">Contact us</a><br>
-                            <a href="#" style="font-size: 12px;color: #7e7e7e;">Team</a></span>
+                        <span class="footer-about"><a href="contact.jsp" style="font-size: 12px;color: #7e7e7e;">Contact us</a><br>
+                            <a href="team.jsp" style="font-size: 12px;color: #7e7e7e;">Team</a></span>
                         <p style="color: #7e7e7e;font-size: 12px;line-height: 80px;">&copy; imagine All rights reserved</p>
                     </div>
                 </div>

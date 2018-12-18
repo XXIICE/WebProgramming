@@ -55,12 +55,14 @@ public class SearchServlet extends HttpServlet {
                 products = productJpaCtrl.findByArtist(search);
                 if (products.isEmpty()) {
                     request.setAttribute("messageSearch", "Product '" + search + "' does not exist .");
+
                 } else {
                     request.setAttribute("productList", products);
+                    request.setAttribute("msg", search);
                 }
             } else {
                 request.setAttribute("productList", products);
-
+                request.setAttribute("msg", search);
             }
         }
         getServletContext().getRequestDispatcher("/search.jsp").forward(request, response);

@@ -166,14 +166,14 @@
                                                                 <h4><a href="GetProductDetail?productid=${p.productid}">${p.productname}</a></h4>
                                                                 <p class="item-price"><span>${p.price} ฿</span></p>
                                                                 <!--<div class="d-flex justify-content-center">-->
-<!--                                                                    <form action="AddItemToCart" method="post">
-                                                                        <input type="hidden" value="${p.productid}" name="productid"/>
-                                                                        <button type="submit" class="btn btn-primary">Add To Cart</button>
-                                                                    </form>
-                                                                    <form action="FavoriteDetail" method="post">
-                                                                        <input type="hidden" value="${p.productid}" name="productid"/>
-                                                                        <button type="submit" id="fav" class="btn btn-danger"><i class="far fa-heart" style="color:#dd0505;"></i></button>
-                                                                    </form>-->
+                                                                <!--                                                                    <form action="AddItemToCart" method="post">
+                                                                                                                                        <input type="hidden" value="${p.productid}" name="productid"/>
+                                                                                                                                        <button type="submit" class="btn btn-primary">Add To Cart</button>
+                                                                                                                                    </form>
+                                                                                                                                    <form action="FavoriteDetail" method="post">
+                                                                                                                                        <input type="hidden" value="${p.productid}" name="productid"/>
+                                                                                                                                        <button type="submit" id="fav" class="btn btn-danger"><i class="far fa-heart" style="color:#dd0505;"></i></button>
+                                                                                                                                    </form>-->
                                                                 <!--</div>-->
                                                             </div>                      
                                                         </div>
@@ -194,10 +194,10 @@
                                                             <div class="thumb-content">
                                                                 <h4><a href="GetProductDetail?productid=${p.productid}">${p.productname}</a></h4>
                                                                 <p class="item-price"><span>${p.price} ฿</span></p>
-<!--                                                                <form action="AddItemToCart" method="post">
-                                                                    <input type="hidden" value="${p.productid}" name="productid"/>
-                                                                    <input type="submit" class="btn btn-primary" value="Add To Cart">
-                                                                </form>-->
+                                                                <!--                                                                <form action="AddItemToCart" method="post">
+                                                                                                                                    <input type="hidden" value="${p.productid}" name="productid"/>
+                                                                                                                                    <input type="submit" class="btn btn-primary" value="Add To Cart">
+                                                                                                                                </form>-->
                                                             </div>                      
                                                         </div> 
                                                     </div>
@@ -235,7 +235,6 @@
         <!-- Footer -->
         <footer class="py-5 bg-dark">
             <div class="container">
-                <!--            <p class="m-0 text-center text-white">Copyright &copy; Your Website 2018</p>-->
                 <div class="row">
                     <div class="col-sm-8">
                         <h1><a href="ProductList"><img src="images/logo-white.png" height="40px" class="imagine"></a></h1>
@@ -246,8 +245,8 @@
                     </div>
                     <div class="col-sm-4">
                         <p style="font-size: 18px;font-weight: bold;color: #7e7e7e;padding-top: 20px;">About</p>
-                        <span class="footer-about"><a href="#" style="font-size: 12px;color: #7e7e7e;">Contact us</a><br>
-                            <a href="#" style="font-size: 12px;color: #7e7e7e;">Team</a></span>
+                        <span class="footer-about"><a href="contact.jsp" style="font-size: 12px;color: #7e7e7e;">Contact us</a><br>
+                            <a href="team.jsp" style="font-size: 12px;color: #7e7e7e;">Team</a></span>
                         <p style="color: #7e7e7e;font-size: 12px;line-height: 80px;">&copy; imagine All rights reserved</p>
                     </div>
                 </div>

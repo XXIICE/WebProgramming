@@ -54,6 +54,14 @@ public class ShoppingCart2 implements Serializable {
         }
        return sum;
     }
+    public double getTotalShipping(){
+       double sum = 0;
+       Collection<LineItem>lineItems = cart.values();
+        for (LineItem lineItem : lineItems) {
+            sum+= lineItem.getTotalPrice();
+        }
+       return sum + 490;
+    }
     public int getTotalQuantity(){
         int sum = 0;
         Collection<LineItem>lineItems = cart.values();

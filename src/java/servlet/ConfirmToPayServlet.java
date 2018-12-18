@@ -54,6 +54,10 @@ public class ConfirmToPayServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         Customer custom = (Customer) session.getAttribute("custom");
         ShoppingCart2 cart = (ShoppingCart2) session.getAttribute("cart");
+        String productid = request.getParameter("productid");
+        if (productid!=null) {
+            
+        
 
         if (session != null) {
             if (cart != null) {
@@ -86,7 +90,9 @@ public class ConfirmToPayServlet extends HttpServlet {
 //                    Logger.getLogger(NewAddressServlet.class.getName()).log(Level.SEVERE, null, ex);
 //                }
             }getServletContext().getRequestDispatcher("/order.jsp").forward(request, response);
-   
+        }
+        }else{
+            session.setAttribute("msg", "No Order");
         }
         getServletContext().getRequestDispatcher("/order.jsp").forward(request, response);
     }
