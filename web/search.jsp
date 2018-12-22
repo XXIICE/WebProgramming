@@ -4,6 +4,7 @@
     Author     : ariya boonchoo
 --%>
 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -47,7 +48,7 @@
                             </aside>
                             <aside class="col-sm-7">
                                 <article class="card-body p-5">
-                                    <h3 class="title mb-3">${p.productname}</h3>
+                                    <h3 class="title mb-3"><a href="GetProductDetail?productid=${p.productid}">${p.productname}</a></h3>
 
                                     <p class="price-detail-wrap"> 
                                         <span class="price h3 text-warning"> 

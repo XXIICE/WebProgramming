@@ -16,6 +16,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
 import jpa.model.Product;
 import jpa.model.controller.ProductJpaController;
@@ -42,18 +43,27 @@ public class RecentViewServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
         String productid = request.getParameter("productid");
         if (productid != null && productid.trim().length() > 0) {
 //        Cookie[] cookie = request.getCookies();
-            Cookie ck = new Cookie("productid", productid);
-//     ck.setMaxAge(7*24*60*60);
-//     response.addCookie(ck);
+            ProductJpaController productJpaCtrl = new ProductJpaController(utx, emf);
+            Product product = productJpaCtrl.findProduct(productid);
+            session.setAttribute("product", product);
+            Cookie ck = new Cookie("product", productid);
+            ck.setMaxAge(7 * 24 * 60 * 60);
+            response.addCookie(ck);
             Cookie[] theCookies = request.getCookies();
+            
+            session.setAttribute("product", ck);
 //        if (theCookies!=null) {
             for (int i = 0; i < theCookies.length; i++) {
-                Cookie theCooky = theCookies[i];
-                ck.setMaxAge(7 * 24 * 60 * 60);
-                response.addCookie(ck);
+//                Cookie theCooky = theCookies[i];
+//                theCooky.getValue();
+                session.setAttribute("product",theCookies[i].getValue() );
+                 getServletContext().getRequestDispatcher("/GetProductDetail").forward(request, response);
+//                ck.setMaxAge(7 * 24 * 60 * 60);
+//                response.addCookie(ck);
             }
 
 //                if ("productid".equals(theCooky.getName())) {
@@ -67,7 +77,7 @@ public class RecentViewServlet extends HttpServlet {
 //     List<Product> products = productJpaCtrl.findProductEntities();
 //            getServletContext().getRequestDispatcher("/home.jsp").forward(request, response);
         }
-//     getServletContext().getRequestDispatcher("/home.jsp").forward(request, response);
+     getServletContext().getRequestDispatcher("/GetProductDetail").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

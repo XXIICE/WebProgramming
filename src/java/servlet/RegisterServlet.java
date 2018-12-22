@@ -110,7 +110,7 @@ public class RegisterServlet extends HttpServlet {
                 customer.setEmail(email);
                 customer.setAddress(address);
                 customer.setCreditcardnumber(creditcardnumber);
-                
+                customer.setPoint(0);
 //                 List<Customer> customerList = customerJpaCtrl.findCustomerEntities();
 //                List<Customer> customerListAccount = new ArrayList<>();
 //                for (Customer customer1 : customerListAccount) {

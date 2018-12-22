@@ -11,6 +11,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import jpa.model.Productorder;
+import jpa.model.Customer;
 import jpa.model.Lineitem;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,14 +19,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.transaction.UserTransaction;
 import jpa.model.Cart;
-import jpa.model.controller.exceptions.IllegalOrphanException;
+import jpa.model.CartPK;
 import jpa.model.controller.exceptions.NonexistentEntityException;
 import jpa.model.controller.exceptions.PreexistingEntityException;
 import jpa.model.controller.exceptions.RollbackFailureException;
 
 /**
  *
- * @author ariya boonchoo
+ * @author Yang
  */
 public class CartJpaController implements Serializable {
 
@@ -41,9 +42,13 @@ public class CartJpaController implements Serializable {
     }
 
     public void create(Cart cart) throws PreexistingEntityException, RollbackFailureException, Exception {
+        if (cart.getCartPK() == null) {
+            cart.setCartPK(new CartPK());
+        }
         if (cart.getLineitemList() == null) {
             cart.setLineitemList(new ArrayList<Lineitem>());
         }
+        cart.getCartPK().setCustomerUsername(cart.getCustomer().getUsername());
         EntityManager em = null;
         try {
             utx.begin();
@@ -53,6 +58,11 @@ public class CartJpaController implements Serializable {
                 productorder = em.getReference(productorder.getClass(), productorder.getOrderid());
                 cart.setProductorder(productorder);
             }
+            Customer customer = cart.getCustomer();
+            if (customer != null) {
+                customer = em.getReference(customer.getClass(), customer.getUsername());
+                cart.setCustomer(customer);
+            }
             List<Lineitem> attachedLineitemList = new ArrayList<Lineitem>();
             for (Lineitem lineitemListLineitemToAttach : cart.getLineitemList()) {
                 lineitemListLineitemToAttach = em.getReference(lineitemListLineitemToAttach.getClass(), lineitemListLineitemToAttach.getLineitemid());
@@ -61,21 +71,25 @@ public class CartJpaController implements Serializable {
             cart.setLineitemList(attachedLineitemList);
             em.persist(cart);
             if (productorder != null) {
-                Cart oldCartCartidOfProductorder = productorder.getCartCartid();
-                if (oldCartCartidOfProductorder != null) {
-                    oldCartCartidOfProductorder.setProductorder(null);
-                    oldCartCartidOfProductorder = em.merge(oldCartCartidOfProductorder);
+                Cart oldCartOfProductorder = productorder.getCart();
+                if (oldCartOfProductorder != null) {
+                    oldCartOfProductorder.setProductorder(null);
+                    oldCartOfProductorder = em.merge(oldCartOfProductorder);
                 }
-                productorder.setCartCartid(cart);
+                productorder.setCart(cart);
                 productorder = em.merge(productorder);
             }
+            if (customer != null) {
+                customer.getCartList().add(cart);
+                customer = em.merge(customer);
+            }
             for (Lineitem lineitemListLineitem : cart.getLineitemList()) {
-                Cart oldCartCartidOfLineitemListLineitem = lineitemListLineitem.getCartCartid();
-                lineitemListLineitem.setCartCartid(cart);
+                Cart oldCartOfLineitemListLineitem = lineitemListLineitem.getCart();
+                lineitemListLineitem.setCart(cart);
                 lineitemListLineitem = em.merge(lineitemListLineitem);
-                if (oldCartCartidOfLineitemListLineitem != null) {
-                    oldCartCartidOfLineitemListLineitem.getLineitemList().remove(lineitemListLineitem);
-                    oldCartCartidOfLineitemListLineitem = em.merge(oldCartCartidOfLineitemListLineitem);
+                if (oldCartOfLineitemListLineitem != null) {
+                    oldCartOfLineitemListLineitem.getLineitemList().remove(lineitemListLineitem);
+                    oldCartOfLineitemListLineitem = em.merge(oldCartOfLineitemListLineitem);
                 }
             }
             utx.commit();
@@ -85,7 +99,7 @@ public class CartJpaController implements Serializable {
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
-            if (findCart(cart.getCartid()) != null) {
+            if (findCart(cart.getCartPK()) != null) {
                 throw new PreexistingEntityException("Cart " + cart + " already exists.", ex);
             }
             throw ex;
@@ -96,37 +110,26 @@ public class CartJpaController implements Serializable {
         }
     }
 
-    public void edit(Cart cart) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
+    public void edit(Cart cart) throws NonexistentEntityException, RollbackFailureException, Exception {
+        cart.getCartPK().setCustomerUsername(cart.getCustomer().getUsername());
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            Cart persistentCart = em.find(Cart.class, cart.getCartid());
+            Cart persistentCart = em.find(Cart.class, cart.getCartPK());
             Productorder productorderOld = persistentCart.getProductorder();
             Productorder productorderNew = cart.getProductorder();
+            Customer customerOld = persistentCart.getCustomer();
+            Customer customerNew = cart.getCustomer();
             List<Lineitem> lineitemListOld = persistentCart.getLineitemList();
             List<Lineitem> lineitemListNew = cart.getLineitemList();
-            List<String> illegalOrphanMessages = null;
-            if (productorderOld != null && !productorderOld.equals(productorderNew)) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("You must retain Productorder " + productorderOld + " since its cartCartid field is not nullable.");
-            }
-            for (Lineitem lineitemListOldLineitem : lineitemListOld) {
-                if (!lineitemListNew.contains(lineitemListOldLineitem)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain Lineitem " + lineitemListOldLineitem + " since its cartCartid field is not nullable.");
-                }
-            }
-            if (illegalOrphanMessages != null) {
-                throw new IllegalOrphanException(illegalOrphanMessages);
-            }
             if (productorderNew != null) {
                 productorderNew = em.getReference(productorderNew.getClass(), productorderNew.getOrderid());
                 cart.setProductorder(productorderNew);
+            }
+            if (customerNew != null) {
+                customerNew = em.getReference(customerNew.getClass(), customerNew.getUsername());
+                cart.setCustomer(customerNew);
             }
             List<Lineitem> attachedLineitemListNew = new ArrayList<Lineitem>();
             for (Lineitem lineitemListNewLineitemToAttach : lineitemListNew) {
@@ -136,23 +139,41 @@ public class CartJpaController implements Serializable {
             lineitemListNew = attachedLineitemListNew;
             cart.setLineitemList(lineitemListNew);
             cart = em.merge(cart);
+            if (productorderOld != null && !productorderOld.equals(productorderNew)) {
+                productorderOld.setCart(null);
+                productorderOld = em.merge(productorderOld);
+            }
             if (productorderNew != null && !productorderNew.equals(productorderOld)) {
-                Cart oldCartCartidOfProductorder = productorderNew.getCartCartid();
-                if (oldCartCartidOfProductorder != null) {
-                    oldCartCartidOfProductorder.setProductorder(null);
-                    oldCartCartidOfProductorder = em.merge(oldCartCartidOfProductorder);
+                Cart oldCartOfProductorder = productorderNew.getCart();
+                if (oldCartOfProductorder != null) {
+                    oldCartOfProductorder.setProductorder(null);
+                    oldCartOfProductorder = em.merge(oldCartOfProductorder);
                 }
-                productorderNew.setCartCartid(cart);
+                productorderNew.setCart(cart);
                 productorderNew = em.merge(productorderNew);
+            }
+            if (customerOld != null && !customerOld.equals(customerNew)) {
+                customerOld.getCartList().remove(cart);
+                customerOld = em.merge(customerOld);
+            }
+            if (customerNew != null && !customerNew.equals(customerOld)) {
+                customerNew.getCartList().add(cart);
+                customerNew = em.merge(customerNew);
+            }
+            for (Lineitem lineitemListOldLineitem : lineitemListOld) {
+                if (!lineitemListNew.contains(lineitemListOldLineitem)) {
+                    lineitemListOldLineitem.setCart(null);
+                    lineitemListOldLineitem = em.merge(lineitemListOldLineitem);
+                }
             }
             for (Lineitem lineitemListNewLineitem : lineitemListNew) {
                 if (!lineitemListOld.contains(lineitemListNewLineitem)) {
-                    Cart oldCartCartidOfLineitemListNewLineitem = lineitemListNewLineitem.getCartCartid();
-                    lineitemListNewLineitem.setCartCartid(cart);
+                    Cart oldCartOfLineitemListNewLineitem = lineitemListNewLineitem.getCart();
+                    lineitemListNewLineitem.setCart(cart);
                     lineitemListNewLineitem = em.merge(lineitemListNewLineitem);
-                    if (oldCartCartidOfLineitemListNewLineitem != null && !oldCartCartidOfLineitemListNewLineitem.equals(cart)) {
-                        oldCartCartidOfLineitemListNewLineitem.getLineitemList().remove(lineitemListNewLineitem);
-                        oldCartCartidOfLineitemListNewLineitem = em.merge(oldCartCartidOfLineitemListNewLineitem);
+                    if (oldCartOfLineitemListNewLineitem != null && !oldCartOfLineitemListNewLineitem.equals(cart)) {
+                        oldCartOfLineitemListNewLineitem.getLineitemList().remove(lineitemListNewLineitem);
+                        oldCartOfLineitemListNewLineitem = em.merge(oldCartOfLineitemListNewLineitem);
                     }
                 }
             }
@@ -165,7 +186,7 @@ public class CartJpaController implements Serializable {
             }
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = cart.getCartid();
+                CartPK id = cart.getCartPK();
                 if (findCart(id) == null) {
                     throw new NonexistentEntityException("The cart with id " + id + " no longer exists.");
                 }
@@ -178,7 +199,7 @@ public class CartJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
+    public void destroy(CartPK id) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
@@ -186,27 +207,24 @@ public class CartJpaController implements Serializable {
             Cart cart;
             try {
                 cart = em.getReference(Cart.class, id);
-                cart.getCartid();
+                cart.getCartPK();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The cart with id " + id + " no longer exists.", enfe);
             }
-            List<String> illegalOrphanMessages = null;
-            Productorder productorderOrphanCheck = cart.getProductorder();
-            if (productorderOrphanCheck != null) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This Cart (" + cart + ") cannot be destroyed since the Productorder " + productorderOrphanCheck + " in its productorder field has a non-nullable cartCartid field.");
+            Productorder productorder = cart.getProductorder();
+            if (productorder != null) {
+                productorder.setCart(null);
+                productorder = em.merge(productorder);
             }
-            List<Lineitem> lineitemListOrphanCheck = cart.getLineitemList();
-            for (Lineitem lineitemListOrphanCheckLineitem : lineitemListOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This Cart (" + cart + ") cannot be destroyed since the Lineitem " + lineitemListOrphanCheckLineitem + " in its lineitemList field has a non-nullable cartCartid field.");
+            Customer customer = cart.getCustomer();
+            if (customer != null) {
+                customer.getCartList().remove(cart);
+                customer = em.merge(customer);
             }
-            if (illegalOrphanMessages != null) {
-                throw new IllegalOrphanException(illegalOrphanMessages);
+            List<Lineitem> lineitemList = cart.getLineitemList();
+            for (Lineitem lineitemListLineitem : lineitemList) {
+                lineitemListLineitem.setCart(null);
+                lineitemListLineitem = em.merge(lineitemListLineitem);
             }
             em.remove(cart);
             utx.commit();
@@ -248,7 +266,7 @@ public class CartJpaController implements Serializable {
         }
     }
 
-    public Cart findCart(Integer id) {
+    public Cart findCart(CartPK id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Cart.class, id);

@@ -17,10 +17,10 @@ import jpa.model.Product;
  *
  * @author ariya boonchoo
  */
-public class Favorite implements Serializable {
+public class Favorites implements Serializable {
      private Map<String,LineItem> itemFav;
 
-    public Favorite() {
+    public Favorites() {
         itemFav = new HashMap();
     }
 

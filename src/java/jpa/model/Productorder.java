@@ -13,6 +13,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -26,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author ariya boonchoo
+ * @author Yang
  */
 @Entity
 @Table(name = "PRODUCTORDER")
@@ -36,7 +37,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Productorder.findByOrderid", query = "SELECT p FROM Productorder p WHERE p.orderid = :orderid")
     , @NamedQuery(name = "Productorder.findByTotalprice", query = "SELECT p FROM Productorder p WHERE p.totalprice = :totalprice")
     , @NamedQuery(name = "Productorder.findByProductstatus", query = "SELECT p FROM Productorder p WHERE p.productstatus = :productstatus")
-    , @NamedQuery(name = "Productorder.findByTrackingno", query = "SELECT p FROM Productorder p WHERE p.trackingno = :trackingno")})
+    , @NamedQuery(name = "Productorder.findByTrackingno", query = "SELECT p FROM Productorder p WHERE p.trackingno = :trackingno")
+    , @NamedQuery(name = "Productorder.findByAddress", query = "SELECT p FROM Productorder p WHERE p.address = :address")})
 public class Productorder implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,19 +50,24 @@ public class Productorder implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "TOTALPRICE")
     private Double totalprice;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+    @Size(max = 50)
     @Column(name = "PRODUCTSTATUS")
     private String productstatus;
     @Size(max = 50)
     @Column(name = "TRACKINGNO")
     private String trackingno;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "productorderOrderid")
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 200)
+    @Column(name = "ADDRESS")
+    private String address;
+    @OneToOne(mappedBy = "productorderOrderid")
     private Payment payment;
-    @JoinColumn(name = "CART_CARTID", referencedColumnName = "CARTID")
-    @OneToOne(optional = false)
-    private Cart cartCartid;
+    @JoinColumns({
+        @JoinColumn(name = "CART_CARTID", referencedColumnName = "CARTID")
+        , @JoinColumn(name = "CART_USERNAME", referencedColumnName = "CUSTOMER_USERNAME")})
+    @OneToOne
+    private Cart cart;
     @JoinColumn(name = "CUSTOMER_USERNAME", referencedColumnName = "USERNAME")
     @ManyToOne(optional = false)
     private Customer customerUsername;
@@ -74,9 +81,9 @@ public class Productorder implements Serializable {
         this.orderid = orderid;
     }
 
-    public Productorder(Integer orderid, String productstatus) {
+    public Productorder(Integer orderid, String address) {
         this.orderid = orderid;
-        this.productstatus = productstatus;
+        this.address = address;
     }
 
     public Integer getOrderid() {
@@ -111,6 +118,14 @@ public class Productorder implements Serializable {
         this.trackingno = trackingno;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public Payment getPayment() {
         return payment;
     }
@@ -119,12 +134,12 @@ public class Productorder implements Serializable {
         this.payment = payment;
     }
 
-    public Cart getCartCartid() {
-        return cartCartid;
+    public Cart getCart() {
+        return cart;
     }
 
-    public void setCartCartid(Cart cartCartid) {
-        this.cartCartid = cartCartid;
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 
     public Customer getCustomerUsername() {

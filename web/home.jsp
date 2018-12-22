@@ -160,7 +160,8 @@
                                                     <div class="col-sm-3">
                                                         <div class="thumb-wrapper">
                                                             <div class="img-box">
-                                                                <a href="GetProductDetail?productid=${p.productid}"><img src="images/${p.productid}.jpg" class="img-responsive img-fluid" alt="cover"></a>
+                                                                <!--<a href="RecentView?productid=${p.productid}" ${cookie.productid.value=='${p.productid}'?'onclick':''}><img src="images/${p.productid}.jpg" class="img-responsive img-fluid" alt="cover"></a>-->
+                                                            <a href="GetProductDetail?productid=${p.productid}" ${cookie.productid.value=='${p.productid}'?'onclick':''}><img src="images/${p.productid}.jpg" class="img-responsive img-fluid" alt="cover"></a>
                                                             </div>
                                                             <div class="thumb-content">
                                                                 <h4><a href="GetProductDetail?productid=${p.productid}">${p.productname}</a></h4>
@@ -230,8 +231,10 @@
                         </div>
                     </div> <!--row-->
                 </div>
+                
             </div>
         </main>    
+
         <!-- Footer -->
         <footer class="py-5 bg-dark">
             <div class="container">

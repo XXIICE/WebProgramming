@@ -1,4 +1,4 @@
-/*
+ /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
 import jpa.model.Cart;
+import jpa.model.CartPK;
 import jpa.model.Customer;
 import jpa.model.Lineitem;
 import jpa.model.Orderitem;
@@ -77,8 +78,15 @@ public class AddItemToCartServlet extends HttpServlet {
             cart.add(p);
             if (custom != null) {
                 Cart ca = new Cart();
-                CartJpaController cartJpaCtrl = new CartJpaController(utx, emf);
-                ca.setCartid(1);
+                CartJpaController cartJpaCtrl = new CartJpaController(utx, emf);                
+                CartPK caPk = new CartPK();
+                int idC = cartJpaCtrl.getCartCount()+1;
+                caPk.setCartid(idC);
+                caPk.setCustomerUsername(custom.getUsername());
+                ca.setCartPK(caPk);
+                ca.setCustomer(custom);
+                
+                
                 try {
                     cartJpaCtrl.create(ca);
                 } catch (Exception ex) {
@@ -86,7 +94,7 @@ public class AddItemToCartServlet extends HttpServlet {
                 }
                 Lineitem line = new Lineitem();
                 LineitemJpaController lineJpaCtrl = new LineitemJpaController(utx, emf);
-                line.setCartCartid(ca);
+                line.setCart(ca);
                 int idL = lineJpaCtrl.getLineitemCount() + 1;
                 line.setLineitemid(idL);
                 LineItem lines= new LineItem();
@@ -96,6 +104,17 @@ public class AddItemToCartServlet extends HttpServlet {
                 List<Lineitem> lineList = lineJpaCtrl.findLineitemEntities();
                     for (Lineitem lineitem : lineList) {
                         if (productid.equals(line.getProductProductid())) {
+//                            line.setQuantity(lines.getQuantity()+1);
+//                            try {
+//                                lineJpaCtrl.edit(line);
+//                            } catch (RollbackFailureException ex) {
+//                                Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                            } catch (Exception ex) {
+//                                Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                            }
+//                            System.out.println(lines.getQuantity());
+
+                       
                        lineList.add(line);
                     }
                     }

@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
 import jpa.model.Customer;
+import jpa.model.Productorder;
 import jpa.model.controller.CustomerJpaController;
 import jpa.model.controller.exceptions.NonexistentEntityException;
 import jpa.model.controller.exceptions.RollbackFailureException;
@@ -51,6 +52,7 @@ public class NewAddressServlet extends HttpServlet {
         String newaddress = request.getParameter("newaddress");
         if (session != null) {
             Customer custom = (Customer) session.getAttribute("custom");
+//            Productorder po = new Productorder(); 
             if (custom != null) {
                 CustomerJpaController customJpa = new CustomerJpaController(utx, emf);
 //                custom.setUsername(custom.getUsername());

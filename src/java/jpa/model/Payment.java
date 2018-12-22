@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author ariya boonchoo
+ * @author Yang
  */
 @Entity
 @Table(name = "PAYMENT")
@@ -38,13 +38,11 @@ public class Payment implements Serializable {
     @NotNull
     @Column(name = "PAYMENTID")
     private Integer paymentid;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
+    @Size(max = 20)
     @Column(name = "PAYMENTSTATUS")
     private String paymentstatus;
     @JoinColumn(name = "PRODUCTORDER_ORDERID", referencedColumnName = "ORDERID")
-    @OneToOne(optional = false)
+    @OneToOne
     private Productorder productorderOrderid;
 
     public Payment() {
@@ -52,11 +50,6 @@ public class Payment implements Serializable {
 
     public Payment(Integer paymentid) {
         this.paymentid = paymentid;
-    }
-
-    public Payment(Integer paymentid, String paymentstatus) {
-        this.paymentid = paymentid;
-        this.paymentstatus = paymentstatus;
     }
 
     public Integer getPaymentid() {

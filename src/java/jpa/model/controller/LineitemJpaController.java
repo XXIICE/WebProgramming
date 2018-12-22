@@ -23,7 +23,7 @@ import jpa.model.controller.exceptions.RollbackFailureException;
 
 /**
  *
- * @author ariya boonchoo
+ * @author Yang
  */
 public class LineitemJpaController implements Serializable {
 
@@ -43,10 +43,10 @@ public class LineitemJpaController implements Serializable {
         try {
             utx.begin();
             em = getEntityManager();
-            Cart cartCartid = lineitem.getCartCartid();
-            if (cartCartid != null) {
-                cartCartid = em.getReference(cartCartid.getClass(), cartCartid.getCartid());
-                lineitem.setCartCartid(cartCartid);
+            Cart cart = lineitem.getCart();
+            if (cart != null) {
+                cart = em.getReference(cart.getClass(), cart.getCartPK());
+                lineitem.setCart(cart);
             }
             Product productProductid = lineitem.getProductProductid();
             if (productProductid != null) {
@@ -54,9 +54,9 @@ public class LineitemJpaController implements Serializable {
                 lineitem.setProductProductid(productProductid);
             }
             em.persist(lineitem);
-            if (cartCartid != null) {
-                cartCartid.getLineitemList().add(lineitem);
-                cartCartid = em.merge(cartCartid);
+            if (cart != null) {
+                cart.getLineitemList().add(lineitem);
+                cart = em.merge(cart);
             }
             if (productProductid != null) {
                 productProductid.getLineitemList().add(lineitem);
@@ -86,26 +86,26 @@ public class LineitemJpaController implements Serializable {
             utx.begin();
             em = getEntityManager();
             Lineitem persistentLineitem = em.find(Lineitem.class, lineitem.getLineitemid());
-            Cart cartCartidOld = persistentLineitem.getCartCartid();
-            Cart cartCartidNew = lineitem.getCartCartid();
+            Cart cartOld = persistentLineitem.getCart();
+            Cart cartNew = lineitem.getCart();
             Product productProductidOld = persistentLineitem.getProductProductid();
             Product productProductidNew = lineitem.getProductProductid();
-            if (cartCartidNew != null) {
-                cartCartidNew = em.getReference(cartCartidNew.getClass(), cartCartidNew.getCartid());
-                lineitem.setCartCartid(cartCartidNew);
+            if (cartNew != null) {
+                cartNew = em.getReference(cartNew.getClass(), cartNew.getCartPK());
+                lineitem.setCart(cartNew);
             }
             if (productProductidNew != null) {
                 productProductidNew = em.getReference(productProductidNew.getClass(), productProductidNew.getProductid());
                 lineitem.setProductProductid(productProductidNew);
             }
             lineitem = em.merge(lineitem);
-            if (cartCartidOld != null && !cartCartidOld.equals(cartCartidNew)) {
-                cartCartidOld.getLineitemList().remove(lineitem);
-                cartCartidOld = em.merge(cartCartidOld);
+            if (cartOld != null && !cartOld.equals(cartNew)) {
+                cartOld.getLineitemList().remove(lineitem);
+                cartOld = em.merge(cartOld);
             }
-            if (cartCartidNew != null && !cartCartidNew.equals(cartCartidOld)) {
-                cartCartidNew.getLineitemList().add(lineitem);
-                cartCartidNew = em.merge(cartCartidNew);
+            if (cartNew != null && !cartNew.equals(cartOld)) {
+                cartNew.getLineitemList().add(lineitem);
+                cartNew = em.merge(cartNew);
             }
             if (productProductidOld != null && !productProductidOld.equals(productProductidNew)) {
                 productProductidOld.getLineitemList().remove(lineitem);
@@ -149,10 +149,10 @@ public class LineitemJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The lineitem with id " + id + " no longer exists.", enfe);
             }
-            Cart cartCartid = lineitem.getCartCartid();
-            if (cartCartid != null) {
-                cartCartid.getLineitemList().remove(lineitem);
-                cartCartid = em.merge(cartCartid);
+            Cart cart = lineitem.getCart();
+            if (cart != null) {
+                cart.getLineitemList().remove(lineitem);
+                cart = em.merge(cart);
             }
             Product productProductid = lineitem.getProductProductid();
             if (productProductid != null) {

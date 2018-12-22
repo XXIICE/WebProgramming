@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
 import jpa.model.Product;
 import jpa.model.controller.ProductJpaController;
-import model.Favorite;
+import model.Favorites;
 
 /**
  *
@@ -41,12 +41,12 @@ public class FavoriteDetailServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
          HttpSession session = request.getSession(false);
-        Favorite fav = (Favorite) session.getAttribute("fav");
+        Favorites fav = (Favorites) session.getAttribute("fav");
         String productid = request.getParameter("productid");
         if (session != null) {
 
             if (fav == null) {
-                fav = new Favorite();
+                fav = new Favorites();
                 session.setAttribute("fav", fav);
             }
             ProductJpaController productJpaCtrl = new ProductJpaController(utx, emf);

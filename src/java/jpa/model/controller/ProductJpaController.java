@@ -28,7 +28,7 @@ import jpa.model.controller.exceptions.RollbackFailureException;
 
 /**
  *
- * @author ariya boonchoo
+ * @author Yang
  */
 public class ProductJpaController implements Serializable {
 
@@ -401,7 +401,35 @@ public class ProductJpaController implements Serializable {
         return findProductEntities(true, -1, -1);
     }
 
-    public List<Product> findByProductname(String productname) {
+    public List<Product> findProductEntities(int maxResults, int firstResult) {
+        return findProductEntities(false, maxResults, firstResult);
+    }
+
+    private List<Product> findProductEntities(boolean all, int maxResults, int firstResult) {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(Product.class));
+            Query q = em.createQuery(cq);
+            if (!all) {
+                q.setMaxResults(maxResults);
+                q.setFirstResult(firstResult);
+            }
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public Product findProduct(String id) {
+        EntityManager em = getEntityManager();
+        try {
+            return em.find(Product.class, id);
+        } finally {
+            em.close();
+        }
+    }
+public List<Product> findByProductname(String productname) {
         EntityManager em = getEntityManager();
         Query query = em.createNamedQuery("Product.findByProductname");
         query.setParameter("productname", "%" + productname.toLowerCase() + "%");
@@ -437,36 +465,6 @@ public class ProductJpaController implements Serializable {
             em.close();
         }
     }
-
-    public List<Product> findProductEntities(int maxResults, int firstResult) {
-        return findProductEntities(false, maxResults, firstResult);
-    }
-
-    private List<Product> findProductEntities(boolean all, int maxResults, int firstResult) {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Product.class));
-            Query q = em.createQuery(cq);
-            if (!all) {
-                q.setMaxResults(maxResults);
-                q.setFirstResult(firstResult);
-            }
-            return q.getResultList();
-        } finally {
-            em.close();
-        }
-    }
-
-    public Product findProduct(String id) {
-        EntityManager em = getEntityManager();
-        try {
-            return em.find(Product.class, id);
-        } finally {
-            em.close();
-        }
-    }
-
     public int getProductCount() {
         EntityManager em = getEntityManager();
         try {
@@ -479,5 +477,5 @@ public class ProductJpaController implements Serializable {
             em.close();
         }
     }
-
+    
 }

@@ -7,56 +7,59 @@ package jpa.model;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author ariya boonchoo
+ * @author Yang
  */
 @Entity
 @Table(name = "CART")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Cart.findAll", query = "SELECT c FROM Cart c")
-    , @NamedQuery(name = "Cart.findByCartid", query = "SELECT c FROM Cart c WHERE c.cartid = :cartid")})
+    , @NamedQuery(name = "Cart.findByCartid", query = "SELECT c FROM Cart c WHERE c.cartPK.cartid = :cartid")
+    , @NamedQuery(name = "Cart.findByCustomerUsername", query = "SELECT c FROM Cart c WHERE c.cartPK.customerUsername = :customerUsername")})
 public class Cart implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "CARTID")
-    private Integer cartid;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "cartCartid")
+    @EmbeddedId
+    protected CartPK cartPK;
+    @OneToOne(mappedBy = "cart")
     private Productorder productorder;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cartCartid")
+    @OneToMany(mappedBy = "cart")
     private List<Lineitem> lineitemList;
+    @JoinColumn(name = "CUSTOMER_USERNAME", referencedColumnName = "USERNAME", insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Customer customer;
 
     public Cart() {
     }
 
-    public Cart(Integer cartid) {
-        this.cartid = cartid;
+    public Cart(CartPK cartPK) {
+        this.cartPK = cartPK;
     }
 
-    public Integer getCartid() {
-        return cartid;
+    public Cart(int cartid, String customerUsername) {
+        this.cartPK = new CartPK(cartid, customerUsername);
     }
 
-    public void setCartid(Integer cartid) {
-        this.cartid = cartid;
+    public CartPK getCartPK() {
+        return cartPK;
+    }
+
+    public void setCartPK(CartPK cartPK) {
+        this.cartPK = cartPK;
     }
 
     public Productorder getProductorder() {
@@ -76,10 +79,18 @@ public class Cart implements Serializable {
         this.lineitemList = lineitemList;
     }
 
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (cartid != null ? cartid.hashCode() : 0);
+        hash += (cartPK != null ? cartPK.hashCode() : 0);
         return hash;
     }
 
@@ -90,7 +101,7 @@ public class Cart implements Serializable {
             return false;
         }
         Cart other = (Cart) object;
-        if ((this.cartid == null && other.cartid != null) || (this.cartid != null && !this.cartid.equals(other.cartid))) {
+        if ((this.cartPK == null && other.cartPK != null) || (this.cartPK != null && !this.cartPK.equals(other.cartPK))) {
             return false;
         }
         return true;
@@ -98,7 +109,7 @@ public class Cart implements Serializable {
 
     @Override
     public String toString() {
-        return "jpa.model.Cart[ cartid=" + cartid + " ]";
+        return "jpa.model.Cart[ cartPK=" + cartPK + " ]";
     }
     
 }

@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author ariya boonchoo
+ * @author Yang
  */
 @Entity
 @Table(name = "TRACKLIST")

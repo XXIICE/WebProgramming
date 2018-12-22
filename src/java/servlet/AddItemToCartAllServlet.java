@@ -66,7 +66,7 @@ public class AddItemToCartAllServlet extends HttpServlet {
             if (custom != null) {
                 Cart ca = new Cart();
                 CartJpaController cartJpaCtrl = new CartJpaController(utx, emf);
-                ca.setCartid(1);
+//                ca.setCartid(1);
                 try {
                     cartJpaCtrl.create(ca);
                 } catch (Exception ex) {
@@ -74,7 +74,7 @@ public class AddItemToCartAllServlet extends HttpServlet {
                 }
                 Lineitem line = new Lineitem();
                 LineitemJpaController lineJpaCtrl = new LineitemJpaController(utx, emf);
-                line.setCartCartid(ca);
+//                line.setCartCartid(ca);
                 int idL = lineJpaCtrl.getLineitemCount() + 1;
                 line.setLineitemid(idL);
                 LineItem lines= new LineItem();

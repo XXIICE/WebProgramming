@@ -23,7 +23,7 @@ import jpa.model.controller.exceptions.RollbackFailureException;
 
 /**
  *
- * @author ariya boonchoo
+ * @author Yang
  */
 public class TracklistJpaController implements Serializable {
 

@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author ariya boonchoo
+ * @author Yang
  */
 @Entity
 @Table(name = "CUSTOMER")
@@ -86,6 +86,8 @@ public class Customer implements Serializable {
     private List<Review> reviewList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerUsername")
     private List<Favorite> favoriteList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
+    private List<Cart> cartList;
 
     public Customer() {
     }
@@ -193,6 +195,15 @@ public class Customer implements Serializable {
 
     public void setFavoriteList(List<Favorite> favoriteList) {
         this.favoriteList = favoriteList;
+    }
+
+    @XmlTransient
+    public List<Cart> getCartList() {
+        return cartList;
+    }
+
+    public void setCartList(List<Cart> cartList) {
+        this.cartList = cartList;
     }
 
     @Override

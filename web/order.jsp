@@ -60,7 +60,7 @@
                                 </div>
                             </div> 
                             <hr class="md-5">
-                            <h5><strong><center>${msg}</center></strong></h5>
+                            <h5><strong><center>${msgO}</center></strong></h5>
                             <c:set var="Items" value="${sessionScope.order.lineItems}"/>
                             <c:forEach items="${order.lineItems}" var="p" varStatus="vs">
                                 

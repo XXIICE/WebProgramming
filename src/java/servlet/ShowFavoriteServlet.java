@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
-import model.Favorite;
+import model.Favorites;
 
 /**
  *
@@ -40,7 +40,7 @@ public class ShowFavoriteServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession(false); 
         if (session != null) {
-           Favorite fav = (Favorite) session.getAttribute("fav");
+           Favorites fav = (Favorites) session.getAttribute("fav");
             if (fav != null) {
                 getServletContext().getRequestDispatcher("/ShowFavorite.jsp").forward(request, response);
                 return;

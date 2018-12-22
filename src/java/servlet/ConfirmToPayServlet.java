@@ -7,11 +7,15 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
+import javax.persistence.Query;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +25,7 @@ import javax.transaction.UserTransaction;
 import jpa.model.Cart;
 import jpa.model.Customer;
 import jpa.model.Payment;
+import jpa.model.Product;
 import jpa.model.Productorder;
 import jpa.model.controller.CustomerJpaController;
 import jpa.model.controller.PaymentJpaController;
@@ -55,17 +60,29 @@ public class ConfirmToPayServlet extends HttpServlet {
         Customer custom = (Customer) session.getAttribute("custom");
         ShoppingCart2 cart = (ShoppingCart2) session.getAttribute("cart");
         String productid = request.getParameter("productid");
-        if (productid!=null) {
-            
-        
+        if (productid != null) {
 
-        if (session != null) {
-            if (cart != null) {
-                session.setAttribute("order", cart);
-//            if (custom != null) {
-//                CustomerJpaController customJpa = new CustomerJpaController(utx, emf);
-//                int point = custom.getPoint() + 10;
-//                custom.setPoint(point);
+            if (session != null) {
+                if (cart != null) {
+                    session.setAttribute("order", cart);
+                    if (custom != null) {
+                        CustomerJpaController customJpa = new CustomerJpaController(utx, emf);
+//                    Customer cus = new Customer();
+//                        System.out.println(1111111);
+                        int point = custom.getPoint() + 10;
+                        EntityManager em = emf.createEntityManager();
+//                        Query q = em.createQuery("update app.customer set app.customer.point =" + point + " where app.customer.username = '" + custom.getUsername() + "'");
+
+                        custom.setPoint(point);
+                        session.setAttribute("custom", custom);
+//                        em.getTransaction().commit();
+//
+//                        try {
+//                            customJpa.edit(custom);
+
+//                        customJpa.create(custom);
+//                        session.setAttribute("order", cart);
+//                            getServletContext().getRequestDispatcher("/order.jsp").forward(request, response);
 //                Productorder productorder = new Productorder();
 //                ProductorderJpaController productorderJpaCtrl = new ProductorderJpaController(utx, emf);
 //                productorder.setCustomerUsername(custom);
@@ -89,10 +106,19 @@ public class ConfirmToPayServlet extends HttpServlet {
 //                } catch (Exception ex) {
 //                    Logger.getLogger(NewAddressServlet.class.getName()).log(Level.SEVERE, null, ex);
 //                }
-            }getServletContext().getRequestDispatcher("/order.jsp").forward(request, response);
-        }
-        }else{
-            session.setAttribute("msg", "No Order");
+//                        } catch (NonexistentEntityException ex) {
+//                            Logger.getLogger(ConfirmToPayServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                        } catch (RollbackFailureException ex) {
+//                            Logger.getLogger(ConfirmToPayServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                        } catch (Exception ex) {
+//                            Logger.getLogger(ConfirmToPayServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                        }
+                    }
+                } else {
+                    request.setAttribute("msgO", "No Order");
+                }
+                getServletContext().getRequestDispatcher("/order.jsp").forward(request, response);
+            }
         }
         getServletContext().getRequestDispatcher("/order.jsp").forward(request, response);
     }

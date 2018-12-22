@@ -16,9 +16,10 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.transaction.UserTransaction;
-import jpa.model.Customer;
 import jpa.model.Review;
 import jpa.model.Favorite;
+import jpa.model.Cart;
+import jpa.model.Customer;
 import jpa.model.controller.exceptions.IllegalOrphanException;
 import jpa.model.controller.exceptions.NonexistentEntityException;
 import jpa.model.controller.exceptions.PreexistingEntityException;
@@ -26,7 +27,7 @@ import jpa.model.controller.exceptions.RollbackFailureException;
 
 /**
  *
- * @author ariya boonchoo
+ * @author Yang
  */
 public class CustomerJpaController implements Serializable {
 
@@ -51,6 +52,9 @@ public class CustomerJpaController implements Serializable {
         if (customer.getFavoriteList() == null) {
             customer.setFavoriteList(new ArrayList<Favorite>());
         }
+        if (customer.getCartList() == null) {
+            customer.setCartList(new ArrayList<Cart>());
+        }
         EntityManager em = null;
         try {
             utx.begin();
@@ -73,6 +77,12 @@ public class CustomerJpaController implements Serializable {
                 attachedFavoriteList.add(favoriteListFavoriteToAttach);
             }
             customer.setFavoriteList(attachedFavoriteList);
+            List<Cart> attachedCartList = new ArrayList<Cart>();
+            for (Cart cartListCartToAttach : customer.getCartList()) {
+                cartListCartToAttach = em.getReference(cartListCartToAttach.getClass(), cartListCartToAttach.getCartPK());
+                attachedCartList.add(cartListCartToAttach);
+            }
+            customer.setCartList(attachedCartList);
             em.persist(customer);
             for (Productorder productorderListProductorder : customer.getProductorderList()) {
                 Customer oldCustomerUsernameOfProductorderListProductorder = productorderListProductorder.getCustomerUsername();
@@ -99,6 +109,15 @@ public class CustomerJpaController implements Serializable {
                 if (oldCustomerUsernameOfFavoriteListFavorite != null) {
                     oldCustomerUsernameOfFavoriteListFavorite.getFavoriteList().remove(favoriteListFavorite);
                     oldCustomerUsernameOfFavoriteListFavorite = em.merge(oldCustomerUsernameOfFavoriteListFavorite);
+                }
+            }
+            for (Cart cartListCart : customer.getCartList()) {
+                Customer oldCustomerOfCartListCart = cartListCart.getCustomer();
+                cartListCart.setCustomer(customer);
+                cartListCart = em.merge(cartListCart);
+                if (oldCustomerOfCartListCart != null) {
+                    oldCustomerOfCartListCart.getCartList().remove(cartListCart);
+                    oldCustomerOfCartListCart = em.merge(oldCustomerOfCartListCart);
                 }
             }
             utx.commit();
@@ -131,6 +150,8 @@ public class CustomerJpaController implements Serializable {
             List<Review> reviewListNew = customer.getReviewList();
             List<Favorite> favoriteListOld = persistentCustomer.getFavoriteList();
             List<Favorite> favoriteListNew = customer.getFavoriteList();
+            List<Cart> cartListOld = persistentCustomer.getCartList();
+            List<Cart> cartListNew = customer.getCartList();
             List<String> illegalOrphanMessages = null;
             for (Productorder productorderListOldProductorder : productorderListOld) {
                 if (!productorderListNew.contains(productorderListOldProductorder)) {
@@ -154,6 +175,14 @@ public class CustomerJpaController implements Serializable {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
                     illegalOrphanMessages.add("You must retain Favorite " + favoriteListOldFavorite + " since its customerUsername field is not nullable.");
+                }
+            }
+            for (Cart cartListOldCart : cartListOld) {
+                if (!cartListNew.contains(cartListOldCart)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain Cart " + cartListOldCart + " since its customer field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
@@ -180,6 +209,13 @@ public class CustomerJpaController implements Serializable {
             }
             favoriteListNew = attachedFavoriteListNew;
             customer.setFavoriteList(favoriteListNew);
+            List<Cart> attachedCartListNew = new ArrayList<Cart>();
+            for (Cart cartListNewCartToAttach : cartListNew) {
+                cartListNewCartToAttach = em.getReference(cartListNewCartToAttach.getClass(), cartListNewCartToAttach.getCartPK());
+                attachedCartListNew.add(cartListNewCartToAttach);
+            }
+            cartListNew = attachedCartListNew;
+            customer.setCartList(cartListNew);
             customer = em.merge(customer);
             for (Productorder productorderListNewProductorder : productorderListNew) {
                 if (!productorderListOld.contains(productorderListNewProductorder)) {
@@ -211,6 +247,17 @@ public class CustomerJpaController implements Serializable {
                     if (oldCustomerUsernameOfFavoriteListNewFavorite != null && !oldCustomerUsernameOfFavoriteListNewFavorite.equals(customer)) {
                         oldCustomerUsernameOfFavoriteListNewFavorite.getFavoriteList().remove(favoriteListNewFavorite);
                         oldCustomerUsernameOfFavoriteListNewFavorite = em.merge(oldCustomerUsernameOfFavoriteListNewFavorite);
+                    }
+                }
+            }
+            for (Cart cartListNewCart : cartListNew) {
+                if (!cartListOld.contains(cartListNewCart)) {
+                    Customer oldCustomerOfCartListNewCart = cartListNewCart.getCustomer();
+                    cartListNewCart.setCustomer(customer);
+                    cartListNewCart = em.merge(cartListNewCart);
+                    if (oldCustomerOfCartListNewCart != null && !oldCustomerOfCartListNewCart.equals(customer)) {
+                        oldCustomerOfCartListNewCart.getCartList().remove(cartListNewCart);
+                        oldCustomerOfCartListNewCart = em.merge(oldCustomerOfCartListNewCart);
                     }
                 }
             }
@@ -269,6 +316,13 @@ public class CustomerJpaController implements Serializable {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
                 illegalOrphanMessages.add("This Customer (" + customer + ") cannot be destroyed since the Favorite " + favoriteListOrphanCheckFavorite + " in its favoriteList field has a non-nullable customerUsername field.");
+            }
+            List<Cart> cartListOrphanCheck = customer.getCartList();
+            for (Cart cartListOrphanCheckCart : cartListOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Customer (" + customer + ") cannot be destroyed since the Cart " + cartListOrphanCheckCart + " in its cartList field has a non-nullable customer field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);

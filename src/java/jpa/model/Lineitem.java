@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -20,7 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author ariya boonchoo
+ * @author Yang
  */
 @Entity
 @Table(name = "LINEITEM")
@@ -45,9 +46,11 @@ public class Lineitem implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "TOTALPRICE")
     private Double totalprice;
-    @JoinColumn(name = "CART_CARTID", referencedColumnName = "CARTID")
-    @ManyToOne(optional = false)
-    private Cart cartCartid;
+    @JoinColumns({
+        @JoinColumn(name = "CART_CARTID", referencedColumnName = "CARTID")
+        , @JoinColumn(name = "CART_USERNAME", referencedColumnName = "CUSTOMER_USERNAME")})
+    @ManyToOne
+    private Cart cart;
     @JoinColumn(name = "PRODUCT_PRODUCTID", referencedColumnName = "PRODUCTID")
     @ManyToOne(optional = false)
     private Product productProductid;
@@ -88,12 +91,12 @@ public class Lineitem implements Serializable {
         this.totalprice = totalprice;
     }
 
-    public Cart getCartCartid() {
-        return cartCartid;
+    public Cart getCart() {
+        return cart;
     }
 
-    public void setCartCartid(Cart cartCartid) {
-        this.cartCartid = cartCartid;
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 
     public Product getProductProductid() {
