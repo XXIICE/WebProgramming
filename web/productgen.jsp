@@ -44,7 +44,7 @@
                     <!-- Heading -->
 
                     <div class="row">
-                        <div class="col-sm-12 text-md-left" style="margin-bottom:1%;margin-top:2%;font-size:20px;"><b>Albums</b></div>
+                        <div class="col-sm-12 text-md-left" style="margin-bottom:1%;margin-top:2%;font-size:20px;"><b>Albums ${genre}</b></div>
                     </div>
                     <div class="card">
                         <div class="card-body">
@@ -90,16 +90,16 @@
                                     <div class="col-sm-4">
                                         <div class="row" style="">
                                             <div class="col-sm-6 text-md-right" >         
-                                                <form action="FavoriteDetail" method="post">
-                                                    <input type="hidden" value="${product.productid}" name="productid"/>
+                                                <form action="Favorite" method="post">
+                                                    <input type="hidden" value="${p.productid}" name="productid"/>
                                                     <button type="submit" class="btn btn-primary btn-danger">
                                                         <i class="fas fa-heart"></i> &nbsp;Favorite
                                                     </button>
                                                 </form>
                                             </div>          
                                             <div class="col-sm-6 text-md-left">
-                                                <form action="AddItemToCartDetail" method="post">
-                                                    <input type="hidden" value="${product.productid}" name="productid"/>
+                                                <form action="AddItemToCart" method="post">
+                                                    <input type="hidden" value="${p.productid}" name="productid"/>
                                                     <button type="submit" class="btn btn-primary">
                                                         <i class="fas fa-shopping-cart"></i> &nbsp;Add To Cart
                                                     </button>

@@ -41,7 +41,7 @@ public class ProductGenreJazzServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        request.setAttribute("genre","Jazz" );
         EntityManager em = emf.createEntityManager();
         Query q = em.createQuery("select p FROM Product p where p.genre = 'Jazz'");
         List<Product> productgenre = q.getResultList();

@@ -26,20 +26,19 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Yang
+ * @author ariya boonchoo
  */
 @Entity
 @Table(name = "PRODUCT")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p")
-    , @NamedQuery(name = "Product.findByProductid", query = "SELECT p FROM Product p WHERE p.productid = :productid")
+     , @NamedQuery(name = "Product.findByProductid", query = "SELECT p FROM Product p WHERE p.productid = :productid")
     , @NamedQuery(name = "Product.findByProductname", query = "SELECT p FROM Product p WHERE lower(p.productname) Like :productname")
     , @NamedQuery(name = "Product.findByArtist", query = "SELECT p FROM Product p WHERE lower(p.artist) Like :artist")
     , @NamedQuery(name = "Product.findByGenre", query = "SELECT p FROM Product p WHERE lower(p.genre) Like :genre")
     , @NamedQuery(name = "Product.findByPrice", query = "SELECT p FROM Product p WHERE p.price = :price")
-    , @NamedQuery(name = "Product.findByReleasedate", query = "SELECT p FROM Product p WHERE p.releasedate = :releasedate")
-})
+    , @NamedQuery(name = "Product.findByReleasedate", query = "SELECT p FROM Product p WHERE p.releasedate = :releasedate")})
 public class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -211,5 +210,5 @@ public class Product implements Serializable {
     public String toString() {
         return "jpa.model.Product[ productid=" + productid + " ]";
     }
-
+    
 }

@@ -23,7 +23,7 @@ import jpa.model.controller.exceptions.RollbackFailureException;
 
 /**
  *
- * @author Yang
+ * @author ariya boonchoo
  */
 public class OrderitemJpaController implements Serializable {
 

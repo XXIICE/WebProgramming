@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Yang
+ * @author ariya boonchoo
  */
 @Entity
 @Table(name = "ORDERITEM")
@@ -55,22 +55,6 @@ public class Orderitem implements Serializable {
 
     public Orderitem(Integer orderitemid) {
         this.orderitemid = orderitemid;
-    }
-
-    public Orderitem(Product product) {
-        this(product, 1);
-
-    }
-
-    public Orderitem(Product product, int quantity) {
-        this.productProductid = product;
-        this.quantity = quantity;
-//        this.salePrice = product.getPrice();
-
-    }
-
-    public double getTotalPrice() {
-        return this.quantity * this.price;
     }
 
     public Integer getOrderitemid() {
@@ -137,5 +121,5 @@ public class Orderitem implements Serializable {
     public String toString() {
         return "jpa.model.Orderitem[ orderitemid=" + orderitemid + " ]";
     }
-
+    
 }

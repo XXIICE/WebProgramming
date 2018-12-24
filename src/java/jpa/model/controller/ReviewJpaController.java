@@ -23,7 +23,7 @@ import jpa.model.controller.exceptions.RollbackFailureException;
 
 /**
  *
- * @author Yang
+ * @author ariya boonchoo
  */
 public class ReviewJpaController implements Serializable {
 
@@ -124,7 +124,7 @@ public class ReviewJpaController implements Serializable {
             }
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                String id = review.getReviewid();
+                Integer id = review.getReviewid();
                 if (findReview(id) == null) {
                     throw new NonexistentEntityException("The review with id " + id + " no longer exists.");
                 }
@@ -137,7 +137,7 @@ public class ReviewJpaController implements Serializable {
         }
     }
 
-    public void destroy(String id) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
@@ -199,7 +199,7 @@ public class ReviewJpaController implements Serializable {
         }
     }
 
-    public Review findReview(String id) {
+    public Review findReview(Integer id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Review.class, id);

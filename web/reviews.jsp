@@ -115,7 +115,7 @@
                 </div> <!--tracklist-->
 
 
-                 <div class="review">
+                                <div class="review">
                                     <div class="review-head">
                                         <div class="row">
                                             <div class="col-sm-12" style="margin-bottom: 1%;margin-top: 2%;"><span class="tl-head">Review</span></div>
@@ -124,20 +124,23 @@
                                     <hr class="my-5">
                                     <div class="review-detail">
                                         <div class="row">
-                                            <c:forEach items="${review}" var="r">
+                                           
                                             <div class="col-sm-2">
-                                                <p><fmt:formatDate value="${r.commentdate}" pattern="yyyy-MM-dd" /></p>
+                                                <p><fmt:formatDate value="${d}" pattern="yyyy-MM-dd" /></p>
                                             </div>
                                             <div class="col-sm-3">
-                                                <p>${r.customerUsername}</p>
+                                                <p>${custom.username}</p>
                                             </div>
-                                            <div class="col-sm-7">
-                                                <p>${r.comment}</p>
-                                            </div>
-                                            </c:forEach>
+<!--                                            <div class="col-sm-7">
+                                                <p>${product.productname}</p>
+                                            </div>--> 
+                                            <form action="Review" method="post">
+                                                <input type="text" size="200" name="review">
+                                                <input type="submit" value="Review">
+                                            </form>
                                         </div> <%--row--%>
                                     </div><%--tracklist-detail--%>
-                                </div> <%--tracklist--%> 
+                                </div> <%--tracklist--%>
 
                 <div class="back-btn" style="margin-bottom:20px;margin-top:70px;">
                     <div class="row">

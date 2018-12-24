@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author Yang
+ * @author ariya boonchoo
  */
 @Embeddable
 public class CartPK implements Serializable {

@@ -41,7 +41,7 @@ public class ProductGenreJpopServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        request.setAttribute("genre","J-Pop" );
         EntityManager em = emf.createEntityManager();
         Query q = em.createQuery("select p FROM Product p where p.genre = 'J-POP'");
         List<Product> productgenre = q.getResultList();

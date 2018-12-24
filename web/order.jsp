@@ -49,21 +49,23 @@
                                 <div class="col-sm-2">
                                     <strong>Quantity</strong>
                                 </div>    
-                                <div class="col-sm-2">
+                                <div class="col-sm-1">
                                     <strong>Price</strong>
                                 </div>    
-                                <div class="col-sm-2">
+                                <div class="col-sm-1">
                                     <strong>Total</strong>
                                 </div> 
                                 <div class="col-sm-1">
                                     <strong>Status</strong>
                                 </div>
+                                <div class="col-sm-2">
+                                    <strong></strong>
+                                </div>
                             </div> 
                             <hr class="md-5">
-                            <h5><strong><center>${msgO}</center></strong></h5>
                             <c:set var="Items" value="${sessionScope.order.lineItems}"/>
                             <c:forEach items="${order.lineItems}" var="p" varStatus="vs">
-                                
+
                                 <div class="row" style="font-size:14px;">   
                                     <div class="col-sm-1">
                                         <strong class="align-self-center">${vs.count}</strong>
@@ -81,18 +83,55 @@
                                     <div class="col-sm-2">
                                         <p>${p.quantity}</p>
                                     </div>    
-                                    <div class="col-sm-2">
+                                    <div class="col-sm-1">
                                         <p>${p.salePrice} ฿</p>
                                     </div>    
-                                    <div class="col-sm-2">
+                                    <div class="col-sm-1">
                                         <p>${p.totalPrice} ฿</p>
                                     </div>  
                                     <div class="col-sm-1">
                                         <p>Paid</p>
                                     </div>
+                                    <div class="col-sm-2">
+                                        <c:choose>
+                                            <c:when test="${received!=null}">
+                                                <!--<form action="#" method="post">-->
+                                                <!--<a href="Review?productid=${product.productid}">-->
+                                                <a href="reviews.jsp">
+                                                <input type="hidden" value="${product.productid}" name="productid"/>
+                                                 <button type="submit" class="btn btn-sm btn-outline-warning">Review
+                                                    </button></a>
+                                                <!--</form>-->
+                                            </c:when>
+                                            <c:otherwise>
+                                                <a href="reviews.jsp"><button class="btn btn-sm btn-outline-secondary disabled" role="button" aria-disabled="true">Review</button></a>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
                                 </div>
-                                <hr>
+                                <hr>     
                             </c:forEach>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <c:choose>
+                                        <c:when test="${received!=null}">
+                                            <!--                                            <form action="Receive" method="post">-->
+                                            <a href="Receive?productid=${product.productid}">
+                                                <input type="hidden" value="${product.productid}" name="productid"/>
+                                                <button type="submit" class="btn btn-outline-success active">Received
+                                                </button></a>
+                                            <!--</form>-->
+                                        </c:when>
+                                        <c:otherwise>
+                                            <!--<form action="#" method="post">-->
+                                            <a href="Receive?productid=${product.productid}"><input type="hidden" value="${product.productid}" name="productid"/>
+                                                <button type="submit" class="btn btn-outline-success">Received
+                                                </button></a>
+                                            <!--</form>-->
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-sm-1"></div>
                                 <div class="col-sm-2"></div>

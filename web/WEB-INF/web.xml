@@ -146,6 +146,14 @@
         <servlet-name>AddItemToCartGenreServlet</servlet-name>
         <servlet-class>servlet.AddItemToCartAllServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddByTypeServlet</servlet-name>
+        <servlet-class>servlet.AddByTypeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReceiveServlet</servlet-name>
+        <servlet-class>servlet.ReceiveServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -281,6 +289,14 @@
     <servlet-mapping>
         <servlet-name>AddItemToCartGenreServlet</servlet-name>
         <url-pattern>/AddItemToCartGenre</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddByTypeServlet</servlet-name>
+        <url-pattern>/AddByType</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReceiveServlet</servlet-name>
+        <url-pattern>/Receive</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

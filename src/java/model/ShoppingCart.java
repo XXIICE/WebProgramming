@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import jpa.model.Orderitem;
+import model.LineItem;
 import jpa.model.Product;
 
 /**
@@ -20,20 +20,20 @@ import jpa.model.Product;
  */
 public class ShoppingCart implements Serializable {
 
-    private Map<String, Orderitem> cart;
+    private Map<String, LineItem> cart;
 
     public ShoppingCart() {
         cart = new HashMap();
     }
 
     public void add(Product p) {
+        LineItem line = cart.get(p.getProductid());
 //        LineItem line = cart.get(p.getProductid());
-        Orderitem order = cart.get(p.getProductid());
-        if (order == null) {
+        if (line == null) {
+            cart.put(p.getProductid(), new LineItem(p));
 //            cart.put(p.getProductid(), new LineItem(p));
-            cart.put(p.getProductid(), new Orderitem(p));
         } else {
-            order.setQuantity(order.getQuantity() + 1);
+            line.setQuantity(line.getQuantity() + 1);
         }
 
     }
@@ -51,32 +51,32 @@ public class ShoppingCart implements Serializable {
 
     public double getTotalPrice() {
         double sum = 0;
-        Collection<Orderitem> orderItems = cart.values();
-        for (Orderitem orderItem : orderItems) {
-            sum += orderItem.getTotalPrice();
+        Collection<LineItem> lineItems = cart.values();
+        for (LineItem lineItem : lineItems) {
+            sum += lineItem.getTotalPrice();
         }
         return sum;
     }
 
     public int getTotalQuantity() {
         int sum = 0;
-        Collection<Orderitem> orderItems = cart.values();
-        for (Orderitem orderItem : orderItems) {
-            sum += orderItem.getQuantity();
+        Collection<LineItem> lineItems = cart.values();
+        for (LineItem lineItem : lineItems) {
+            sum += lineItem.getQuantity();
         }
         return sum;
     }
 
-    public List<Orderitem> getOrderItems() {
+    public List<LineItem> getOrderItems() {
         return new ArrayList(cart.values());
     }
 
     public void delete(Product p) {
-        Orderitem order = cart.get(p.getProductid());
-        if (order.getQuantity() == 1) {
+        LineItem line = cart.get(p.getProductid());
+        if (line.getQuantity() == 1) {
             this.remove(p.getProductid());
-        } else if (order.getQuantity() > 1) {
-            order.setQuantity(order.getQuantity() - 1);
+        } else if (line.getQuantity() > 1) {
+            line.setQuantity(line.getQuantity() - 1);
         }
     }
 

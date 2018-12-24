@@ -1,4 +1,4 @@
- /*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -40,6 +40,7 @@ import jpa.model.controller.exceptions.NonexistentEntityException;
 import jpa.model.controller.exceptions.PreexistingEntityException;
 import jpa.model.controller.exceptions.RollbackFailureException;
 import model.LineItem;
+import model.ShoppingCart;
 import model.ShoppingCart2;
 
 /**
@@ -68,6 +69,7 @@ public class AddItemToCartServlet extends HttpServlet {
         ShoppingCart2 cart = (ShoppingCart2) session.getAttribute("cart");
         String productid = request.getParameter("productid");
         Customer custom = (Customer) session.getAttribute("custom");
+//        ShoppingCart c = new ShoppingCart();
         if (cart == null) {
             cart = new ShoppingCart2();
             session.setAttribute("cart", cart);
@@ -76,17 +78,80 @@ public class AddItemToCartServlet extends HttpServlet {
         Product p = productJpaCtrl.findProduct(productid);
         if (productid != null) {
             cart.add(p);
+//            c.add(p);
+//            Cart ca = new Cart();
+//            CartJpaController cartJpaCtrl = new CartJpaController(utx, emf);            
+//            CartPK caPk = new CartPK();
+//            int idC = cartJpaCtrl.getCartCount() + 1;
+//            caPk.setCartid(idC);
+//            ca.setCartPK(caPk);
+//            try {
+//                cartJpaCtrl.create(ca);
+//            } catch (Exception ex) {
+//                Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//            Lineitem line = new Lineitem();
+//            LineitemJpaController lineJpaCtrl = new LineitemJpaController(utx, emf);
+////            line.setCart(ca);
+//            int idL = lineJpaCtrl.getLineitemCount() + 1;
+//            line.setLineitemid(idL);
+//            LineItem lines = new LineItem();
+//            line.setQuantity(lines.getQuantity() + 1);
+//            line.setTotalprice(lines.getTotalPrice() + p.getPrice());
+//            line.setProductProductid(p);
+////                List<Lineitem> lineList = lineJpaCtrl.findLineitemEntities();
+////                    for (Lineitem lineitem : lineList) {
+////                        if (productid.equals(line.getProductProductid())) {
+////                       lineList.add(line);
+////                    }
+////                    }
+//            try {
+//                lineJpaCtrl.create(line);
+////                    ca.setLineitemList(lineList);
+//
+//            } catch (Exception ex) {
+//                Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//            
+//           List<Lineitem> lineList = lineJpaCtrl.findLineitemEntities();
+//            if (productid.equals(line.getProductProductid())) {
+//                Cart ca = new Cart();
+//                CartJpaController cartJpaCtrl = new CartJpaController(utx, emf);
+//                CartPK caPk = new CartPK();
+//                int idC = cartJpaCtrl.getCartCount() + 1;
+//                caPk.setCartid(idC);
+//                caPk.setCustomerUsername(custom.getUsername());
+//                ca.setCartPK(caPk);
+//                ca.setCustomer(custom);
+//                try {
+//                    cartJpaCtrl.edit(ca);
+//                } catch (RollbackFailureException ex) {
+//                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                } catch (Exception ex) {
+//                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//                line.setCart(ca);
+//                
+//                try {
+//                    lineJpaCtrl.edit(line);
+//                    ca.setLineitemList(lineList);
+//                } catch (RollbackFailureException ex) {
+//                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                } catch (Exception ex) {
+//                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
             if (custom != null) {
+
                 Cart ca = new Cart();
-                CartJpaController cartJpaCtrl = new CartJpaController(utx, emf);                
+                CartJpaController cartJpaCtrl = new CartJpaController(utx, emf);
                 CartPK caPk = new CartPK();
-                int idC = cartJpaCtrl.getCartCount()+1;
+                int idC = cartJpaCtrl.getCartCount() + 1;
                 caPk.setCartid(idC);
                 caPk.setCustomerUsername(custom.getUsername());
                 ca.setCartPK(caPk);
                 ca.setCustomer(custom);
-                
-                
+
                 try {
                     cartJpaCtrl.create(ca);
                 } catch (Exception ex) {
@@ -97,31 +162,36 @@ public class AddItemToCartServlet extends HttpServlet {
                 line.setCart(ca);
                 int idL = lineJpaCtrl.getLineitemCount() + 1;
                 line.setLineitemid(idL);
-                LineItem lines= new LineItem();
-                line.setQuantity(lines.getQuantity()+1);
-                line.setTotalprice(lines.getTotalPrice()+p.getPrice());
+                LineItem lines = new LineItem();
+//                double total = line.getQuantity()*line.getTotalprice();
+                line.setQuantity(lines.getQuantity() + 1);
+//                line.setQuantity(cart.getTotalQuantity());
+                line.setTotalprice(lines.getTotalPrice() + p.getPrice());
+//                line.setTotalprice(line.getTotalPrice()+p.getPrice());
                 line.setProductProductid(p);
                 List<Lineitem> lineList = lineJpaCtrl.findLineitemEntities();
-                    for (Lineitem lineitem : lineList) {
-                        if (productid.equals(line.getProductProductid())) {
-//                            line.setQuantity(lines.getQuantity()+1);
-//                            try {
-//                                lineJpaCtrl.edit(line);
-//                            } catch (RollbackFailureException ex) {
-//                                Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
-//                            } catch (Exception ex) {
-//                                Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
-//                            }
-//                            System.out.println(lines.getQuantity());
+                for (Lineitem lineitem : lineList) {
+                    if (productid.equals(line.getProductProductid())) {
+                        lineList.add(line);
+                    }
+//                    if (!productid.equals(line.getProductProductid())) {
+//                        lineList.add(line);
+//                    } else if (productid.equals(line.getProductProductid())) { 
+//                        line.setQuantity(lines.getQuantity() + 1);
+//                        try {
+//                            lineJpaCtrl.edit(line);
+//                        } catch (RollbackFailureException ex) {
+//                            Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                        } catch (Exception ex) {
+//                            Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                        }
+//                    }
 
-                       
-                       lineList.add(line);
-                    }
-                    }
+                }
                 try {
                     lineJpaCtrl.create(line);
                     ca.setLineitemList(lineList);
-                     
+
                 } catch (Exception ex) {
                     Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -141,10 +211,37 @@ public class AddItemToCartServlet extends HttpServlet {
 //                } catch (Exception ex) {
 //                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
 //                }
+//            }
             }
             session.setAttribute("cart", cart);
             getServletContext().getRequestDispatcher("/ProductList").forward(request, response);
-
+//            if (productid.equals(line.getProductProductid())) {
+//                Cart ca = new Cart();
+//                CartJpaController cartJpaCtrl = new CartJpaController(utx, emf);
+//                CartPK caPk = new CartPK();
+//                int idC = cartJpaCtrl.getCartCount() + 1;
+//                caPk.setCartid(idC);
+//                caPk.setCustomerUsername(custom.getUsername());
+//                ca.setCartPK(caPk);
+//                ca.setCustomer(custom);
+//                try {
+//                    cartJpaCtrl.edit(ca);
+//                } catch (RollbackFailureException ex) {
+//                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                } catch (Exception ex) {
+//                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//                line.setCart(ca);
+//                
+//                try {
+//                    lineJpaCtrl.edit(line);
+//                    ca.setLineitemList(lineList);
+//                } catch (RollbackFailureException ex) {
+//                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                } catch (Exception ex) {
+//                    Logger.getLogger(AddItemToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
         }
 
     }
@@ -277,7 +374,7 @@ public class AddItemToCartServlet extends HttpServlet {
 //                }
 //            }
 //        }
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 
     /**
      * Handles the HTTP <code>GET</code> method.

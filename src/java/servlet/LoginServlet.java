@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
 import jpa.model.Customer;
 import jpa.model.controller.CustomerJpaController;
+import model.ShoppingCart2;
 
 /**
  *
@@ -48,6 +49,11 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
 
         Customer custom = new Customer();
+        ShoppingCart2 cart = (ShoppingCart2) session.getAttribute("cart");
+
+        if (cart != null) {
+            session.removeAttribute("cart");
+        }
         if (username != null && username.trim().length() > 0
                 && password != null && password.trim().length() > 0) {
             CustomerJpaController customJpaCtrl = new CustomerJpaController(utx, emf);
@@ -56,27 +62,26 @@ public class LoginServlet extends HttpServlet {
             if (custom != null) {
 
 //                if (custom != null) {
+                if (custom.getUsername().equals(username) && custom.getPassword().equals((cryptWithMD5(password)))) {
+                    if (session == null) {
 
-                    if (custom.getUsername().equals(username) && custom.getPassword().equals((cryptWithMD5(password)))) {
-                        if (session == null) {
-
-                            session = request.getSession(true);
-                            request.setAttribute("msg", "");
-                        }
-
-                        session.setAttribute("custom", custom);
-                        getServletContext().getRequestDispatcher("/productDiv1").forward(request, response);
-                    } else if (!custom.getUsername().equals(username) || !custom.getPassword().equals((cryptWithMD5(password)))) {
-
-                        request.setAttribute("msg", "username or password is incorrect,Please try again!!");
-
+                        session = request.getSession(true);
+                        request.setAttribute("msg", "");
                     }
 
-                }
-            }
+                    session.setAttribute("custom", custom);
+                    getServletContext().getRequestDispatcher("/productDiv1").forward(request, response);
+                } else if (!custom.getUsername().equals(username) || !custom.getPassword().equals((cryptWithMD5(password)))) {
 
-            getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
-        
+                    request.setAttribute("msg", "username or password is incorrect,Please try again!!");
+
+                }
+
+            }
+        }
+//            session.invalidate();
+        getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
+
     }
 
     public static String cryptWithMD5(String pass) {

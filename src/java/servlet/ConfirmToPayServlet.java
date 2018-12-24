@@ -75,11 +75,13 @@ public class ConfirmToPayServlet extends HttpServlet {
 
                         custom.setPoint(point);
                         session.setAttribute("custom", custom);
+
+                        session.removeAttribute("cart");
+
 //                        em.getTransaction().commit();
 //
 //                        try {
 //                            customJpa.edit(custom);
-
 //                        customJpa.create(custom);
 //                        session.setAttribute("order", cart);
 //                            getServletContext().getRequestDispatcher("/order.jsp").forward(request, response);

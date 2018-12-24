@@ -28,7 +28,7 @@ import jpa.model.controller.exceptions.RollbackFailureException;
 
 /**
  *
- * @author Yang
+ * @author ariya boonchoo
  */
 public class ProductJpaController implements Serializable {
 
@@ -429,7 +429,7 @@ public class ProductJpaController implements Serializable {
             em.close();
         }
     }
-public List<Product> findByProductname(String productname) {
+  public List<Product> findByProductname(String productname) {
         EntityManager em = getEntityManager();
         Query query = em.createNamedQuery("Product.findByProductname");
         query.setParameter("productname", "%" + productname.toLowerCase() + "%");

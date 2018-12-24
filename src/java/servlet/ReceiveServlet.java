@@ -7,10 +7,8 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.Resource;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 import javax.servlet.ServletException;
@@ -21,24 +19,19 @@ import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
 import jpa.model.Customer;
 import jpa.model.Product;
-import jpa.model.Review;
 import jpa.model.controller.CustomerJpaController;
 import jpa.model.controller.ProductJpaController;
-import jpa.model.controller.ReviewJpaController;
-import jpa.model.controller.exceptions.RollbackFailureException;
 import model.ShoppingCart2;
 
 /**
  *
  * @author ariya boonchoo
  */
-public class ReviewServlet extends HttpServlet {
-
-    @PersistenceUnit(unitName = "ImaginePU")
+public class ReceiveServlet extends HttpServlet {
+@PersistenceUnit(unitName = "ImaginePU")
     EntityManagerFactory emf;
     @Resource
     UserTransaction utx;
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -51,43 +44,24 @@ public class ReviewServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
-
-        ShoppingCart2 order = (ShoppingCart2) session.getAttribute("order");
-        String review = request.getParameter("review");
         Customer custom = (Customer) session.getAttribute("custom");
-        Review re = new Review();
-        String productid = request.getParameter("productid");
 
+        String productid = request.getParameter("productid");
         if (productid != null) {
             ProductJpaController productJpaCtrl = new ProductJpaController(utx, emf);
             Product product = productJpaCtrl.findProduct(productid);
             session.setAttribute("product", product);
-            if (review != null) {
-                if (custom != null) {
-                    CustomerJpaController customJpa = new CustomerJpaController(utx, emf);
-                    Date d = new Date();
-                    session.setAttribute("date", d);
-                    re.setComment(review);
-                    re.setCommentdate(d);
-                    re.setCustomerUsername(custom);
-                    re.setProductProductid(product);
-                    ReviewJpaController reJpaCtrl = new ReviewJpaController(utx, emf);
-                    int idRe = reJpaCtrl.getReviewCount()+1;
-                    re.setReviewid(idRe);
-                    try {
-                        reJpaCtrl.create(re);
-                        session.setAttribute("review", re);
-                        getServletContext().getRequestDispatcher("/GetProductDatail").forward(request, response);
-                    } catch (RollbackFailureException ex) {
-                        Logger.getLogger(ReviewServlet.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (Exception ex) {
-                        Logger.getLogger(ReviewServlet.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    
+            if (session != null) {
+                ShoppingCart2 order = (ShoppingCart2) session.getAttribute("order");
+
+                if (order != null) {
+                    session.setAttribute("received", order);
+                    getServletContext().getRequestDispatcher("/order.jsp").forward(request, response);
+
                 }
             }
         }
-        getServletContext().getRequestDispatcher("/reviews.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher("/order.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Yang
+ * @author ariya boonchoo
  */
 @Entity
 @Table(name = "REVIEW")
@@ -40,9 +40,8 @@ public class Review implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 5)
     @Column(name = "REVIEWID")
-    private String reviewid;
+    private Integer reviewid;
     @Size(max = 255)
     @Column(name = "Comment")
     private String comment;
@@ -61,20 +60,20 @@ public class Review implements Serializable {
     public Review() {
     }
 
-    public Review(String reviewid) {
+    public Review(Integer reviewid) {
         this.reviewid = reviewid;
     }
 
-    public Review(String reviewid, Date commentdate) {
+    public Review(Integer reviewid, Date commentdate) {
         this.reviewid = reviewid;
         this.commentdate = commentdate;
     }
 
-    public String getReviewid() {
+    public Integer getReviewid() {
         return reviewid;
     }
 
-    public void setReviewid(String reviewid) {
+    public void setReviewid(Integer reviewid) {
         this.reviewid = reviewid;
     }
 
